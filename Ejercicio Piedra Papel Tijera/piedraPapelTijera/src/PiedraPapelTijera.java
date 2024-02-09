@@ -11,7 +11,7 @@ public class PiedraPapelTijera {
     static int ganaOrdenador = 0;
     static int ganaHumano =  0;
 
-
+    // hacemos un comentario, y luego me movere de rama. para hacer otro comentario en la rama Banco
 
     public static void main(String[] args) {
 
