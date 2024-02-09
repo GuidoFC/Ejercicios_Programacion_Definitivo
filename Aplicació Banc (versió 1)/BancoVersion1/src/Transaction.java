@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Transaction {
+    // primero he hecho un commit en la rama Piedra, luego he hecho
+    // el push i finalmente he cambiado de rama. Ahora hare un commit
+    // esta rama y mirare como se ha quedado en el git hub
     public static int accountTransaction = 1;
     private int numeroTransaccion;
     public enum TransactionType {
