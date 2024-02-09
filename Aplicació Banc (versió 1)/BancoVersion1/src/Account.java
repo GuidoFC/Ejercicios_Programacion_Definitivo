@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Account{
 
+    // tengo que seguir lo pasos que ha hecho miquel vera y hacer otra carpet donde me ponga la info del banco version 2
     // creamos accountCounter para hacer un Auto Increment de accountNumber
     public static int accountCounter = 1;
     private int accountNumber;
