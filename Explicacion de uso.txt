@@ -1,0 +1,1 @@
+En el master no tendre nada, y creare una nueva rama para cada proyecto o ejercicio que tenga que hacer en programación
