@@ -8,16 +8,26 @@ public class Bank {
     private static Scanner in = new Scanner(System.in);
     // Como determina que tiene que crear dentro de banco un ArrayList de Cliente y Cuentas?
     private static ArrayList<Client> clients = new ArrayList<Client>();
-    private static ArrayList<Account> accounts = new ArrayList<Account>();
+    private static ArrayList<CurrentAccount> listCurrentAccounts = new ArrayList<CurrentAccount>();
+    private static ArrayList<MortgageAccount> listMortgageAccount = new ArrayList<MortgageAccount>();
+    private static ArrayList<InvestmentFund> listInvestmentFund = new ArrayList<InvestmentFund>();
 
     // Este activeAccount sirve para hacer una copia de un objeto y a traves de esta copia
     // podemos hacer los cambios que veamos oportunos y eso hara que el objeto original tmb se modifique
 
     // una pregunta esto sería la clase Account y esto seria el nombre del objeto activeAccount y estoy diciendo
     // a traves del constructor vacio que no me guarde nada?
-    private static Account activeAccount = null;
+    private static CurrentAccount activeCurrentAccount = null;
+    private static MortgageAccount activeMortgageAccount = null;
+    private static InvestmentFund activeInvestmentFund = null;
+
+
     // para que usa esta variable de accountCounter?
-    private static int accountCounter = 1;
+    private static int accountCurrentAccount = 1;
+    private static int accountMortgageAccount = 1;
+    private static int accountInvestmentFund = 1;
+
+
 
     public static void main(String[] args) {
         int option = 0;
@@ -79,9 +89,10 @@ public class Bank {
             // si no lo encontramos sal del método
             return;
         }
+
         // primero en el método se pone todo lo que va mal, y luego empieza el método.
         // creamos un String de name y una variable de tipo cliente
-            // para que creamos una variable de tipo cliente?
+            // Duda: para que creamos una variable de tipo cliente?
         String name;
         Client client = null;
         do {
@@ -96,11 +107,8 @@ public class Bank {
             client = validateClient(name);
         } while (client == null); // Si cliente es null volvera a pedir que escribas el nombre
 
-        // si encontramos al cliente
-        // accountCounter es una variable STATIC que actua como contador, pero no acabo de entder como funciona
-        // pq en el constructor aparece --> this.accountNumber = accountNumber;
-        accounts.add(new Account(accountCounter++, 0, client));
-        System.out.println("Account for " + client.fullName() + " created succesfully.");
+        // para elegir la cuenta tengo que saber que cliente lo va a hacer
+        chooseAccount(client);
     }
 
     private static Client validateClient(String name) {
@@ -193,6 +201,46 @@ public class Bank {
         activeAccount.withdraw(amount);
     }
 
+    public static void chooseAccount(Client client){
+
+        int opcion;
+
+        do{
+            chooseAccountMenu();
+            opcion = Integer.parseInt(in.nextLine());
+            switch (opcion){
+                case 1:
+                    System.out.println("Creant Compte Corrent");
+
+                    listCurrentAccounts.add(new CurrentAccount(accountCurrentAccount++, 0, client));
+                    System.out.println("New Current Account for " + client.fullName() + " created succesfully.");
+
+                    // con el return salgo del método
+                    // y con el break salgo de esta opcion del switch?
+                    return;
+                case 2:
+                    System.out.println("Creant Compte Vivenda");
+                    listMortgageAccount.add(new MortgageAccount(accountCurrentAccount++, 1_000, client));
+                    System.out.println("New Mortgage Account for " + client.fullName() + " created succesfully.");
+                    return;
+                case 3:
+                    System.out.println("Creant Fons d’inversió");
+                    listInvestmentFund.add(new InvestmentFund(accountInvestmentFund++, 5_000, client));
+                    System.out.println("New Investment Fund for " + client.fullName() + " created succesfully.");
+                    return;
+                case 4:
+                    System.out.println("Back to Main Menu");
+                    break;
+                default:
+                    System.out.println("Opción incorrecta, vuelta a intentarlo");
+                    break;
+            }
+
+        }while (opcion != 4);
+        in.close();
+
+    }
+
     private static void mainMenu() {
         String s = """
 
@@ -213,6 +261,18 @@ public class Bank {
                 1 - Deposit
                 2 - Withdrawal
                 3 - View Account Data
+                4 - Back to Main Menu
+                """;
+        System.out.println(s);
+    }
+
+    private static void chooseAccountMenu(){
+        String s = """
+                
+                Choose your Account
+                1 - Current Account (Compte Corrent): es crea amb 0€
+                2 - MortgageAccount (Compte Vivenda): es crea amb 1,000€
+                3 - Investment Fund (Fons d’inversió): es crea amb 5,000€.
                 4 - Back to Main Menu
                 """;
         System.out.println(s);

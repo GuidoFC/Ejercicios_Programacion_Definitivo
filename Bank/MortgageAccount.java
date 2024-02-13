@@ -1,30 +1,16 @@
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
-public class Account {
+public class MortgageAccount extends AccountAbstract {
 
-    private int accountNumber;
-    private double balance;
-    // Crea una clase cliente para de esta forma asociar la cuenta a un cliente
-    private Client owner;
 
-    // Duda: como sabe que tiene que crear un ArrayList de transaciones en cuenta?
-    private ArrayList<Transaction> transactions;
-
-    public Account(int accountNumber, double balance, Client owner) {
-        this.accountNumber = accountNumber;
-        this.balance = balance;
-        this.owner = owner;
-
-        // Duda: Por que esto lo haces asi?
-            // Puede ser pq dentro de una cuenta tiene muchas transacciones y
-            // nos interesa guardar el registro
-        this.transactions = new ArrayList<Transaction>();
+    public MortgageAccount(int accountNumber, double balance, Client owner) {
+        super(accountNumber, balance, owner);
     }
 
+    @Override
     public void deposit(double amount) {
-        if (amount <= 0) {
-            System.out.println("ERROR: Can't deposit a negative or 0 amount");
+        if (amount < 10) {
+            System.out.println("El ingreso tiene que ser superior a 10€");
             return;
         }
         this.balance += amount;
@@ -33,7 +19,7 @@ public class Account {
         // pq no has añadido finalBalance que es un atributo del Transaction?
         this.transactions.add(new Transaction(LocalDateTime.now(), amount, this.balance, TransactionType.DEPOSIT));
     }
-
+    @Override
     public void withdraw(double amount) {
         if (amount <= 0) {
             System.out.println("ERROR: Can't deposit a negative or 0 amount");
@@ -47,7 +33,7 @@ public class Account {
         // fijate como funciona el ENUM
         this.transactions.add(new Transaction(LocalDateTime.now(), amount, this.balance, TransactionType.WITHDRAWAL));
     }
-
+    @Override
     public void viewAccount() {
         String s = "";
         // curioso como guarda estos datos con el \n
@@ -67,31 +53,31 @@ public class Account {
     public String toString() {
         return "Account [accountNumber=" + this.accountNumber + ", owner=" + this.owner.fullName() + "]";
     }
-
+    @Override
     public int getAccountNumber() {
         return accountNumber;
     }
-
+    @Override
     public void setAccountNumber(int accountNumber) {
         this.accountNumber = accountNumber;
     }
-
+    @Override
     public double getBalance() {
         return balance;
     }
-
+    @Override
     public void setBalance(double balance) {
         this.balance = balance;
     }
-
+    @Override
     public Client getOwner() {
         return owner;
     }
-
+    @Override
     public void setOwner(Client owner) {
         this.owner = owner;
     }
-
+    @Override
     private String viewTransactions() {
         String s = "";
 
