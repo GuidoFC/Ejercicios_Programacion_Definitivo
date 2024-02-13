@@ -7,6 +7,11 @@ public class Transaction {
     private LocalDateTime dateTime;
     private double amount;
     private double finalBalance;
+    // Curioso:
+    // Cuando hacemos un ENUM
+
+    // Duda: TransactionType = clase y
+    // type = que sería?
     private TransactionType type;
 
     public Transaction(LocalDateTime dateTime, double amount, double finalBalance, TransactionType type) {
@@ -18,7 +23,11 @@ public class Transaction {
 
     @Override
     public String toString() {
+        // Ternaria
+        // TransactionType.DEPOSIT = condicion --- ? "   TRUE = DEPOSIT" : " FALSE =WITHDRAWAL"
         return (this.type == TransactionType.DEPOSIT ? "   DEPOSIT" : "WITHDRAWAL")
+
+                // Buscar info de como funciona este formato de fecha
                 + " [Date = " + this.dateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
                 + ", time = " + this.dateTime.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))
                 + ", amount = " + this.amount
@@ -49,6 +58,8 @@ public class Transaction {
     public void setFinalBalance(double finalBalance) {
         this.finalBalance = finalBalance;
     }
+
+    // Curios el getter y setter también se aplican en ENUM
 
     public TransactionType getType() {
         return type;

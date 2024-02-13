@@ -5,6 +5,8 @@ public class Client {
     private String lastNames;
     private String address;
     private String city;
+
+    // para usar LocalDate hay que importar el paquete
     private LocalDate birthDate;
 
     public Client(String name, String lastNames, String address, String city, LocalDate birthDate) {
@@ -62,5 +64,6 @@ public class Client {
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
+
 
 }
