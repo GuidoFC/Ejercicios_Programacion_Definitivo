@@ -78,7 +78,7 @@ public class InvestmentFund extends AccountAbstract {
         this.owner = owner;
     }
     @Override
-    private String viewTransactions() {
+    public String viewTransactions() {
         String s = "";
 
         // vaya crack para imprimir cada transaccion
@@ -87,5 +87,7 @@ public class InvestmentFund extends AccountAbstract {
         }
         return s;
     }
+
+
 
 }

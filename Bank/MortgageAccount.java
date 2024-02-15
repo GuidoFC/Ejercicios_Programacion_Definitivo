@@ -77,15 +77,16 @@ public class MortgageAccount extends AccountAbstract {
     public void setOwner(Client owner) {
         this.owner = owner;
     }
+
     @Override
-    private String viewTransactions() {
-        String s = "";
+    public String viewTransactions() {
+        StringBuilder s = new StringBuilder();
 
         // vaya crack para imprimir cada transaccion
         for (Transaction transaction : transactions) {
-            s += transaction.toString() + "\n";
+            s.append(transaction.toString()).append("\n");
         }
-        return s;
+        return s.toString();
     }
 
 }

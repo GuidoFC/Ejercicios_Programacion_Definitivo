@@ -41,5 +41,6 @@ public abstract class  AccountAbstract {
 
     public abstract void setOwner(Client owner);
 
+    protected abstract String viewTransactions();
 }
 

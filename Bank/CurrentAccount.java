@@ -79,7 +79,7 @@ public class CurrentAccount extends AccountAbstract {
         this.owner = owner;
     }
     @Override
-    private String viewTransactions() {
+    public String viewTransactions() {
         String s = "";
 
         // vaya crack para imprimir cada transaccion
