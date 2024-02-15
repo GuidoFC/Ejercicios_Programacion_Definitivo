@@ -26,6 +26,16 @@ public abstract class  AccountAbstract {
 
     public abstract void viewAccount();
 
+    // public abstract void interesesAnual();
+
+
+    public void interesesAnual() {
+        System.out.println("Esta cuenta no genera intereses");
+        System.out.println("Solo genera intereses la cuenta Investment Fund");
+    }
+
+
+
 
     public abstract String toString();
 

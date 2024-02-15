@@ -7,6 +7,7 @@ public class Bank {
 
     // Una vez que lo declaras fuera del Main no necesitas volver
     // a declararlo dentro de los métodos o dentro del main
+    // mirar comentarios a ver si entiendo el modelo
     private static Scanner sc = new Scanner(System.in);
 
 
