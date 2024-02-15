@@ -29,6 +29,10 @@ public class MortgageAccount extends AccountAbstract {
             System.out.println("ERROR: There's not enough balance");
             return;
         }
+        if (amount >= 500) {
+            System.out.println("ERROR: Supera los 500€ que es la retirada màxima.");
+            return;
+        }
         this.balance -= amount;
         // fijate como funciona el ENUM
         this.transactions.add(new Transaction(LocalDateTime.now(), amount, this.balance, TransactionType.WITHDRAWAL));
@@ -51,7 +55,7 @@ public class MortgageAccount extends AccountAbstract {
 
     @Override
     public String toString() {
-        return "Account [accountNumber=" + this.accountNumber + ", owner=" + this.owner.fullName() + "]";
+        return "Mortagage Account [accountNumber=" + this.accountNumber + ", owner=" + this.owner.fullName() + "]";
     }
     @Override
     public int getAccountNumber() {
@@ -87,6 +91,10 @@ public class MortgageAccount extends AccountAbstract {
             s.append(transaction.toString()).append("\n");
         }
         return s.toString();
+    }
+    @Override
+    public void interesesAnual() {
+        super.interesesAnual();
     }
 
 }

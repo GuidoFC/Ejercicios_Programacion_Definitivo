@@ -23,14 +23,22 @@ public class CurrentAccount extends AccountAbstract {
     @Override
     public void withdraw(double amount) {
         if (amount <= 0) {
-            System.out.println("ERROR: Can't deposit a negative or 0 amount");
+            System.out.println("ERROR: Can't withdraw a negative or 0 amount");
             return;
+        // No es pot retirar si el balanç final és menor a 0€.
         }
         if (amount > this.balance) {
             System.out.println("ERROR: There's not enough balance");
             return;
         }
+        // 300€ retirada màxima.
+        if (amount >= 300) {
+            System.out.println("ERROR: Supera los 300€ que es la retirada màxima.");
+            return;
+        }
+
         this.balance -= amount;
+
         // fijate como funciona el ENUM
         this.transactions.add(new Transaction(LocalDateTime.now(), amount, this.balance, TransactionType.WITHDRAWAL));
     }
@@ -52,7 +60,7 @@ public class CurrentAccount extends AccountAbstract {
 
     @Override
     public String toString() {
-        return "Account [accountNumber=" + this.accountNumber + ", owner=" + this.owner.fullName() + "]";
+        return "Current Account [accountNumber=" + this.accountNumber + ", owner=" + this.owner.fullName() + "]";
     }
     @Override
     public int getAccountNumber() {
@@ -87,6 +95,11 @@ public class CurrentAccount extends AccountAbstract {
             s += transaction.toString() + "\n";
         }
         return s;
+    }
+
+    @Override
+    public void interesesAnual() {
+        super.interesesAnual();
     }
 
 }

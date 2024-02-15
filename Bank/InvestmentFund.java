@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class InvestmentFund extends AccountAbstract {
 
@@ -9,8 +10,8 @@ public class InvestmentFund extends AccountAbstract {
 
     @Override
     public void deposit(double amount) {
-        if (amount < 10) {
-            System.out.println("El ingreso tiene que ser superior a 10€");
+        if (amount < 500) {
+            System.out.println("El ingreso tiene que ser superior a 500€");
             return;
         }
         this.balance += amount;
@@ -27,6 +28,10 @@ public class InvestmentFund extends AccountAbstract {
         }
         if (amount > this.balance) {
             System.out.println("ERROR: There's not enough balance");
+            return;
+        }
+        if (amount >= 500) {
+            System.out.println("ERROR: Supera los 500€ que es la retirada màxima.");
             return;
         }
         this.balance -= amount;
@@ -51,7 +56,7 @@ public class InvestmentFund extends AccountAbstract {
 
     @Override
     public String toString() {
-        return "Account [accountNumber=" + this.accountNumber + ", owner=" + this.owner.fullName() + "]";
+        return "Investment Fund [accountNumber=" + this.accountNumber + ", owner=" + this.owner.fullName() + "]";
     }
     @Override
     public int getAccountNumber() {
@@ -89,5 +94,43 @@ public class InvestmentFund extends AccountAbstract {
     }
 
 
+    public void interesesAnual() {
+        double balanceAntiguo;
+        double intereses;
+            if (this.balance >= 100_000) {
+                balanceAntiguo = this.balance;
+                intereses = this.balance * 0.05;
+                this.balance = balanceAntiguo + intereses;
 
-}
+                System.out.println("Su saldo era de: " + balanceAntiguo);
+                System.out.println("Los intereses generados son: "+ intereses);
+                System.out.println("Ahora en su cuenta tiene: " + this.balance);
+
+
+            } else if ((this.balance >= 50_000)) {
+                balanceAntiguo = this.balance;
+                intereses = this.balance * 0.04;
+                this.balance = balanceAntiguo + intereses;
+
+                System.out.println("Su saldo era de: " + balanceAntiguo);
+                System.out.println("Los intereses generados son: "+ intereses);
+                System.out.println("Ahora en su cuenta tiene: " + this.balance);
+                return;
+
+            } else {
+
+                balanceAntiguo = this.balance;
+                intereses = this.balance * 0.02;
+                this.balance = balanceAntiguo + intereses;
+
+                System.out.println("Su saldo era de: " + balanceAntiguo);
+                System.out.println("Los intereses generados son: "+ intereses);
+                System.out.println("Ahora en su cuenta tiene: " + this.balance);
+            }
+
+    }
+
+
+
+
+    }
