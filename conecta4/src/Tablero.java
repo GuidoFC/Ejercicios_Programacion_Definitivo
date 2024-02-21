@@ -6,7 +6,7 @@ public class Tablero {
         tableroFichas = this.tableroFichas;
     }
 
-
+// mirar si lo puedo mejorar este método
     public static void dibujarTablero() {
         // Dibujar la primera fila
         for (int j = 0; j < 7; j++) {
