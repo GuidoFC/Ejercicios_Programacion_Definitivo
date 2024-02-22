@@ -1,49 +1,58 @@
 import java.util.Scanner;
 
 public class MainJuego {
-
-
-    public final static int MAXIMO_FILAS = 6;
-    public final static int MAXIMO_COLUMNAS = 7;
     public static int turno = 0;
 
-
-
-
     public Scanner sc = new Scanner(System.in);
-    static int columnaElegida;
+    static int columnaElegidaPorElJugador;
 
 
     public static void main(String[] args) {
 
+        Tablero.inicializarJuego();
         Tablero.dibujarTablero();
-
-        boolean columnaLibreDisponible = false;
+        boolean ganador = false;
 
         do {
-            columnaElegida = Ficha.introducirFichaColumna();
-            columnaLibreDisponible = Tablero.columnaLibre(columnaElegida);
+            boolean columnaLibreDisponible = false;
+
+            columnaElegidaPorElJugador = Ficha.elegirColumna();
+            columnaLibreDisponible = Tablero.comprobarSiColumnaLibre(columnaElegidaPorElJugador);
 
             if (columnaLibreDisponible && turno % 2 == 0 ){
-                guardarFicha[MAXIMO_FILAS][MAXIMO_COLUMNAS] = new Ficha('X');
-                // Esto esta mal pq mi tablero es bidimensional
-                MAXIMO_COLUMNAS ++;
-                MAXIMO_FILAS++;
-                // añadir Tablero.ganadorHorizontal();
+                Tablero.guardarFicha[Tablero.getPosFila()][Tablero.getPosColumna()] = new Ficha('X');
+
+                Tablero.dibujarTablero();
+
+                ganador = Tablero.ganadorHorizontal('X');
+                ganador = Tablero.ganadorVertical('X');
+                ganador = Tablero.ganadorDiagAscIzq('X');
+                ganador = Tablero.ganadorDiagAscDerech('X');
+                ganador = Tablero.ganadorDiagDescIzq('X');
+                ganador = Tablero.ganadorDiagDescDerecho('X');
+
+
 
                 turno ++;
             }else {
-                guardarFicha[MAXIMO_FILAS][MAXIMO_COLUMNAS] = new Ficha('0');
-                // Esto esta mal pq mi tablero es bidimensional
-                MAXIMO_COLUMNAS  ++;
-                MAXIMO_FILAS++;
-                // añadir Tablero.ganadorHorizontal();
+                Tablero.guardarFicha[Tablero.getPosFila()][Tablero.getPosColumna()] = new Ficha('0');
+
+                Tablero.dibujarTablero();
+
+                ganador = Tablero.ganadorHorizontal('0');
+                ganador = Tablero.ganadorVertical('0');
+                ganador = Tablero.ganadorDiagAscIzq('0');
+                ganador = Tablero.ganadorDiagAscDerech('0');
+                ganador = Tablero.ganadorDiagDescIzq('0');
+                ganador = Tablero.ganadorDiagDescDerecho('0');
+
+
 
                 turno ++;
             }
 
 
-        }while (columnaLibreDisponible == false);
+        }while (ganador == false);
 
     }
 }

@@ -16,7 +16,11 @@ public class Ficha {
         return ficha;
     }
 
-    public static int introducirFichaColumna(){
+    public void setFicha(char ficha) {
+        this.ficha = ficha;
+    }
+
+    public static int elegirColumna(){
         int columna;
         System.out.println("En que columna quieres introducir la ficha");
         return columna = sc.nextInt();

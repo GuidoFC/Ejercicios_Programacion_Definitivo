@@ -1,48 +1,62 @@
 import java.util.Arrays;
+
 public class Tablero {
 
     public static Ficha [][] guardarFicha = new Ficha[6][7];
+    private static int posColumna;
+    private static int posFila;
 
-    public Tablero (int [][] tableroFichas){
-        tableroFichas = this.tableroFichas;
+    public Tablero (Ficha [][] guardarFicha){
+        this.guardarFicha = guardarFicha ;
     }
 
-// mirar si lo puedo mejorar este método
-    public static void dibujarTablero() {
-        // Dibujar la primera fila
-        for (int j = 0; j < 7; j++) {
-            System.out.print("|   ");
-        }
-        System.out.println("|");
+    public static int getPosColumna() {
+        return posColumna;
+    }
 
-        // Dibujar las filas
+    public static int getPosFila() {
+        return posFila;
+    }
+
+    public static void setGuardarFicha(Ficha[][] guardarFicha) {
+        Tablero.guardarFicha = guardarFicha;
+    }
+
+    // mirar si lo puedo mejorar este método
+    public static void inicializarJuego() {
+
         for (int i = 0; i < 6; i++) {
-            // Dibujar las columnas
             for (int j = 0; j < 7; j++) {
-                System.out.print("|___");
-            }
-            System.out.println("|");
+                guardarFicha[i][j] = new Ficha(' ');
 
-            // Dibujar los separadores de fila
-            for (int j = 0; j < 7; j++) {
-                System.out.print("|   ");
             }
-            System.out.println("|");
+        }
+    }
+
+    public static void dibujarTablero(){
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 7; j++) {
+                System.out.print("| " + guardarFicha[i][j].getFicha() + " |");
+            }
+            System.out.println();
         }
 
-        // Dibujar la última fila
 
     }
 
-    public static boolean columnaLibre(int columnaElegida){
-        if(guardarFicha[contadorGuardarFichaFila][columnaElegida] == null) {
-            return true;
+    public static boolean comprobarSiColumnaLibre(int columnaElegida){
+        for (int i = 5; i >= 0; i--) {
+            if(guardarFicha[i][columnaElegida] == null) {
+                posColumna = i;
+                posFila = columnaElegida;
+                return true;
+            }
         }
-        System.out.println("No se puede introducir ninguna ficha en ese tablero");
+        System.out.println("No se puede introducir ninguna ficha en esa columna");
         return false;
     }
 
-    public static boolean ganadorHorizontal(Ficha ficha){
+    public static boolean ganadorHorizontal(char ficha){
         int sumaColumna = 1;
         char comprobacion;
         char comprobacion2;
@@ -51,7 +65,7 @@ public class Tablero {
             for (int columna = 0; columna < 7; columna++) {
                     comprobacion = guardarFicha[fila][columna].getFicha();
                     comprobacion2 = guardarFicha[fila][columna + sumaColumna].getFicha();
-                    if (ficha.getFicha() == comprobacion && ficha.getFicha() == comprobacion2 ) {
+                    if (ficha == comprobacion && ficha == comprobacion2 ) {
                         sumaColumna++;
                         if (sumaColumna == 4){
                             return true;
@@ -64,7 +78,9 @@ public class Tablero {
         return false;
     }
 
-    public static boolean ganadorVertical(Ficha ficha){
+    public static boolean ganadorVertical(char ficha){
+        // si introduzco una ficha y obtengo su posicion es más facil hacer comprobacion de arriba a abajo
+        // por solo una columna
         int sumaFila = 1;
         char comprobacion;
         char comprobacion2;
@@ -75,7 +91,7 @@ public class Tablero {
             for (int j = 0; j < 5; j++)  {
                 comprobacion = guardarFicha[j][i].getFicha();
                 comprobacion2 = guardarFicha[j+ sumaFila][i].getFicha();
-                if (ficha.getFicha() == comprobacion && ficha.getFicha() == comprobacion2 ) {
+                if (ficha == comprobacion && ficha == comprobacion2 ) {
                     sumaFila++;
                     if (sumaFila == 4){
                         return true;
@@ -88,14 +104,142 @@ public class Tablero {
         return false;
     }
 
-    public static boolean ganadorDiagonal(Ficha ficha){
-        int sumaColumna = 1;
+
+    public static boolean ganadorDiagAscIzq(char ficha){
+        int variableTemporalFila = posFila;
+        int variableTemporalColumna = posColumna;
+
+        int modColumna = -1;
+        int modFila = -1;
         char comprobacion;
         char comprobacion2;
 
-
+        // seguramente tengo que hacer un Try and Catch por si no se puede ejecutar el código
+        // ponga que no dse ha ganado y el programa tire.
+        if (variableTemporalFila - 3 <= 0 || variableTemporalColumna - 3 <= 0){
+            return false;
+        }
+        for (int i = variableTemporalFila; i < 0; i--) {
+            for (int j = variableTemporalColumna; j < 0; j--) {
+                comprobacion = guardarFicha[i][j].getFicha();
+                comprobacion2 = guardarFicha[i + modFila][j + modColumna].getFicha();
+                if (ficha == comprobacion && ficha == comprobacion2 ) {
+                    modColumna --;
+                    modFila --;
+                    if (modColumna == -4){
+                        return true;
+                    }
+                }else {
+                    modColumna = -1;
+                    modFila = -1;
+                }
+            }
+        }
         return false;
     }
+
+
+    public static boolean ganadorDiagAscDerech(char ficha){
+        int variableTemporalFila = posFila;
+        int variableTemporalColumna = posColumna;
+
+        int modColumna = 1;
+        int modFila = -1;
+        char comprobacion;
+        char comprobacion2;
+
+        // seguramente tengo que hacer un Try and Catch por si no se puede ejecutar el código
+        // ponga que no dse ha ganado y el programa tire.
+        if (variableTemporalFila - 3 < 0 || variableTemporalColumna +3 > 7){
+            return false;
+        }
+        for (int i = variableTemporalFila; i < 0; i--) {
+            for (int j = variableTemporalColumna; j < 6; j++) {
+                comprobacion = guardarFicha[i][j].getFicha();
+                comprobacion2 = guardarFicha[i + modFila][j + modColumna].getFicha();
+                if (ficha == comprobacion && ficha == comprobacion2 ) {
+                    modColumna ++;
+                    modFila --;
+                    if (modColumna == -4){
+                        return true;
+                    }
+                }else {
+                    modColumna = 1;
+                    modFila = -1;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public static boolean ganadorDiagDescIzq(char ficha){
+        int variableTemporalFila = posFila;
+        int variableTemporalColumna = posColumna;
+
+        int modColumna = -1;
+        int modFila = 1;
+        char comprobacion;
+        char comprobacion2;
+
+        // seguramente tengo que hacer un Try and Catch por si no se puede ejecutar el código
+        // ponga que no dse ha ganado y el programa tire.
+        if (variableTemporalFila + 3 > 6 || variableTemporalColumna -4 < 0){
+            return false;
+        }
+        for (int i = variableTemporalFila; i < 6; i++) {
+            for (int j = variableTemporalColumna; j > 0; j--) {
+                comprobacion = guardarFicha[i][j].getFicha();
+                comprobacion2 = guardarFicha[i + modFila][j + modColumna].getFicha();
+                if (ficha == comprobacion && ficha == comprobacion2 ) {
+                    modColumna ++;
+                    modFila --;
+                    if (modColumna == -4){
+                        return true;
+                    }
+                }else {
+                    modColumna = -1;
+                    modFila = -1;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean ganadorDiagDescDerecho(char ficha){
+        int variableTemporalFila = posFila;
+        int variableTemporalColumna = posColumna;
+
+        int modColumna = 1;
+        int modFila = 1;
+        char comprobacion;
+        char comprobacion2;
+
+        // seguramente tengo que hacer un Try and Catch por si no se puede ejecutar el código
+        // ponga que no dse ha ganado y el programa tire.
+        if (variableTemporalFila + 3 > 6 || variableTemporalColumna +3 > 7){
+            return false;
+        }
+        for (int i = variableTemporalFila; i > 6; i++) {
+            for (int j = variableTemporalColumna; j > 0; j++) {
+                comprobacion = guardarFicha[i][j].getFicha();
+                comprobacion2 = guardarFicha[i + modFila][j + modColumna].getFicha();
+                if (ficha == comprobacion && ficha == comprobacion2 ) {
+                    modColumna ++;
+                    modFila ++;
+                    if (modColumna == 4){
+                        return true;
+                    }
+                }else {
+                    modColumna = 1;
+                    modFila = 1;
+                }
+            }
+        }
+        return false;
+    }
+
+
 
 
 
