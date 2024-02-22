@@ -1,15 +1,26 @@
+import java.util.Scanner;
+
 public class Ficha {
-    private String color;
-    private TipoFicha tipoFicha;
+    public static Scanner sc = new Scanner(System.in);
 
-    public Ficha(String color, TipoFicha tipoFicha){
-        color = this.color;
-        tipoFicha = this.tipoFicha;
+    private char ficha;
 
+
+
+    public Ficha(char ficha){
+        this.ficha = ficha; // una variable char lleva comilla simple
+ // es un cero
     }
 
-    public String pintarFicha(TipoFicha tipoFicha){
-        return System.out.println(tipoFicha);
+    public char getFicha() {
+        return ficha;
     }
+
+    public static int introducirFichaColumna(){
+        int columna;
+        System.out.println("En que columna quieres introducir la ficha");
+        return columna = sc.nextInt();
+    }
+
 
 }
