@@ -11,10 +11,13 @@ public class MainJuego {
 
         Tablero.inicializarJuego();
         // haciendo trampas para iterar menos
-        // 1r ganadorDiagAscIzq
-        Tablero.guardarFicha[4][5].setFicha('X');
-        Tablero.guardarFicha[3][4].setFicha('X');
-        Tablero.guardarFicha[5][6].setFicha('X');
+        // Tengo un problema, si la ficha cae en medio del 3 enraya no detecta un ganador
+        // este problema afecta con todos los métodos
+        Tablero.guardarFicha[5][0].setFicha('X');
+        Tablero.guardarFicha[5][2].setFicha('X');
+        Tablero.guardarFicha[5][3].setFicha('X');
+
+
 
         boolean ganador = false;
 

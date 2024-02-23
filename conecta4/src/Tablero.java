@@ -215,19 +215,20 @@ public class Tablero {
 
         comprobacion = guardarFicha[posFila][posColumna].getFicha();
 
-        if (posFila - 1 < 0 || posColumna - 1 < 0){
-            return false;
-        }
         for (int i = 1; i <= 5; i++) {
-            comprobacion2 = guardarFicha[posFila - i][posColumna - i].getFicha();
-            if (comprobacion == comprobacion2 ) {
-                contador ++;
-                if (contador == 3){
-                    return true;
-                }
-            }else {
+            if (posFila - i < 0 || posColumna - i < 0){
                 return false;
+            }else {
+                comprobacion2 = guardarFicha[posFila - i][posColumna - i].getFicha();
+                if (comprobacion == comprobacion2) {
+                    contador++;
+                    if (contador == 3) {
+                        return true;
+                    }
+                }
             }
+
+
         }
         return false;
     }
