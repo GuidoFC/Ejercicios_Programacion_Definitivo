@@ -1,7 +1,9 @@
 import java.util.Objects;
 import java.util.Scanner;
 
+
 public class Ficha {
+    public static boolean turno = true;
     public static Scanner sc = new Scanner(System.in);
 
     private char ficha;
@@ -23,6 +25,13 @@ public class Ficha {
 
     public static int elegirColumna(){
         int columna;
+        if (turno){
+            System.out.println("Le toca al jugador 'X'");
+            turno = false;
+        }else {
+            System.out.println("Le toca al jugador '0'");
+            turno = true;
+        }
         System.out.println("En que columna quieres introducir la ficha? ");
         return columna = sc.nextInt();
     }
