@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Ficha {
@@ -22,9 +23,16 @@ public class Ficha {
 
     public static int elegirColumna(){
         int columna;
-        System.out.println("En que columna quieres introducir la ficha");
+        System.out.println("En que columna quieres introducir la ficha? ");
         return columna = sc.nextInt();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ficha ficha1 = (Ficha) o;
+        return ficha == ficha1.ficha;
+    }
 
 }

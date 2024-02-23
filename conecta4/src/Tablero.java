@@ -34,21 +34,30 @@ public class Tablero {
     }
 
     public static void dibujarTablero(){
+        System.out.println(" ");
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
                 System.out.print("| " + guardarFicha[i][j].getFicha() + " |");
             }
             System.out.println();
         }
-
+        for (int i = 0; i < 7; i++) {
+            int numero = i;
+            System.out.print("| " + i + " |");
+        }
+        System.out.println(" ");
+        System.out.println(" ");
 
     }
 
     public static boolean comprobarSiColumnaLibre(int columnaElegida){
-        for (int i = 5; i >= 0; i--) {
-            if(guardarFicha[i][columnaElegida] == null) {
-                posColumna = i;
-                posFila = columnaElegida;
+        char vacio = ' ';
+
+        for (int fila = 5; fila >= 0; fila--) {
+            char fichaIntroducida =  guardarFicha[fila][columnaElegida].getFicha();
+            if(fichaIntroducida == vacio) {
+                posColumna = columnaElegida;
+                posFila = fila;
                 return true;
             }
         }
@@ -56,26 +65,25 @@ public class Tablero {
         return false;
     }
 
-    public static boolean ganadorHorizontal(char ficha){
+    public static boolean ganadorHorizontal(char ficha){ // aqui
         int sumaColumna = 1;
         char comprobacion;
         char comprobacion2;
 
-        for (int fila = 0; fila < 5; fila++) {
-            for (int columna = 0; columna < 7; columna++) {
-                    comprobacion = guardarFicha[fila][columna].getFicha();
-                    comprobacion2 = guardarFicha[fila][columna + sumaColumna].getFicha();
-                    if (ficha == comprobacion && ficha == comprobacion2 ) {
+        for (int columna = 0; columna < 6; columna++) {
+            comprobacion = guardarFicha[posFila][columna].getFicha();
+                if (columna + sumaColumna < 6){
+                    comprobacion2 = guardarFicha[posFila][columna + sumaColumna].getFicha();
+                    if (comprobacion  == comprobacion2  && comprobacion == ficha) {
                         sumaColumna++;
-                        if (sumaColumna == 4){
+                        if (sumaColumna == 3){
                             return true;
                         }
                     }else {
                         sumaColumna = 1;
                     }
-            }
-        }
-        return false;
+                }
+        }return false;
     }
 
     public static boolean ganadorVertical(char ficha){
@@ -86,18 +94,21 @@ public class Tablero {
         char comprobacion2;
 
         // i = columna
-        for (int i = 0; i < 7; i++)  {
+        for (int i = 0; i < 6; i++) {
             // j = fila
-            for (int j = 0; j < 5; j++)  {
+            for (int j = 0; j < 5; j++) {
                 comprobacion = guardarFicha[j][i].getFicha();
-                comprobacion2 = guardarFicha[j+ sumaFila][i].getFicha();
-                if (ficha == comprobacion && ficha == comprobacion2 ) {
-                    sumaFila++;
-                    if (sumaFila == 4){
-                        return true;
+                if (j + sumaFila < 5) {
+                    comprobacion2 = guardarFicha[j + sumaFila][i].getFicha();
+
+                    if (ficha == comprobacion && ficha == comprobacion2) {
+                        sumaFila++;
+                        if (sumaFila == 4) {
+                            return true;
+                        }
+                    } else {
+                        sumaFila = 1;
                     }
-                }else {
-                    sumaFila = 1;
                 }
             }
         }

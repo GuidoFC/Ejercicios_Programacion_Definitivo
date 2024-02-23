@@ -10,14 +10,19 @@ public class MainJuego {
     public static void main(String[] args) {
 
         Tablero.inicializarJuego();
-        Tablero.dibujarTablero();
+
         boolean ganador = false;
 
         do {
+            Tablero.dibujarTablero();
             boolean columnaLibreDisponible = false;
 
             columnaElegidaPorElJugador = Ficha.elegirColumna();
             columnaLibreDisponible = Tablero.comprobarSiColumnaLibre(columnaElegidaPorElJugador);
+            if (columnaLibreDisponible == false){
+                continue;
+            }
+
 
             if (columnaLibreDisponible && turno % 2 == 0 ){
                 Tablero.guardarFicha[Tablero.getPosFila()][Tablero.getPosColumna()] = new Ficha('X');
@@ -30,9 +35,6 @@ public class MainJuego {
                 ganador = Tablero.ganadorDiagAscDerech('X');
                 ganador = Tablero.ganadorDiagDescIzq('X');
                 ganador = Tablero.ganadorDiagDescDerecho('X');
-
-
-
                 turno ++;
             }else {
                 Tablero.guardarFicha[Tablero.getPosFila()][Tablero.getPosColumna()] = new Ficha('0');
