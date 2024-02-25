@@ -74,43 +74,16 @@ public class Tablero {
         return false;
     }
 
-    public static boolean ganadorHorizontalDerecha(char ficha){
+
+    // este método solo hare una que mirara de izq a derecha
+    public static boolean ganadorHorizontalIzquierdaADerecha(char ficha){
         int contador = 0;
         char comprobacion;
         char comprobacion2;
 
         comprobacion = guardarFicha[posFila][posColumna].getFicha();
-
-        for (int columna = 1; columna <= 6; columna++) {
-                if (columna + posColumna <= 6){
-                    comprobacion2 = guardarFicha[posFila][columna + posColumna].getFicha();
-                    if (comprobacion  == comprobacion2) {
-                        contador++;
-                        if (contador == 3){
-                            return true;
-                        }
-                    }else {
-                        contador = 0;
-
-                    }
-                }else {
-                    return false;
-                }
-        }return false;
-
-    }
-
-    // este método ganadorHorizontalIzquierda funciona
-    public static boolean ganadorHorizontalIzquierda(char ficha){
-        int contador = 0;
-        char comprobacion;
-        char comprobacion2;
-
-        comprobacion = guardarFicha[posFila][posColumna].getFicha();
-
-        for (int columna = posColumna; columna >= 0; columna--) {
-            if (posColumna - columna   >= 0){
-                comprobacion2 = guardarFicha[posFila][posColumna - columna].getFicha();
+        for (int columna = 0; columna <= 6; columna++) {
+                comprobacion2 = guardarFicha[posFila][columna].getFicha();
                 if (comprobacion  == comprobacion2) {
                     contador++;
                     if (contador == 4){
@@ -120,8 +93,8 @@ public class Tablero {
                     contador = 0;
 
                 }
-            }
-        }return false;
+        }
+        return false;
 
     }
 
@@ -149,119 +122,98 @@ public class Tablero {
 
 
 
-    public static boolean ganadorDiagDescendienteIzquierdo(char ficha){
-        // a las filas sumo
-        // a las columnas resto
-        int contador = 0;
-        char comprobacion;
-        char comprobacion2;
+    public static boolean ganadorDiagDescendiente(char ficha){
+        // primero hago que la ficha se me vaya hacia la izquierda y hacia arriba
+            // crear método
 
-        comprobacion = guardarFicha[posFila][posColumna].getFicha();
-
-        if (posFila + 1 > 5 || posColumna - 1 < 0){
-            return false;
-        }
-        // tengo que hacer que los 2 for sean simultaneos
-        for (int i = 1; i <= 5; i++) {
-            comprobacion2 = guardarFicha[posFila + i][posColumna - i].getFicha();
-            if (comprobacion == comprobacion2 ) {
-                contador ++;
-                if (contador == 3){
-                    return true;
-                }
+        int arribaFila = posFila;
+        int izquierdaColumna = posColumna;
+        do {
+            if (arribaFila -1 >= 0 && izquierdaColumna - 1 >= 0){
+                arribaFila --;
+                izquierdaColumna --;
             }else {
-                return false;
+                break;
             }
-        }
-        return false;
-    }
+        }while (arribaFila > -1);
 
 
-    public static boolean ganadorDiagAscendienteDerecho(char ficha){
-        // a las filas resto
-        // a las columnas sumo
+        // y luego empiezo a mirar si hay ganador de forma descendiente de izquierda a Derecha
         int contador = 0;
         char comprobacion;
         char comprobacion2;
 
         comprobacion = guardarFicha[posFila][posColumna].getFicha();
+        // mirar la lógica que los 2 for no van al mismo compaso
 
-        if (posFila - 1 < 0 || posColumna + 1 > 6){
-            return false;
-        }
-        for (int i = 1; i <= 5; i++) {
-            comprobacion2 = guardarFicha[posFila - i][posColumna + i].getFicha();
-            if (comprobacion == comprobacion2 ) {
-                contador ++;
-                if (contador == 3){
-                    return true;
-                }
-            }else {
-                return false;
-            }
-        }
-        return false;
-    }
-
-
-
-
-    public static boolean ganadorDiagAscendienteIzquierdo(char ficha){
-        // a las filas resto
-        // a las columnas resto
-        int contador = 0;
-        char comprobacion;
-        char comprobacion2;
-
-        comprobacion = guardarFicha[posFila][posColumna].getFicha();
-
-        for (int i = 1; i <= 5; i++) {
-            if (posFila - i < 0 || posColumna - i < 0){
-                return false;
-            }else {
-                comprobacion2 = guardarFicha[posFila - i][posColumna - i].getFicha();
-                if (comprobacion == comprobacion2) {
-                    contador++;
-                    if (contador == 3) {
+        do {
+            comprobacion2 = guardarFicha[arribaFila][izquierdaColumna].getFicha();
+                if (comprobacion == comprobacion2){
+                    contador ++;
+                    if (contador == 4){
                         return true;
                     }
+                }else {
+                    contador =0;
                 }
+            if (arribaFila + 1 <= 5 && izquierdaColumna + 1 <= 6) {
+                arribaFila++;
+                izquierdaColumna++;
+            }else{
+                return false;
             }
 
+        }while (arribaFila > -1);
 
-        }
         return false;
+
     }
 
-    public static boolean ganadorDiagDescendienteDerecho(char ficha){
-        // a las filas suma
-        // a las columnas suma
+
+    public static boolean ganadorDiagAscendiente(char ficha){
+        // primero hago que la ficha se me vaya hacia la izquierda(columna) y hacia abajo (fila 5)
+        // crear método
+
+        int arribaFila = posFila;
+        int izquierdaColumna = posColumna;
+        do {
+            if (arribaFila +1 <= 5 && izquierdaColumna - 1 >= 0){
+                arribaFila ++;
+                izquierdaColumna --;
+            }else {
+                break;
+            }
+        }while (arribaFila > -1);
+
+
+        // y luego empiezo a mirar si hay ganador de forma descendiente de izquierda a Derecha
         int contador = 0;
         char comprobacion;
         char comprobacion2;
 
         comprobacion = guardarFicha[posFila][posColumna].getFicha();
+        // mirar la lógica que los 2 for no van al mismo compaso
 
-        if (posFila + 1 >= 5 || posColumna + 1 >= 6){
-            return false;
-        }
-        for (int i = 1; i <= 5; i++) {
-            comprobacion2 = guardarFicha[posFila + i][posColumna + i].getFicha();
-            if (comprobacion == comprobacion2 ) {
+        do {
+            comprobacion2 = guardarFicha[arribaFila][izquierdaColumna].getFicha();
+            if (comprobacion == comprobacion2){
                 contador ++;
                 if (contador == 3){
                     return true;
                 }
             }else {
+                contador =0;
+            }
+            if (arribaFila - 1 >= 0 && izquierdaColumna + 1 <= 6) {
+                arribaFila--;
+                izquierdaColumna++;
+            }else{
                 return false;
             }
-        }
+
+        }while (arribaFila > -1);
+
         return false;
+
     }
-
-
-
-
-
-
 }

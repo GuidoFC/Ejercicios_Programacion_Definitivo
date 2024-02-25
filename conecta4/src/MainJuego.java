@@ -13,11 +13,13 @@ public class MainJuego {
         // haciendo trampas para iterar menos
         // Tengo un problema, si la ficha cae en medio del 3 enraya no detecta un ganador
         // este problema afecta con todos los métodos
+        /*
         Tablero.guardarFicha[5][0].setFicha('X');
-        Tablero.guardarFicha[5][2].setFicha('X');
-        Tablero.guardarFicha[5][3].setFicha('X');
+        Tablero.guardarFicha[3][2].setFicha('X');
+        Tablero.guardarFicha[2][3].setFicha('X');
 
-
+         */
+        // ganadorDiagAscendiente funciona
 
         boolean ganador = false;
 
@@ -39,93 +41,63 @@ public class MainJuego {
                 Tablero.dibujarTablero();
 
 
-                ganador = Tablero.ganadorHorizontalIzquierda('X'); // funciona
+                ganador = Tablero.ganadorHorizontalIzquierdaADerecha('X'); // FUNCIONA
                 if (ganador){
                     System.out.println("El jugador 'X' ha ganado");
-                    System.out.println("ganadorHorizontalIzquierda");
+                    System.out.println("ganadorHorizontalIzquierdaADerecha");
                     break;
                 }
-                ganador = Tablero.ganadorHorizontalDerecha('X'); // funciona
-                if (ganador){
-                    System.out.println("El jugador 'X' ha ganado");
-                    System.out.println("ganadorHorizontalDerecha");
-                    break;
-                }
-                ganador = Tablero.ganadorVertical('X'); // funciona
+
+                ganador = Tablero.ganadorVertical('X'); // pte
                 if (ganador){
                     System.out.println("El jugador 'X' ha ganado");
                     System.out.println("ganadorVertical");
                     break;
                 }
-                ganador = Tablero.ganadorDiagDescendienteIzquierdo('X'); // funciona
+                ganador = Tablero.ganadorDiagDescendiente('X'); // pte
                 if (ganador){
-                    System.out.println("ganadorDiagDescendienteIzquierdo");
+                    System.out.println("ganadorDiagDescendiente");
                     System.out.println("El jugador 'X' ha ganado");
                     break;
                 }
-                ganador = Tablero.ganadorDiagAscendienteDerecho('X'); // funciona
+                ganador = Tablero.ganadorDiagAscendiente('X'); // pte
                 if (ganador){
-                    System.out.println("ganadorDiagAscDerech");
-                    System.out.println("El jugador 'X' ha ganado");
-                    break;
-                }
-                ganador = Tablero.ganadorDiagAscendienteIzquierdo('X'); // funciona
-                if (ganador){
-                    System.out.println("ganadorDiagDescIzq");
-                    System.out.println("El jugador 'X' ha ganado");
-                    break;
-                }
-                ganador = Tablero.ganadorDiagDescendienteDerecho('X'); //funciona
-                if (ganador){
-                    System.out.println("ganadorDiagDescDerecho");
+                    System.out.println("ganadorDiagAscendiente");
                     System.out.println("El jugador 'X' ha ganado");
                     break;
                 }
                 turno ++;
+
             }else {
                 Tablero.guardarFicha[Tablero.getPosFila()][Tablero.getPosColumna()] = new Ficha('0');
 
                 Tablero.dibujarTablero();
 
 
-                ganador = Tablero.ganadorHorizontalIzquierda('0');
+                ganador = Tablero.ganadorHorizontalIzquierdaADerecha('0');
                 if (ganador){
                     System.out.println("El jugador '0' ha ganado");
-                    break;
-                }
-                ganador = Tablero.ganadorHorizontalDerecha('0');
-                if (ganador){
-                    System.out.println("El jugador '0' ha ganado");
+                    System.out.println("ganadorHorizontalIzquierdaADerecha");
                     break;
                 }
                 ganador = Tablero.ganadorVertical('0');
                 if (ganador){
                     System.out.println("El jugador '0' ha ganado");
+                    System.out.println("ganadorVertical");
                     break;
                 }
-                ganador = Tablero.ganadorDiagDescendienteIzquierdo('0');
+                ganador = Tablero.ganadorDiagDescendiente('0');
                 if (ganador){
                     System.out.println("El jugador '0' ha ganado");
+                    System.out.println("ganadorDiagDescendiente");
                     break;
                 }
-                ganador = Tablero.ganadorDiagAscendienteDerecho('0');
+                ganador = Tablero.ganadorDiagAscendiente('0');
                 if (ganador){
                     System.out.println("El jugador '0' ha ganado");
+                    System.out.println("ganadorDiagAscendiente");
                     break;
                 }
-                ganador = Tablero.ganadorDiagAscendienteIzquierdo('0');
-                if (ganador){
-                    System.out.println("El jugador '0' ha ganado");
-                    break;
-                }
-                ganador = Tablero.ganadorDiagDescendienteDerecho('0');
-                if (ganador){
-                    System.out.println("El jugador '0' ha ganado");
-                    break;
-                }
-
-
-
                 turno ++;
             }
 
