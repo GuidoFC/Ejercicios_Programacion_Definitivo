@@ -7,11 +7,13 @@ public class Bank {
 
     // Una vez que lo declaras fuera del Main no necesitas volver
     // a declararlo dentro de los métodos o dentro del main
-    // mirar comentarios a ver si entiendo el modelo
+        // duda: para que sirve ponerle Static a una variable?
+            // Respuesta: es Static pq no necesitamos crear un objeto Bank (new Bank) para poder utilizar esta variable
     private static Scanner sc = new Scanner(System.in);
 
 
-    // Como determina que tiene que crear dentro de banco un ArrayList de Cliente y Cuentas?
+    // Como determinas que tienes que crear dentro de banco un ArrayList de Cliente y Cuentas?
+     // Respuesta: tenemos que mirar el diagrama UML y tenemos que hacer como si fuera BD y meter la FK en la parte donde la relación es 1 (siendo la tabla de FK donde la relacion es N "or" *)
     private static ArrayList<Client> listaClients = new ArrayList<Client>();
     // creamos una lista con la clase padre, y ella sabra de que TIPO guardamos en la lista
     private static ArrayList<AccountAbstract> listaDeTodasLasCuentas = new ArrayList<AccountAbstract>();
@@ -33,6 +35,8 @@ public class Bank {
     public static void main(String[] args) {
 
         // Vamos a crear 3 objetos de cliente
+        // duda: de cuantas formas diferentes se puede crear un objeto?
+            // Solo se puede crear el objeto de una manera. La parte del = que esta a la derecha es para crear el objeto, y luego la parte de la izquierda es para asignar ese objeto a una variable por si queremos operar con el y queremos hacer modificaciones.
 
         Client cliente1 = new Client("Guido", "Figueroa", "C/ Manacor", "Mallorca",LocalDate.parse("1996-06-12"));
         Client cliente2 = new Client("Miquel", "Rosello", "C/ Manacor", "Mallorca",LocalDate.parse("1996-06-12"));
@@ -43,10 +47,12 @@ public class Bank {
         listaClients.add(cliente3);
         // creamos 3 objetos de cuentas
         // Duda: que diferencia hay entre crear un objeto de este modo:
-            //AccountAbstract currentAccount1 = new CurrentAccount(1, 10, cliente1 );
-            //MortgageAccount mortgageAccount1 = new MortgageAccount(1, 500,cliente2);
+            //AccountAbstract currentAccount123 = new CurrentAccount(1, 10, cliente1 ); --> seria asignar el objeto CurrentAccount en la clase padre, en este caso la asignacion currentAccount123 no podra usar los métodos de la clase hija
+            //MortgageAccount mortgageAccount789 = new MortgageAccount(1, 500,cliente2); --> seri crear un objeto de la clase MortgageAccount y asignarle a la clase MortgageAccount.
             // una de ellas esta creada con una clase abstracta y la otra el tipo de la misma clase
-            // como funciona el accountNumber? cada una tendria que tener un numero diferente? En este csao las 3 tiene un 1
+        // Nota: el polimorfismo solo se puede aplicar en HERENCIA
+        // la parte de la izquierda donde se asigna el objeto, puede ser de la misma clase, o la clase del padre o del abuelo. Pero no puedes crear un objeto de la clase padre y asignarlo a la clase hija. Cuando se usa el polimorfirmo usando la clase padre, no podra usar los metodos de la clase hija
+
         CurrentAccount currentAccount1 = new CurrentAccount(contadorDeLas3Cuentas++, 0, cliente1 );
         MortgageAccount mortgageAccount1 = new MortgageAccount(contadorDeLas3Cuentas++, 1_00,cliente2);
         InvestmentFund investmentFund1 = new InvestmentFund(contadorDeLas3Cuentas++, 5_000,cliente3);
@@ -62,6 +68,8 @@ public class Bank {
             mainMenu();
 
             // De esta forma transformamos un String en un INTEGER --> Parse
+                // Duda: puede ser que si lo haces de esta manera ya es suficione?
+                    // option = Integer.parse(sc.nextLine());
             option = Integer.parseInt(sc.nextLine());
             switch (option) {
                 case 1:
@@ -82,7 +90,7 @@ public class Bank {
                     break;
             }
         }
-        // una vez que se termina de usar el Scanner hay que cerrarlo
+
 
 
 
@@ -157,6 +165,7 @@ public class Bank {
         // primero en el método se pone todo lo que va mal, y luego empieza el método.
         // creamos un String de name y una variable de tipo cliente
             // Duda: para que creamos una variable de tipo cliente?
+                // para usarlo en el while y luego llevarlo al método chooseAccount
         String name;
         Client clientCopia = null;
         do {
@@ -205,12 +214,13 @@ public class Bank {
             switch (opcion){
                 case 1:
                     System.out.println("Creant Compte Corrent");
-
+                    // Duda: No entiendo que este objeto creado no tiene nombre, luego como lo puedo modificar?
+                        // tendria que hacer una busqueda con el foreach y luego asignarlo a una variable y de esta forma tendre una copia que apuntan a la misma memoria, por lo tanto, si modifico la copia modifico la original
                     listaDeTodasLasCuentas.add(new CurrentAccount(contadorDeLas3Cuentas++, 0, client));
                     System.out.println("New Current Account for " + client.fullName() + " created succesfully.");
 
-                    // con el return salgo del método
-                    // y con el break salgo de esta opcion del switch?
+                    // con el return salgo del método -> SI
+                    // y con el break salgo de esta opcion del switch? -> SI
                     return;
                 case 2:
                     System.out.println("Creant Compte Vivenda");
@@ -240,9 +250,7 @@ public class Bank {
         int eligaCuenta;
         do {
             for (AccountAbstract cuenta :listaDeTodasLasCuentas) {
-                /*
-                para cada cuenta [hay 3 cuentas diferentes] usara el .toString de cada clase
-                 */
+                // nota: para cada cuenta [hay 3 cuentas diferentes] usara el método .toString que tiene cada clase ya que se ha sobreescrito
                 System.out.println(cuenta.toString());
             }
             System.out.println("Elige una de las cuentas por 'accountNumber':");
@@ -262,13 +270,6 @@ public class Bank {
         selectAccountOption();
 
     }
-
-    // Con esta modificación, el método comprobacionCuentaVacia ahora puede aceptar cualquier ArrayList,
-    // independientemente del tipo de elementos que contenga.
-    /*
-    ArrayList<?> sustituir eso con un if ([] intaceof.[])
-     */
-
 
 
 
@@ -306,13 +307,12 @@ public class Bank {
                 case 4:
 
                     /*
-                    duda: como puedo añadir el método para que solo se me active si es en la cuenta
-                    es de Investment
+                    Duda: como puedo añadir el método para que solo se sea visible si es en la cuenta
+                    es de Investment?
 
+                      // podriamos usar el InstanceOf pero es una mala practica
+                      // lo mejor es Sobreescribir el método viewAccount() e incluir el metodo interesesAnual() dentro de la clase InvestmentFound
 
-                     Para ello como usamos un objeto activeAccount de la clase AccountAbstract
-                     tenemos que crear el método dentro de esa clase y luego en la clase
-                     InvestFund hacer un Override de ese método
                      */
                         activeAccount.interesesAnual();
 
@@ -321,7 +321,7 @@ public class Bank {
                 case 5:
                     System.out.println("Back to Main Menu.");
                     activeAccount = null;
-
+                    break;
                 default:
                     System.out.println("Option not valid, select an option between 1 and 4");
                     break;
