@@ -198,7 +198,7 @@ public class Tablero {
             comprobacion2 = guardarFicha[arribaFila][izquierdaColumna].getFicha();
             if (comprobacion == comprobacion2){
                 contador ++;
-                if (contador == 3){
+                if (contador == 4){
                     return true;
                 }
             }else {
