@@ -21,7 +21,7 @@ public class MainJuego {
     public static void main(String[] args) {
 
 
-        System.out.println( ConsoleColors.chooseColor() +"Ejemplo de como funciona el método" + ConsoleColors.RESET);
+        System.out.println( ConsoleColors.chooseColor() +"Ejemplo de como funciona el método de ConsoleColors" + ConsoleColors.RESET);
 
         Tablero.inicializarJuego();
         // haciendo trampas para iterar menos
