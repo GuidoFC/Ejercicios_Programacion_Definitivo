@@ -1,3 +1,4 @@
+
 public class Tablero {
 
     public static Ficha [][] guardarFicha = new Ficha[6][7];
@@ -36,13 +37,14 @@ public class Tablero {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
                 if (j == 0){
-                    System.out.print(i + "| " + guardarFicha[i][j].getFicha() + " |");
+                    System.out.print( ConsoleColors.BLACK_BOLD + i + "| " + ConsoleColors.elijaUnColor(i, j, guardarFicha) + guardarFicha[i][j].getFicha() + ConsoleColors.BLACK_BOLD + " |");
                 }else {
-                    System.out.print("| " + guardarFicha[i][j].getFicha() + " |");
+                    System.out.print("| " + ConsoleColors.elijaUnColor(i, j, guardarFicha)+  guardarFicha[i][j].getFicha() + ConsoleColors.BLACK_BOLD + " |");
                 }
 
             }
             System.out.println();
+
         }
         for (int i = 0; i < 7; i++) {
             if (i == 0){
@@ -56,8 +58,10 @@ public class Tablero {
         }
         System.out.println(" ");
         System.out.println(" ");
-
+        System.out.println(ConsoleColors.RESET);
     }
+
+
 
     public static boolean comprobarSiColumnaLibre(int columnaElegida){
         char vacio = ' ';

@@ -1,6 +1,17 @@
 import java.util.Scanner;
 
+
+
+
+    /*
+Cosas a mejorar:
+0) Hacer que las fichas sea foto1 y foto2
+1) hacer que se puede hacer el tablero con las filas y columnas que el usuario eliga (modificar el métood de inicialicionJuego
+2) Centrate mas en lo que se pedira en el EXAMEN
+ */
 public class MainJuego {
+
+
     public static int turno = 0;
 
     public Scanner sc = new Scanner(System.in);
@@ -8,6 +19,9 @@ public class MainJuego {
 
 
     public static void main(String[] args) {
+
+
+        System.out.println( ConsoleColors.chooseColor() +"Ejemplo de como funciona el método" + ConsoleColors.RESET);
 
         Tablero.inicializarJuego();
         // haciendo trampas para iterar menos

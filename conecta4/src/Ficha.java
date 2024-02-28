@@ -23,7 +23,7 @@ public class Ficha {
         this.ficha = ficha;
     }
 
-    public static int elegirColumna(){
+    public static int elegirColumna(){ // tiene que estar en el main
         int columna;
         if (turno){
             System.out.println("Le toca al jugador 'X'");
