@@ -10,6 +10,10 @@ public class Bank {
         // duda: para que sirve ponerle Static a una variable?
             // Respuesta: es Static pq no necesitamos crear un objeto Bank (new Bank) para poder utilizar esta variable
     private static Scanner sc = new Scanner(System.in);
+        // truco Scanner y Static empiezan por "s". Recuerda que para usar el
+        // scanner no necesitas crear un objeto para usar el Scanner, por lo tanto, ponemos: private static Scanner
+        // la parte del private es porque este Scanner solo podra ser usando dentro de esta clase Bank.
+
 
 
     // Como determinas que tienes que crear dentro de banco un ArrayList de Cliente y Cuentas?
@@ -41,6 +45,7 @@ public class Bank {
         Client cliente1 = new Client("Guido", "Figueroa", "C/ Manacor", "Mallorca",LocalDate.parse("1996-06-12"));
         Client cliente2 = new Client("Miquel", "Rosello", "C/ Manacor", "Mallorca",LocalDate.parse("1996-06-12"));
         Client cliente3 = new Client("Rafa", "Matallana", "C/ Manacor", "Mallorca",LocalDate.parse("1996-06-12"));
+
 
         listaClients.add(cliente1);
         listaClients.add(cliente2);

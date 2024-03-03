@@ -1,10 +1,12 @@
 import java.time.LocalDate;
 
 public class Client {
-    private String name;
-    private String lastNames;
-    private String address;
-    private String city;
+        private String name;
+        private String lastNames;
+        private String address;
+        private String city;
+
+
 
     // para usar LocalDate hay que importar el paquete
     private LocalDate birthDate;
