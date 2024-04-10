@@ -7,4 +7,6 @@ public abstract class Ficha {
     }
 
     public abstract void RellenarFicha ();
+
+
 }
