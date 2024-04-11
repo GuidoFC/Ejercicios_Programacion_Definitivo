@@ -12,7 +12,7 @@ public class BuscaMinaJuegoMain {
 
         tableroDef1.RellenarTodasLasFichasDelTableroAlInicio();
         tableroDef1.insertarBombas();
-        tableroDef1.contadorBombasVecinas();
+        tableroDef1.contadorDeLasBombasVecinas();
 
 
         imprimirTablero();
