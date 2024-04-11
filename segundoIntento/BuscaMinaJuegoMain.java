@@ -8,15 +8,8 @@ public class BuscaMinaJuegoMain {
     public static void main(String[] args) {
 
         // luego hacer un Swithc para elegir la dificultad
-        tableroDef1 = new TableroDef(10,10,30);
-
-        tableroDef1.RellenarTodasLasFichasDelTableroAlInicio();
-        tableroDef1.insertarBombas();
-        tableroDef1.contadorDeLasBombasVecinas();
-
-
+        tableroDef1 = new TableroDef(5,5,3);
         imprimirTablero();
-
 
         imrimirTableroConBombas();
 
@@ -25,7 +18,7 @@ public class BuscaMinaJuegoMain {
         boolean continua = true;
 
         while (continua){
-            // aqui
+
          continua = elegirFilaColumnaParaJugar();
          if (!continua){
              System.out.println("Has perdido");
@@ -48,7 +41,7 @@ public class BuscaMinaJuegoMain {
                     if (j == 0) {
                         System.out.print(i + 1 + "\t");
                     }
-                    System.out.print(tableroDef1.getLaFichaDelTablero(i,j).getCasillaVisible() + "\t");
+                    System.out.print(imprimirMatrizCasilla(i,j) + "\t");
                     if (j == tableroDef1.getColumnaTabla() - 1) {
                         System.out.println();
                     }
@@ -57,6 +50,21 @@ public class BuscaMinaJuegoMain {
         }
     }
 
+    // aqui hay el fallo porque no se imprime
+    public static String imprimirMatrizCasilla(int fila, int columna){
+        if (tableroDef1.getLaFichaDelTablero(fila,columna).esBandera()){
+            return  "!";
+        }
+        if (tableroDef1.getLaFichaDelTablero(fila,columna).estaTapada()){
+            return  "-";
+        }else {
+            int numeroBombas = tableroDef1.getLaFichaDelTablero(fila,columna).getNumBombasVecinas();
+
+            return  Integer.toString(numeroBombas);
+        }
+
+
+    }
     public static void imrimirTableroConBombas() {
         System.out.println();
         for (int i = -1; i < tableroDef1.getFilaTabla(); i++) {

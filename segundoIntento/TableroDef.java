@@ -12,8 +12,9 @@ public class TableroDef {
         this.numBombas = numBombas;
         numBanderas = 0;
 
-        //
-
+        RellenarTodasLasFichasDelTableroAlInicio();
+        insertarBombas();
+        contadorDeLasBombasVecinas();
     }
 
     // que hace el get tablero??
@@ -34,15 +35,15 @@ public class TableroDef {
     }
 
 
-    public void RellenarTodasLasFichasDelTableroAlInicio() {
+    private void RellenarTodasLasFichasDelTableroAlInicio() {
         for (int i = 0; i < matrizDeCasilla.length; i++) {
             for (int j = 0; j < matrizDeCasilla[0].length; j++) {
-                matrizDeCasilla[i][j] = new Casilla('-');
+                matrizDeCasilla[i][j] = new Casilla();
             }
         }
     }
 
-    public void insertarBombas() {
+    private void insertarBombas() {
         int totalBombas = this.numBombas;
         int fila = this.getFilaTabla();
         int columna = this.getColumnaTabla();
@@ -60,7 +61,7 @@ public class TableroDef {
         }
     }
 
-    public void contadorDeLasBombasVecinas(){
+    private void contadorDeLasBombasVecinas(){
         for (int fila = 0; fila < this.getFilaTabla() ; fila++) {
             for (int columna = 0; columna < this.getColumnaTabla(); columna++) {
                 for (int modificaFila = -1; modificaFila <= 1; modificaFila++) {
@@ -106,14 +107,15 @@ public class TableroDef {
     }
 
     public boolean jugar(int fila, int columna){
-        if(this.getLaFichaDelTablero(fila,columna).getNumBombasVecinas() == -1){
+        if(this.getLaFichaDelTablero(fila,columna).esMina()){
             gameOverImprimirTodasLasMinas();
             return false;
         }
-        this.getLaFichaDelTablero(fila,columna).setTapada(false);
-        // importante como pasar de un int a un char
-        char numero = (char) ('0' + this.getLaFichaDelTablero(fila,columna).getNumBombasVecinas());
-        this.getLaFichaDelTablero(fila,columna).setCasillaVisible(numero);
+
+
+        // que hacer si se destapa la ficha?
+        this.getLaFichaDelTablero(fila,columna).casillaTapada();
+
         return true;
 
     }
@@ -121,8 +123,8 @@ public class TableroDef {
     public void gameOverImprimirTodasLasMinas(){
         for (int i = 0; i < getFilaTabla(); i++) {
             for (int j = 0; j < getColumnaTabla(); j++) {
-                if (this.getLaFichaDelTablero(i,j).getNumBombasVecinas() == -1){
-                    this.getLaFichaDelTablero(i,j).setCasillaVisible('x');
+                if (this.getLaFichaDelTablero(i,j).esMina()){
+                    this.getLaFichaDelTablero(i,j).casillaTapada();
                 }
 
             }
