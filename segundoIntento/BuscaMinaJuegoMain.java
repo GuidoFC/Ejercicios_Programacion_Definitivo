@@ -19,14 +19,52 @@ public class BuscaMinaJuegoMain {
 
         while (continua){
 
-         continua = elegirFilaColumnaParaJugar();
-         if (!continua){
-             System.out.println("Has perdido");
+
+            menu();
+            int option = sc.nextInt();
+         switch (option){
+             case 1: ponerBandera();
+                     imprimirTablero();
+                     break;
+
+             case 2: continua = elegirFilaColumnaParaJugar();
+                 if (!continua){
+                     imprimirTablero();
+                     System.out.println("Has perdido");
+                     break;
+                 }
+                 imprimirTablero();
+                 break;
+             default:
+                 System.out.println("Opción No Valida. Vuelva a intentarlo");
+                 break;
          }
-         imprimirTablero();
+
+
+
         }
 
     }
+
+    public static void menu(){
+        String mensaje =
+                """
+                2 opciones:
+                    1. Poner Bandera
+                    2. Destapar Casilla
+                """;
+        System.out.println(mensaje);
+    }
+
+    public static void ponerBandera(){
+        System.out.println("Elija una fila");
+        int fila = sc.nextInt() -1;
+        System.out.println("Elija una columna");
+        int columna = sc.nextInt() -1;
+        tableroDef1.getLaFichaDelTablero(fila,columna).switchFlag();
+    }
+
+
     public static void imprimirTablero() {
         System.out.println();
         for (int i = -1; i < tableroDef1.getFilaTabla(); i++) {
@@ -50,7 +88,7 @@ public class BuscaMinaJuegoMain {
         }
     }
 
-    // aqui hay el fallo porque no se imprime
+
     public static String imprimirMatrizCasilla(int fila, int columna){
         if (tableroDef1.getLaFichaDelTablero(fila,columna).esBandera()){
             return  "!";
@@ -65,6 +103,8 @@ public class BuscaMinaJuegoMain {
 
 
     }
+    // este método lo puedo borrar luego, sirve para mirar donde estan las bombas y ver si
+    // el código funciona
     public static void imrimirTableroConBombas() {
         System.out.println();
         for (int i = -1; i < tableroDef1.getFilaTabla(); i++) {
@@ -93,6 +133,8 @@ public class BuscaMinaJuegoMain {
         }
     }
 
+    // este método lo puedo borrar luego, sirve para mirar donde estan las bombas y ver si
+    // el código funciona
     public static void imprimirLaSolucion() {
         System.out.println();
         for (int i = -1; i < tableroDef1.getFilaTabla(); i++) {

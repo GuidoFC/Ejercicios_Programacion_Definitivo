@@ -38,7 +38,7 @@ public class Casilla {
         return bandera;
     }
 
-    public void switchFlag(boolean bandera) {
+    public void switchFlag() {
         this.bandera = ! this.bandera;
     }
 
