@@ -3,27 +3,22 @@ package segundoIntento;
 public class Casilla {
 
     private char casillaVisible;
-    // Estado de una Casilla:
-        // 'x' bomba
-        // '-' casilla tapada
-        // 'n' numeroBombas
-        // 'b' bandera
-    private char estado;
-    private int fila;
-    private int columna;
+    private boolean mina;
     private boolean tapada;
-    private int numBombasVecinas;
     private boolean bandera;
+    private int numBombasVecinas;
 
 
-    public Casilla(int fila, int columna, char casillaValor){
-        this.fila = fila;
-        this.columna = columna;
+
+    public Casilla(char casillaValor){
+
         this.casillaVisible = casillaValor;
         this.tapada = true;
-        this.numBombasVecinas =0;
-        this.estado = casillaValor;
+        this.mina = false;
         this.bandera = false;
+        this.numBombasVecinas =0;
+
+
     }
 
     public char getCasillaVisible() {
@@ -34,32 +29,8 @@ public class Casilla {
         this.casillaVisible = casillaVisible;
     }
 
-    public char getEstado() {
-        return estado;
-    }
-
-    public void setEstado(char estado) {
-        this.estado = estado;
-    }
-
-    public int getFila() {
-        return fila;
-    }
-
-    public void setFila(int fila) {
-        this.fila = fila;
-    }
-
-    public int getColumna() {
-        return columna;
-    }
-
-    public void setColumna(int columna) {
-        this.columna = columna;
-    }
-
-    public boolean isTapada() {
-        return tapada;
+    public void setNumBombasVecinas(int numBombasVecinas) {
+        this.numBombasVecinas = numBombasVecinas;
     }
 
     public void setTapada(boolean tapada) {
@@ -70,15 +41,23 @@ public class Casilla {
         return numBombasVecinas;
     }
 
-    public void setNumBombasVecinas(int numBombasVecinas) {
-        this.numBombasVecinas = numBombasVecinas;
+    public void incrementoNumeroBomas() {
+        this.numBombasVecinas ++;
     }
 
-    public boolean isBandera() {
+    public boolean esBandera() {
         return bandera;
     }
 
-    public void setBandera(boolean bandera) {
-        this.bandera = bandera;
+    public void switchFlag(boolean bandera) {
+        this.bandera = ! this.bandera;
+    }
+
+    public boolean esMina() {
+        return mina;
+    }
+
+    public void ponerMina() {
+        this.mina = true;
     }
 }
