@@ -133,4 +133,7 @@ public class TableroDef {
 
     }
 
+    // método recursivo
+    // revelarCasillasVacias();
+
 }
