@@ -3,7 +3,7 @@ package segundoIntento;
 import java.util.Scanner;
 
 public class BuscaMinaJuegoMain {
-    // hacer un push
+    // hacer un push y comprobar que hay que mejorar mañana en clase
     static TableroDef tableroDef1;
     static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) throws Exception {
