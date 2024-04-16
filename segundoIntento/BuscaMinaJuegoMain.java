@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class BuscaMinaJuegoMain {
     static TableroDef tableroDef1;
     static Scanner sc = new Scanner(System.in);
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         // luego hacer un Swithc para elegir la dificultad
-        tableroDef1 = new TableroDef(5,5,3);
+        tableroDef1 = new TableroDef(10,10,10);
         imprimirTablero();
 
         imrimirTableroConBombas();
@@ -93,7 +93,7 @@ public class BuscaMinaJuegoMain {
         if (tableroDef1.getLaFichaDelTablero(fila,columna).esBandera()){
             return  "!";
         }
-        if (tableroDef1.getLaFichaDelTablero(fila,columna).estaTapada()){
+        if (tableroDef1.getLaFichaDelTablero(fila,columna).esTapada()){
             return  "-";
         }else {
             int numeroBombas = tableroDef1.getLaFichaDelTablero(fila,columna).getNumBombasVecinas();
@@ -158,7 +158,7 @@ public class BuscaMinaJuegoMain {
         }
     }
 
-    public static boolean elegirFilaColumnaParaJugar(){
+    public static boolean elegirFilaColumnaParaJugar() throws Exception {
         boolean elJuegoContinua = true;
         System.out.println("Elija una fila");
         int fila = sc.nextInt() -1;

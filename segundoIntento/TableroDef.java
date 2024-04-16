@@ -23,7 +23,6 @@ public class TableroDef {
         return this.matrizDeCasilla[fila][columna];
     }
 
-
     public int getFilaTabla(){
         int filas = this.matrizDeCasilla.length;
         return filas;
@@ -106,16 +105,14 @@ public class TableroDef {
         this.getLaFichaDelTablero(fila,columna).incrementoNumeroBomas();
     }
 
-    public boolean jugar(int fila, int columna){
+    public boolean jugar(int fila, int columna) throws Exception {
         if(this.getLaFichaDelTablero(fila,columna).esMina()){
             gameOverImprimirTodasLasMinas();
             return false;
         }
-
-
-        // que hacer si se destapa la ficha?
-        this.getLaFichaDelTablero(fila,columna).casillaTapada();
-
+        // TableroDef tableroDef = this;
+        // Como hacer que este método funcione?
+        this.revelarCasillasVaciasRecursivamente(fila,columna);
         return true;
 
     }
@@ -124,16 +121,46 @@ public class TableroDef {
         for (int i = 0; i < getFilaTabla(); i++) {
             for (int j = 0; j < getColumnaTabla(); j++) {
                 if (this.getLaFichaDelTablero(i,j).esMina()){
-                    this.getLaFichaDelTablero(i,j).casillaTapada();
+                    this.getLaFichaDelTablero(i,j).abrirCasilla();
                 }
-
             }
-
         }
+    }
+    public boolean insideTable(int fila, int columna){
+        if ((fila >= 0) && (fila < this.getFilaTabla())
+            && (columna >= 0) && (columna < this.getColumnaTabla()) ){
+            return true;
+        }
+        return false;
+    }
+
+    public  void revelarCasillasVaciasRecursivamente(int fila, int columna) throws Exception{
+
+        if (!this.insideTable(fila,columna)){
+            return;
+        }
+
+        if (!this.getLaFichaDelTablero(fila,columna).esTapada()){
+            return;
+        }
+
+        if (this.getLaFichaDelTablero(fila,columna).getNumBombasVecinas() != 0){
+            this.getLaFichaDelTablero(fila,columna).abrirCasilla();
+            return;
+        }
+
+        this.getLaFichaDelTablero(fila,columna).abrirCasilla();
+            for (int i = fila -1; i <= fila + 1; i++) {
+                for (int j = columna -1 ; j <= columna +1; j++) {
+                    if (this.insideTable(i,j)){
+                        revelarCasillasVaciasRecursivamente(i,j);
+                    }
+
+
+                }
+            }
 
     }
 
-    // método recursivo
-    // revelarCasillasVacias();
 
 }

@@ -18,11 +18,11 @@ public class Casilla {
         this.numBombasVecinas = numBombasVecinas;
     }
 
-    public void casillaTapada() {
+    public void abrirCasilla() {
         this.tapada = false;
     }
 
-    public boolean estaTapada() {
+    public boolean esTapada() {
         return tapada;
     }
 
@@ -49,4 +49,6 @@ public class Casilla {
     public void ponerMina() {
         this.mina = true;
     }
+
+
 }
