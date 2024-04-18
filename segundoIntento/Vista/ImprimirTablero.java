@@ -10,9 +10,11 @@ public class ImprimirTablero  {
         // tengo que crear un objeto de la clase ImprimirTablero
         // en la clase Juego que esta en la carpeta de Lógica
 
-    public void menu(){
+
+    public static void menu(){
         String mensaje =
                 """
+                Elija una de estas
                 2 opciones:
                     1. Poner Bandera
                     2. Destapar Casilla
@@ -21,23 +23,22 @@ public class ImprimirTablero  {
     }
 
 
-    public static void putFlag(){
-        // reutilizar método de introducirFila y introducirColumna
-        System.out.println("Elija una fila");
-        int fila = sc.nextInt() -1;
-        System.out.println("Elija una columna");
-        int columna = sc.nextInt() -1;
+
+    public  void set_or_Remove_Flag(int rowMAx , int columnMAx ){
+
+        int fila = introducirFila(rowMAx);
+        int columna = introducirColumna(columnMAx);
 
         tableroDef.getFichaTablero(fila,columna).switchFlag();
     }
 
     public void printTablero() {
         System.out.println();
-        for (int i = -1; i < tableroDef1.getFilaTabla(); i++) {
-            for (int j = 0; j < tableroDef1.getColumnaTabla(); j++) {
+        for (int i = -1; i < tableroDef.getFilaTabla(); i++) {
+            for (int j = 0; j < tableroDef.getColumnaTabla(); j++) {
                 if ((i == -1)) {
                     System.out.print("\t" + (j + 1) + " ");
-                    if (j == tableroDef1.getColumnaTabla() - 1) {
+                    if (j == tableroDef.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
@@ -46,7 +47,7 @@ public class ImprimirTablero  {
                         System.out.print(i + 1 + "\t");
                     }
                     System.out.print(printMatrizCasilla(i,j) + "\t");
-                    if (j == tableroDef1.getColumnaTabla() - 1) {
+                    if (j == tableroDef.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
@@ -124,16 +125,6 @@ public class ImprimirTablero  {
         }
     }
 
-    public  boolean chooseRowColumn(int rowMAx, int columnMAx ) throws Exception {
-        boolean elJuegoContinua = true;
-
-        int fila = introducirFila(rowMAx);
-        int column = introducirColumna(columnMAx);
-
-        return elJuegoContinua = tableroDef1.jugar(fila, columna);
-
-    }
-
 
     public  int introducirFila(int rowMax){
         // comprobamos que se ha introducido correctamente la fila
@@ -157,4 +148,10 @@ public class ImprimirTablero  {
 
         return columna;
     }
+
+    public void endGame(){
+        System.out.println("Has selecionado una mina. Has perdido");
+    }
 }
+
+

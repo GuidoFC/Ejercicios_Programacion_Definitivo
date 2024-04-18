@@ -1,19 +1,22 @@
 package segundoIntento;
 
 import segundoIntento.Logica.Juego;
-import segundoIntento.Vista.ImprimirTablero;
+import segundoIntento.Modelo.BuscaMinas.TableroDef;
 
 import java.util.Scanner;
 
-public class BuscaMinaMain {
+public class MainBucaMinas {
     // no podemos usar static en una variable
     // static TableroDefEj tableroDef1;
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
-        Juego viewTablero = new Juego(10,10,3);
-        viewTablero.jugar();
+
+        Juego buscaMinas = new Juego(10,10,3);
+        buscaMinas.jugar();
+
     }
+
 }
 
 

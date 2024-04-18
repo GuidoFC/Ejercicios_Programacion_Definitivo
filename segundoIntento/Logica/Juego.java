@@ -17,7 +17,6 @@ public class Juego {
 
     public void jugar() throws Exception {
 
-
         // bucle que fins que no hi hagi end vagi iterant
         boolean continuarJugar = true;
         int fila;
@@ -36,7 +35,11 @@ public class Juego {
             // menu
             presentacion.menu();
 
-            // me falta hacer la opcion de la bandera
+            // me falta hacer que eliga entre la opcion
+            // de poner bandera o destapar casilla
+            // por ahora dejo comentado la opcion de BANDERA
+
+            // presentacion.set_or_Remove_Flag(this.tableroDef.getFilaTabla(),this.tableroDef.getColumnaTabla());
 
 
             // insertar fila
@@ -45,14 +48,17 @@ public class Juego {
              columna = presentacion.introducirColumna(this.tableroDef.getColumnaTabla());
 
             // logica del juego
-
             if(this.tableroDef.getFichaTablero(fila,columna).esMina()){
                 gameOverImprimirTodasLasMinas();
                 continuarJugar = false;
+            }else {
+                this.revelarCasillasVaciasRecursivamente(fila,columna);
             }
-            this.revelarCasillasVaciasRecursivamente(fila,columna);
+
 
         }
+        presentacion.endGame();
+
     }
 
     public void gameOverImprimirTodasLasMinas(){
@@ -64,13 +70,7 @@ public class Juego {
             }
         }
     }
-    public boolean insideTable(int fila, int columna){
-        if ((fila >= 0) && (fila < this.tableroDef.getFilaTabla())
-                && (columna >= 0) && (columna < this.tableroDef.getColumnaTabla()) ){
-            return true;
-        }
-        return false;
-    }
+
 
     public  void revelarCasillasVaciasRecursivamente(int fila, int columna) throws Exception{
 
@@ -93,10 +93,15 @@ public class Juego {
                 if (this.insideTable(i,j)){
                     revelarCasillasVaciasRecursivamente(i,j);
                 }
-
-
             }
         }
+    }
 
+    public boolean insideTable(int fila, int columna){
+        if ((fila >= 0) && (fila < this.tableroDef.getFilaTabla())
+                && (columna >= 0) && (columna < this.tableroDef.getColumnaTabla()) ){
+            return true;
+        }
+        return false;
     }
 }
