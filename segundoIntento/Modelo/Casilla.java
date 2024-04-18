@@ -1,4 +1,4 @@
-package segundoIntento;
+package segundoIntento.Modelo;
 
 public class Casilla {
     private boolean mina;

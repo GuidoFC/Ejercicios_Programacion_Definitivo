@@ -1,5 +1,7 @@
 package segundoIntento;
 
+import segundoIntento.Modelo.TableroDef;
+
 import java.util.Scanner;
 
 public class BuscaMinaJuegoMain {

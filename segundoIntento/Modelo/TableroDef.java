@@ -1,7 +1,7 @@
-package segundoIntento;
+package segundoIntento.Modelo;
 
 public class TableroDef {
-    private Casilla [][] matrizDeCasilla;
+    private Casilla[][] matrizDeCasilla;
     private int numBombas;
     private int numBanderas;
 
