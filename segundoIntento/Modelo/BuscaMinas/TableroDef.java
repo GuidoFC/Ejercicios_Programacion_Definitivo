@@ -1,8 +1,9 @@
 package segundoIntento.Modelo.BuscaMinas;
 
-import segundoIntento.Modelo.Abstracto.TableroAbstracto;
 
-public class TableroDef extends TableroAbstracto {
+
+public class TableroDef  {
+    private Casilla[][] matrizDeCasilla;
 
     private final int numBombas;
     private int numBanderas;
@@ -62,14 +63,16 @@ public class TableroDef extends TableroAbstracto {
             for (int columna = 0; columna < this.getColumnaTabla(); columna++) {
                 for (int modificaFila = -1; modificaFila <= 1; modificaFila++) {
                     for (int modificaColumna = -1; modificaColumna <=1 ; modificaColumna++) {
-                        if (!estamosDentodeLaTabla(fila,modificaFila,columna,modificaColumna)
-                                || soyYo(modificaFila,modificaColumna) ) {
+                        if (  ( modificaColumna == 0) && ( modificaFila == 0 ) )
+                            continue;
+                        if (!estamosDentodeLaTabla(fila,modificaFila,columna,modificaColumna)) {
                             continue;
                         }
                         int vecinosFila = fila + modificaFila;
                         int vecinosColumnas = columna + modificaColumna;
-                        if (hayMinaEnEstaCasilla(vecinosFila,vecinosColumnas)){
-                            incrementarNumeroSegunBombasVecinas(fila,columna);
+                        if (matrizDeCasilla[vecinosFila][vecinosColumnas].esMina()) {
+                            matrizDeCasilla[fila][columna].incrementoNumeroBomas();
+
                         }
 
                     }
@@ -89,21 +92,6 @@ public class TableroDef extends TableroAbstracto {
         return false;
     }
 
-    private boolean soyYo(int fila, int columna){
-        if ((fila ==0) && (columna ==0)){
-            return true;
-        }
-        return false;
-    }
 
-    private boolean hayMinaEnEstaCasilla(int fila, int columna){
-        if (this.getFichaTablero(fila, columna).esMina()){
-            return true;
-        }
-        return false;
-    }
-    private void incrementarNumeroSegunBombasVecinas(int fila, int columna){
-        this.getFichaTablero(fila,columna).incrementoNumeroBomas();
-    }
 
 }

@@ -1,6 +1,14 @@
 package segundoIntento.Vista;
 
-public class ImprimirTablero   {
+import segundoIntento.Logica.Juego;
+
+import java.util.Scanner;
+
+public class ImprimirTablero  {
+
+    static Scanner sc = new Scanner(System.in);
+
+    // no se como conectar la parte de la Vista con la Logica
 
 
     public static void menu(){
@@ -19,7 +27,7 @@ public class ImprimirTablero   {
         int fila = sc.nextInt() -1;
         System.out.println("Elija una columna");
         int columna = sc.nextInt() -1;
-        tableroDef1.getFichaTablero(fila,columna).switchFlag();
+        tableroDef.getFichaTablero(fila,columna).switchFlag();
     }
 
     public static void printTablero() {

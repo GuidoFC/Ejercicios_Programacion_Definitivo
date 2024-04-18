@@ -1,9 +1,11 @@
 package segundoIntento.Logica;
 
 import segundoIntento.Modelo.BuscaMinas.TableroDef;
+import segundoIntento.Vista.ImprimirTablero;
 
 public class Juego {
-
+    // para conectar la parte logica con la vista:
+    private ImprimirTablero interaccion = new ImprimirTablero();
     private TableroDef tableroDef;
 
     public Juego(int fila, int columna, int bomba){
@@ -12,8 +14,9 @@ public class Juego {
 
 
 
+
     public boolean jugar(int fila, int columna) throws Exception {
-        if(this.getFichaTablero(fila,columna).esMina()){
+        if(this.tableroDef.getFichaTablero(fila,columna).esMina()){
             gameOverImprimirTodasLasMinas();
             return false;
         }
@@ -25,17 +28,17 @@ public class Juego {
     }
 
     public void gameOverImprimirTodasLasMinas(){
-        for (int i = 0; i < getFilaTabla(); i++) {
-            for (int j = 0; j < getColumnaTabla(); j++) {
-                if (this.getFichaTablero(i,j).esMina()){
-                    this.getFichaTablero(i,j).abrirCasilla();
+        for (int i = 0; i < this.tableroDef.getFilaTabla(); i++) {
+            for (int j = 0; j < this.tableroDef.getColumnaTabla(); j++) {
+                if (this.tableroDef.getFichaTablero(i,j).esMina()){
+                    this.tableroDef.getFichaTablero(i,j).abrirCasilla();
                 }
             }
         }
     }
     public boolean insideTable(int fila, int columna){
-        if ((fila >= 0) && (fila < this.getFilaTabla())
-                && (columna >= 0) && (columna < this.getColumnaTabla()) ){
+        if ((fila >= 0) && (fila < this.tableroDef.getFilaTabla())
+                && (columna >= 0) && (columna < this.tableroDef.getColumnaTabla()) ){
             return true;
         }
         return false;
@@ -47,16 +50,16 @@ public class Juego {
             return;
         }
 
-        if (!this.getFichaTablero(fila,columna).esTapada()){
+        if (!this.tableroDef.getFichaTablero(fila,columna).esTapada()){
             return;
         }
 
-        if (this.getFichaTablero(fila,columna).getNumBombasVecinas() != 0){
-            this.getFichaTablero(fila,columna).abrirCasilla();
+        if (this.tableroDef.getFichaTablero(fila,columna).getNumBombasVecinas() != 0){
+            this.tableroDef.getFichaTablero(fila,columna).abrirCasilla();
             return;
         }
 
-        this.getFichaTablero(fila,columna).abrirCasilla();
+        this.tableroDef.getFichaTablero(fila,columna).abrirCasilla();
         for (int i = fila -1; i <= fila + 1; i++) {
             for (int j = columna -1 ; j <= columna +1; j++) {
                 if (this.insideTable(i,j)){
