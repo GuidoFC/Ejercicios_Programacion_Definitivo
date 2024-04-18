@@ -4,8 +4,10 @@ import segundoIntento.Modelo.BuscaMinas.TableroDef;
 import segundoIntento.Vista.ImprimirTablero;
 
 public class Juego {
-    // para conectar la parte logica con la vista:
-    private ImprimirTablero interaccion = new ImprimirTablero();
+    // para conectar la parte logica con la vista creamos un
+    // objeto de la clase ImprimirTablero que pertenece al
+    // package de Vista:
+    private ImprimirTablero presentacion = new ImprimirTablero();
     private TableroDef tableroDef;
 
     public Juego(int fila, int columna, int bomba){
@@ -13,18 +15,44 @@ public class Juego {
     }
 
 
+    public void jugar() throws Exception {
 
 
-    public boolean jugar(int fila, int columna) throws Exception {
-        if(this.tableroDef.getFichaTablero(fila,columna).esMina()){
-            gameOverImprimirTodasLasMinas();
-            return false;
+        // bucle que fins que no hi hagi end vagi iterant
+        boolean continuarJugar = true;
+        int fila;
+        int columna;
+        while (continuarJugar){
+
+            // imprimir Tabla
+            presentacion.printTablero();
+
+            // imprimir tablero con minas
+            presentacion.printTableroConBombas();
+
+            // imprimir tablero con solucion
+            presentacion.printTableroSolucion();
+
+            // menu
+            presentacion.menu();
+
+            // me falta hacer la opcion de la bandera
+
+
+            // insertar fila
+             fila = presentacion.introducirFila(this.tableroDef.getFilaTabla());
+            // insertar columna
+             columna = presentacion.introducirColumna(this.tableroDef.getColumnaTabla());
+
+            // logica del juego
+
+            if(this.tableroDef.getFichaTablero(fila,columna).esMina()){
+                gameOverImprimirTodasLasMinas();
+                continuarJugar = false;
+            }
+            this.revelarCasillasVaciasRecursivamente(fila,columna);
+
         }
-        // TableroDef tableroDef = this;
-        // Como hacer que este método funcione?
-        this.revelarCasillasVaciasRecursivamente(fila,columna);
-        return true;
-
     }
 
     public void gameOverImprimirTodasLasMinas(){

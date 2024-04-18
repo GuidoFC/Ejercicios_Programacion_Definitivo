@@ -1,7 +1,5 @@
 package segundoIntento.Vista;
 
-import segundoIntento.Logica.Juego;
-
 import java.util.Scanner;
 
 public class ImprimirTablero  {
@@ -9,9 +7,10 @@ public class ImprimirTablero  {
     static Scanner sc = new Scanner(System.in);
 
     // no se como conectar la parte de la Vista con la Logica
+        // tengo que crear un objeto de la clase ImprimirTablero
+        // en la clase Juego que esta en la carpeta de Lógica
 
-
-    public static void menu(){
+    public void menu(){
         String mensaje =
                 """
                 2 opciones:
@@ -23,14 +22,16 @@ public class ImprimirTablero  {
 
 
     public static void putFlag(){
+        // reutilizar método de introducirFila y introducirColumna
         System.out.println("Elija una fila");
         int fila = sc.nextInt() -1;
         System.out.println("Elija una columna");
         int columna = sc.nextInt() -1;
+
         tableroDef.getFichaTablero(fila,columna).switchFlag();
     }
 
-    public static void printTablero() {
+    public void printTablero() {
         System.out.println();
         for (int i = -1; i < tableroDef1.getFilaTabla(); i++) {
             for (int j = 0; j < tableroDef1.getColumnaTabla(); j++) {
@@ -70,7 +71,7 @@ public class ImprimirTablero  {
     }
     // este método lo puedo borrar luego, sirve para mirar donde estan las bombas y ver si
     // el código funciona
-    public static void printTableroConBombas() {
+    public  void printTableroConBombas() {
         System.out.println();
         for (int i = -1; i < tableroDef1.getFilaTabla(); i++) {
             for (int j = 0; j < tableroDef1.getColumnaTabla(); j++) {
@@ -100,7 +101,7 @@ public class ImprimirTablero  {
 
     // este método lo puedo borrar luego, sirve para mirar donde estan las bombas y ver si
     // el código funciona
-    public static void printTableroSolucion() {
+    public  void printTableroSolucion() {
         System.out.println();
         for (int i = -1; i < tableroDef1.getFilaTabla(); i++) {
             for (int j = 0; j < tableroDef1.getColumnaTabla(); j++) {
@@ -123,16 +124,37 @@ public class ImprimirTablero  {
         }
     }
 
-    public static boolean chooseRowColumn() throws Exception {
+    public  boolean chooseRowColumn(int rowMAx, int columnMAx ) throws Exception {
         boolean elJuegoContinua = true;
-        System.out.println("Elija una fila");
-        int fila = sc.nextInt() -1;
-        System.out.println("Elija una columna");
-        int columna = sc.nextInt() -1;
 
-
+        int fila = introducirFila(rowMAx);
+        int column = introducirColumna(columnMAx);
 
         return elJuegoContinua = tableroDef1.jugar(fila, columna);
 
+    }
+
+
+    public  int introducirFila(int rowMax){
+        // comprobamos que se ha introducido correctamente la fila
+        int fila;
+        do{
+            System.out.println("Elija una fila entre 0 y " + rowMax);
+            System.out.println("Elija una fila");
+            fila = sc.nextInt() - 1;
+        }while (   (fila < 0) || (fila > rowMax)   );
+        return fila;
+    }
+
+    public  int introducirColumna(int columnMax ){
+        // comprobamos que se ha introducido correctamente columna
+        int columna;
+        do{
+            System.out.println("Elija una columna entre 0 y " + columnMax);
+            System.out.println("Elija una columna");
+            columna = sc.nextInt() - 1;
+        }while (  (columna < 0) || (columna > columnMax)  );
+
+        return columna;
     }
 }
