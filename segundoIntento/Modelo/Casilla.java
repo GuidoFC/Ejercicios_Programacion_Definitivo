@@ -1,4 +1,4 @@
-package segundoIntento.Modelo.BuscaMinas;
+package Modelo;
 
 public class Casilla  {
     private boolean mina;

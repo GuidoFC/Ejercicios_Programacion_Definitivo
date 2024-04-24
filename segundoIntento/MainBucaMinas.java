@@ -1,7 +1,7 @@
-package segundoIntento;
 
-import segundoIntento.Logica.Juego;
-import segundoIntento.Modelo.BuscaMinas.TableroDef;
+
+import Logica.Juego;
+import Modelo.TableroDef;
 
 import java.util.Scanner;
 
@@ -11,10 +11,9 @@ public class MainBucaMinas {
     static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
-
-        Juego buscaMinas = new Juego(10,10,3);
+        TableroDef tableroDef = new TableroDef(10,10,10 );
+        Juego buscaMinas = new Juego(tableroDef);
         buscaMinas.jugar();
-
     }
 
 }

@@ -1,17 +1,19 @@
-package segundoIntento.Logica;
+package Logica;
 
-import segundoIntento.Modelo.BuscaMinas.TableroDef;
-import segundoIntento.Vista.ImprimirTablero;
+
+import Vista.ImprimirTablero;
+import Modelo.TableroDef;
 
 public class Juego {
     // para conectar la parte logica con la vista creamos un
     // objeto de la clase ImprimirTablero que pertenece al
     // package de Vista:
-    private ImprimirTablero presentacion = new ImprimirTablero();
+    private ImprimirTablero presentacion;
     private TableroDef tableroDef;
 
-    public Juego(int fila, int columna, int bomba){
-        TableroDef tableroDef = new TableroDef(fila, columna, bomba);
+    public Juego(TableroDef tableroRefInput){
+        tableroDef = tableroRefInput;
+        presentacion = new ImprimirTablero(tableroDef);
     }
 
 
@@ -43,9 +45,9 @@ public class Juego {
 
 
             // insertar fila
-             fila = presentacion.introducirFila(this.tableroDef.getFilaTabla());
+            fila = presentacion.introducirFila(this.tableroDef.getFilaTabla());
             // insertar columna
-             columna = presentacion.introducirColumna(this.tableroDef.getColumnaTabla());
+            columna = presentacion.introducirColumna(this.tableroDef.getColumnaTabla());
 
             // logica del juego
             if(this.tableroDef.getFichaTablero(fila,columna).esMina()){

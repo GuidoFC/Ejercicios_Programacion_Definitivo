@@ -1,4 +1,4 @@
-package segundoIntento.Modelo.BuscaMinas;
+package Modelo;
 
 
 
@@ -11,9 +11,9 @@ public class TableroDef  {
 
     // constructor
     public TableroDef(int fila, int columna, int numBombas){
-        matrizDeCasilla = new Casilla[fila][columna];
+        this.matrizDeCasilla = new Casilla[fila][columna];
         this.numBombas = numBombas;
-        numBanderas = 0;
+        this.numBanderas = 0;
 
         crearTableroConCasillas();
         insertarBombas();

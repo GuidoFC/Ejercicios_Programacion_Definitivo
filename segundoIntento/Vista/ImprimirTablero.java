@@ -1,14 +1,21 @@
-package segundoIntento.Vista;
+package Vista;
 
 import java.util.Scanner;
+import Modelo.TableroDef;
 
 public class ImprimirTablero  {
 
     static Scanner sc = new Scanner(System.in);
 
+    private TableroDef tableroDef;
+
+    public ImprimirTablero(TableroDef tableroRefInput){
+        tableroDef = tableroRefInput;
+    }
+
     // no se como conectar la parte de la Vista con la Logica
-        // tengo que crear un objeto de la clase ImprimirTablero
-        // en la clase Juego que esta en la carpeta de Lógica
+    // tengo que crear un objeto de la clase ImprimirTablero
+    // en la clase Juego que esta en la carpeta de Lógica
 
 
     public static void menu(){
@@ -56,14 +63,14 @@ public class ImprimirTablero  {
     }
 
 
-    public static String printMatrizCasilla(int fila, int columna){
-        if (tableroDef1.getFichaTablero(fila,columna).esBandera()){
+    public  String printMatrizCasilla(int fila, int columna){
+        if (tableroDef.getFichaTablero(fila,columna).esBandera()){
             return  "!";
         }
-        if (tableroDef1.getFichaTablero(fila,columna).esTapada()){
+        if (tableroDef.getFichaTablero(fila,columna).esTapada()){
             return  "-";
         }else {
-            int numeroBombas = tableroDef1.getFichaTablero(fila,columna).getNumBombasVecinas();
+            int numeroBombas = tableroDef.getFichaTablero(fila,columna).getNumBombasVecinas();
 
             return  Integer.toString(numeroBombas);
         }
@@ -74,11 +81,11 @@ public class ImprimirTablero  {
     // el código funciona
     public  void printTableroConBombas() {
         System.out.println();
-        for (int i = -1; i < tableroDef1.getFilaTabla(); i++) {
-            for (int j = 0; j < tableroDef1.getColumnaTabla(); j++) {
+        for (int i = -1; i < tableroDef.getFilaTabla(); i++) {
+            for (int j = 0; j < tableroDef.getColumnaTabla(); j++) {
                 if ((i == -1)) {
                     System.out.print("\t" + (j + 1) + " ");
-                    if (j == tableroDef1.getColumnaTabla() - 1) {
+                    if (j == tableroDef.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
@@ -86,13 +93,13 @@ public class ImprimirTablero  {
                     if (j == 0) {
                         System.out.print(i + 1 + "\t");
                     }
-                    if (tableroDef1.getFichaTablero(i,j).esMina()){
+                    if (tableroDef.getFichaTablero(i,j).esMina()){
                         System.out.print( "x" + "\t");
                     }else {
                         System.out.print("0" + "\t");
                     }
 
-                    if (j == tableroDef1.getColumnaTabla() - 1) {
+                    if (j == tableroDef.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
@@ -102,13 +109,13 @@ public class ImprimirTablero  {
 
     // este método lo puedo borrar luego, sirve para mirar donde estan las bombas y ver si
     // el código funciona
-    public  void printTableroSolucion() {
+    public void printTableroSolucion() {
         System.out.println();
-        for (int i = -1; i < tableroDef1.getFilaTabla(); i++) {
-            for (int j = 0; j < tableroDef1.getColumnaTabla(); j++) {
+        for (int i = -1; i < tableroDef.getFilaTabla(); i++) {
+            for (int j = 0; j < tableroDef.getColumnaTabla(); j++) {
                 if ((i == -1)) {
                     System.out.print("\t" + (j + 1) + " ");
-                    if (j == tableroDef1.getColumnaTabla() - 1) {
+                    if (j == tableroDef.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
@@ -116,8 +123,8 @@ public class ImprimirTablero  {
                     if (j == 0) {
                         System.out.print(i + 1 + "\t");
                     }
-                    System.out.print(tableroDef1.getFichaTablero(i,j).getNumBombasVecinas() + "\t");
-                    if (j == tableroDef1.getColumnaTabla() - 1) {
+                    System.out.print(tableroDef.getFichaTablero(i,j).getNumBombasVecinas() + "\t");
+                    if (j == tableroDef.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
