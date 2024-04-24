@@ -5,7 +5,7 @@ import Modelo.TableroDef;
 
 import java.util.Scanner;
 
-public class MainBucaMinas {
+public class MainBucaMinas { // busca minas
     // no podemos usar static en una variable
     // static TableroDefEj tableroDef1;
     static Scanner sc = new Scanner(System.in);
