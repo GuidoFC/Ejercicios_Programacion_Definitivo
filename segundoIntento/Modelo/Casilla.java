@@ -6,6 +6,7 @@ public class Casilla  {
     private boolean bandera;
     private int numBombasVecinas;
 
+    // constructor
     public Casilla(){
         this.tapada = true;
         this.mina = false;
@@ -19,9 +20,6 @@ public class Casilla  {
 
     public void incrementoNumeroBomas() {
         this.numBombasVecinas ++;
-    }
-    public void setNumBombasVecinas(int numBombasVecinas) {
-        this.numBombasVecinas = numBombasVecinas;
     }
 
     public void abrirCasilla() {

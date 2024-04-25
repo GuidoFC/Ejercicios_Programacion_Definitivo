@@ -2,15 +2,16 @@ package Modelo;
 
 
 
-public class TableroDef  {
+public class Tablero {
     private Casilla[][] matrizDeCasilla;
 
     private final int numBombas;
     private int numBanderas;
 
 
-    // constructor
-    public TableroDef(int fila, int columna, int numBombas){
+    // constructor del tablero
+        // un tablero esta compuesto de Casillas
+    public Tablero(int fila, int columna, int numBombas){
         this.matrizDeCasilla = new Casilla[fila][columna];
         this.numBombas = numBombas;
         this.numBanderas = 0;
@@ -24,13 +25,13 @@ public class TableroDef  {
         return this.matrizDeCasilla[fila][columna];
     }
     public int getFilaTabla(){
-        int filas = this.matrizDeCasilla.length;
-        return filas;
+        return this.matrizDeCasilla.length;
+
     }
 
     public int getColumnaTabla(){
-        int columnas = this.matrizDeCasilla[0].length;
-        return columnas;
+        return this.matrizDeCasilla[0].length;
+
     }
 
     private void crearTableroConCasillas() {
@@ -63,9 +64,9 @@ public class TableroDef  {
             for (int columna = 0; columna < this.getColumnaTabla(); columna++) {
                 for (int modificaFila = -1; modificaFila <= 1; modificaFila++) {
                     for (int modificaColumna = -1; modificaColumna <=1 ; modificaColumna++) {
-                        if (  ( modificaColumna == 0) && ( modificaFila == 0 ) )
-                            continue;
-                        if (!estamosDentodeLaTabla(fila,modificaFila,columna,modificaColumna)) {
+                        if (  ( modificaColumna == 0) && ( modificaFila == 0 ) ||
+                                !isDentroTabla(fila,modificaFila,columna,modificaColumna)
+                        ) {
                             continue;
                         }
                         int vecinosFila = fila + modificaFila;
@@ -82,7 +83,7 @@ public class TableroDef  {
     }
 
 
-    private boolean estamosDentodeLaTabla(int fila, int modFilia, int columna, int modColumna){
+    private boolean isDentroTabla(int fila, int modFilia, int columna, int modColumna){
         final int INDICE_CERO = 0;
         if ((fila + modFilia >= INDICE_CERO) && (columna + modColumna >= INDICE_CERO) &&
                 (fila + modFilia < this.getFilaTabla() ) &&

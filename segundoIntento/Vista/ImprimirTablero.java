@@ -1,16 +1,16 @@
 package Vista;
 
 import java.util.Scanner;
-import Modelo.TableroDef;
+import Modelo.Tablero;
 
 public class ImprimirTablero  {
 
     static Scanner sc = new Scanner(System.in);
 
-    private TableroDef tableroDef;
+    private Tablero tablero;
 
-    public ImprimirTablero(TableroDef tableroRefInput){
-        tableroDef = tableroRefInput;
+    public ImprimirTablero(Tablero tableroRefInput){
+        tablero = tableroRefInput;
     }
 
     // no se como conectar la parte de la Vista con la Logica
@@ -29,23 +29,21 @@ public class ImprimirTablero  {
         System.out.println(mensaje);
     }
 
-
-
     public  void set_or_Remove_Flag(int rowMAx , int columnMAx ){
 
         int fila = introducirFila(rowMAx);
         int columna = introducirColumna(columnMAx);
 
-        tableroDef.getFichaTablero(fila,columna).switchFlag();
+        tablero.getFichaTablero(fila,columna).switchFlag();
     }
 
     public void printTablero() {
         System.out.println();
-        for (int i = -1; i < tableroDef.getFilaTabla(); i++) {
-            for (int j = 0; j < tableroDef.getColumnaTabla(); j++) {
+        for (int i = -1; i < tablero.getFilaTabla(); i++) {
+            for (int j = 0; j < tablero.getColumnaTabla(); j++) {
                 if ((i == -1)) {
                     System.out.print("\t" + (j + 1) + " ");
-                    if (j == tableroDef.getColumnaTabla() - 1) {
+                    if (j == tablero.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
@@ -54,7 +52,7 @@ public class ImprimirTablero  {
                         System.out.print(i + 1 + "\t");
                     }
                     System.out.print(printMatrizCasilla(i,j) + "\t");
-                    if (j == tableroDef.getColumnaTabla() - 1) {
+                    if (j == tablero.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
@@ -64,13 +62,13 @@ public class ImprimirTablero  {
 
 
     public  String printMatrizCasilla(int fila, int columna){
-        if (tableroDef.getFichaTablero(fila,columna).esBandera()){
+        if (tablero.getFichaTablero(fila,columna).esBandera()){
             return  "!";
         }
-        if (tableroDef.getFichaTablero(fila,columna).esTapada()){
+        if (tablero.getFichaTablero(fila,columna).esTapada()){
             return  "-";
         }else {
-            int numeroBombas = tableroDef.getFichaTablero(fila,columna).getNumBombasVecinas();
+            int numeroBombas = tablero.getFichaTablero(fila,columna).getNumBombasVecinas();
 
             return  Integer.toString(numeroBombas);
         }
@@ -81,11 +79,11 @@ public class ImprimirTablero  {
     // el código funciona
     public  void printTableroConBombas() {
         System.out.println();
-        for (int i = -1; i < tableroDef.getFilaTabla(); i++) {
-            for (int j = 0; j < tableroDef.getColumnaTabla(); j++) {
+        for (int i = -1; i < tablero.getFilaTabla(); i++) {
+            for (int j = 0; j < tablero.getColumnaTabla(); j++) {
                 if ((i == -1)) {
                     System.out.print("\t" + (j + 1) + " ");
-                    if (j == tableroDef.getColumnaTabla() - 1) {
+                    if (j == tablero.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
@@ -93,13 +91,13 @@ public class ImprimirTablero  {
                     if (j == 0) {
                         System.out.print(i + 1 + "\t");
                     }
-                    if (tableroDef.getFichaTablero(i,j).esMina()){
+                    if (tablero.getFichaTablero(i,j).esMina()){
                         System.out.print( "x" + "\t");
                     }else {
                         System.out.print("0" + "\t");
                     }
 
-                    if (j == tableroDef.getColumnaTabla() - 1) {
+                    if (j == tablero.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
@@ -111,11 +109,11 @@ public class ImprimirTablero  {
     // el código funciona
     public void printTableroSolucion() {
         System.out.println();
-        for (int i = -1; i < tableroDef.getFilaTabla(); i++) {
-            for (int j = 0; j < tableroDef.getColumnaTabla(); j++) {
+        for (int i = -1; i < tablero.getFilaTabla(); i++) {
+            for (int j = 0; j < tablero.getColumnaTabla(); j++) {
                 if ((i == -1)) {
                     System.out.print("\t" + (j + 1) + " ");
-                    if (j == tableroDef.getColumnaTabla() - 1) {
+                    if (j == tablero.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }
@@ -123,8 +121,8 @@ public class ImprimirTablero  {
                     if (j == 0) {
                         System.out.print(i + 1 + "\t");
                     }
-                    System.out.print(tableroDef.getFichaTablero(i,j).getNumBombasVecinas() + "\t");
-                    if (j == tableroDef.getColumnaTabla() - 1) {
+                    System.out.print(tablero.getFichaTablero(i,j).getNumBombasVecinas() + "\t");
+                    if (j == tablero.getColumnaTabla() - 1) {
                         System.out.println();
                     }
                 }

@@ -2,18 +2,26 @@ package Logica;
 
 
 import Vista.ImprimirTablero;
-import Modelo.TableroDef;
+import Modelo.Tablero;
 
 public class Juego {
-    // para conectar la parte logica con la vista creamos un
+    // para conectar la parte Logica con la Vista creamos un
     // objeto de la clase ImprimirTablero que pertenece al
     // package de Vista:
     private ImprimirTablero presentacion;
-    private TableroDef tableroDef;
 
-    public Juego(TableroDef tableroRefInput){
-        tableroDef = tableroRefInput;
-        presentacion = new ImprimirTablero(tableroDef);
+    // para conectar la parte Logica con el Modelo creamos un
+    // objeto de la clase TableroDef que pertenece al
+    // package de Modelo:
+    private Tablero tablero;
+
+    // constructor
+        // Primero va la creacion del Modelo
+        // Luego la lógica
+        // finalmenente la Vista
+    public Juego(Tablero tableroRefInput){
+        tablero = tableroRefInput;
+        presentacion = new ImprimirTablero(tablero);
     }
 
 
@@ -45,16 +53,16 @@ public class Juego {
 
 
             // insertar fila
-            fila = presentacion.introducirFila(this.tableroDef.getFilaTabla());
+            fila = presentacion.introducirFila(this.tablero.getFilaTabla());
             // insertar columna
-            columna = presentacion.introducirColumna(this.tableroDef.getColumnaTabla());
+            columna = presentacion.introducirColumna(this.tablero.getColumnaTabla());
 
             // logica del juego
-            if(this.tableroDef.getFichaTablero(fila,columna).esMina()){
-                gameOverImprimirTodasLasMinas();
+            if(this.tablero.getFichaTablero(fila,columna).esMina()){
+                gameOver();
                 continuarJugar = false;
             }else {
-                this.revelarCasillasVaciasRecursivamente(fila,columna);
+                this.revelarCasillasVacias(fila,columna);
             }
 
 
@@ -63,45 +71,45 @@ public class Juego {
 
     }
 
-    public void gameOverImprimirTodasLasMinas(){
-        for (int i = 0; i < this.tableroDef.getFilaTabla(); i++) {
-            for (int j = 0; j < this.tableroDef.getColumnaTabla(); j++) {
-                if (this.tableroDef.getFichaTablero(i,j).esMina()){
-                    this.tableroDef.getFichaTablero(i,j).abrirCasilla();
+    public void gameOver(){
+        for (int i = 0; i < this.tablero.getFilaTabla(); i++) {
+            for (int j = 0; j < this.tablero.getColumnaTabla(); j++) {
+                if (this.tablero.getFichaTablero(i,j).esMina()){
+                    this.tablero.getFichaTablero(i,j).abrirCasilla();
                 }
             }
         }
     }
 
 
-    public  void revelarCasillasVaciasRecursivamente(int fila, int columna) throws Exception{
+    public  void revelarCasillasVacias(int fila, int columna) throws Exception{
 
         if (!this.insideTable(fila,columna)){
             return;
         }
 
-        if (!this.tableroDef.getFichaTablero(fila,columna).esTapada()){
+        if (!this.tablero.getFichaTablero(fila,columna).esTapada()){
             return;
         }
 
-        if (this.tableroDef.getFichaTablero(fila,columna).getNumBombasVecinas() != 0){
-            this.tableroDef.getFichaTablero(fila,columna).abrirCasilla();
+        if (this.tablero.getFichaTablero(fila,columna).getNumBombasVecinas() != 0){
+            this.tablero.getFichaTablero(fila,columna).abrirCasilla();
             return;
         }
 
-        this.tableroDef.getFichaTablero(fila,columna).abrirCasilla();
+        this.tablero.getFichaTablero(fila,columna).abrirCasilla();
         for (int i = fila -1; i <= fila + 1; i++) {
             for (int j = columna -1 ; j <= columna +1; j++) {
                 if (this.insideTable(i,j)){
-                    revelarCasillasVaciasRecursivamente(i,j);
+                    revelarCasillasVacias(i,j);
                 }
             }
         }
     }
 
     public boolean insideTable(int fila, int columna){
-        if ((fila >= 0) && (fila < this.tableroDef.getFilaTabla())
-                && (columna >= 0) && (columna < this.tableroDef.getColumnaTabla()) ){
+        if ((fila >= 0) && (fila < this.tablero.getFilaTabla())
+                && (columna >= 0) && (columna < this.tablero.getColumnaTabla()) ){
             return true;
         }
         return false;
