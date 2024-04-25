@@ -2,19 +2,18 @@ package Model;
 
 public class Casilla {
     private Barco barcos;
-    private boolean hayBarco;
     private boolean vacio;
     private boolean tapada;
     private  int posicionX = 0;
     private  int posicionY = 0;
 
 
-    public Casilla(){
-        hayBarco = false;
-        vacio = true;
-        tapada = true;
-        posicionX = 0;
-        posicionY = 0;
+    public Casilla(int posX, int posY, Barco barcos){
+        this.barcos = barcos.isParteBarcoTocado();
+        this.vacio = true;
+        this.tapada = true;
+        setPosicionX(posX);
+        setPosicionY(posY);
 
     }
 
@@ -22,7 +21,7 @@ public class Casilla {
         return posicionX;
     }
 
-    public  void setPosicionX(int posicionX) {
+    private  void setPosicionX(int posicionX) {
         this.posicionX = posicionX;
     }
 
@@ -30,7 +29,7 @@ public class Casilla {
         return posicionY;
     }
 
-    public void setPosicionY(int posicionY) {
+    private void setPosicionY(int posicionY) {
         this.posicionY = posicionY;
     }
 }
