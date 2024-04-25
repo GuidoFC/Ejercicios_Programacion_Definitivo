@@ -10,6 +10,8 @@ public class Jugador {
     // y asi pueda saber cuantos barcos tiene
     // cuando no tenga barcos, el juego se acabo
 
+    // es el jugador que tiene Tablero
+
     public Jugador(String nombre, String apellido, Tablero tablero){
         this.nombre = nombre;
         this.apellido = apellido;

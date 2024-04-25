@@ -7,7 +7,9 @@ public class Casilla {
     private  int posicionY = 0;
 
     // como puedo colocar una parte del Barco y que yo sepa que las otras
-    // parte del barco se coloquen cerca de esta casilla
+    // parte del barco se coloquen cerca de esta casilla????
+
+    private ParteBarco parteBarco;
 
     public Casilla(int posX, int posY){
         this.vacio = true;
