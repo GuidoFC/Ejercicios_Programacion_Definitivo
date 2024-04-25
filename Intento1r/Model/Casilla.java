@@ -3,35 +3,40 @@ package Model;
 public class Casilla {
     private boolean vacio;
     private boolean tapada;
-    private  int posicionX = 0;
-    private  int posicionY = 0;
 
     // como puedo colocar una parte del Barco y que yo sepa que las otras
     // parte del barco se coloquen cerca de esta casilla????
 
     private ParteBarco parteBarco;
 
-    public Casilla(int posX, int posY){
+
+    public Casilla() {
         this.vacio = true;
         this.tapada = true;
-        setPosicionX(posX);
-        setPosicionY(posY);
-
+        parteBarco = null;
     }
 
-    public  int getPosicionX() {
-        return posicionX;
+    public void colocarParteBarco(ParteBarco parteBarco) {
+        this.parteBarco = parteBarco;
+    }
+    public boolean tieneBarco() {
+        return parteBarco != null;
     }
 
-    private  void setPosicionX(int posicionX) {
-        this.posicionX = posicionX;
+    public boolean isVacio(){
+        return this.vacio;
     }
 
-    public int getPosicionY() {
-        return posicionY;
+    public void setVacio(){
+        this.vacio = false;
     }
 
-    private void setPosicionY(int posicionY) {
-        this.posicionY = posicionY;
+    public boolean isTapada() {
+        return tapada;
+    }
+
+    public void setTapada(){
+        this.tapada = false;
     }
 }
+
