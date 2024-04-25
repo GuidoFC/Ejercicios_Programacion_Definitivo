@@ -6,9 +6,10 @@ public class Tablero  {
 
     public Tablero (int fila, int columna, Jugador jugador1, Jugador jugador2){
         this.matrizCasilla = new Casilla [fila][columna];
-
-
     }
 
+    public Casilla obtenerCasilla(int fila, int columna){
+        return matrizCasilla[fila][columna];
+    }
 
 }

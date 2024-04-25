@@ -6,7 +6,9 @@ public class Jugador {
 
     private Tablero tablero;
 
-    // matriz de barcos
+    // añadir que el jugador tenga una matriz de barcos
+    // y asi pueda saber cuantos barcos tiene
+    // cuando no tenga barcos, el juego se acabo
 
     public Jugador(String nombre, String apellido, Tablero tablero){
         this.nombre = nombre;

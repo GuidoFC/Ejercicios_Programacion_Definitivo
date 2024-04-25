@@ -2,4 +2,16 @@ package Model;
 
 public class ParteBarco {
     private boolean tocado;
+    public ParteBarco(){
+        this.tocado = false;
+    }
+
+    public boolean isTocado(){
+        return this.tocado;
+    }
+
+    public void HundirParteBarco(){
+        this.tocado = true;
+    }
+
 }

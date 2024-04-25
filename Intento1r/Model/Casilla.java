@@ -1,15 +1,15 @@
 package Model;
 
 public class Casilla {
-    private Barco barcos;
     private boolean vacio;
     private boolean tapada;
     private  int posicionX = 0;
     private  int posicionY = 0;
 
+    // como puedo colocar una parte del Barco y que yo sepa que las otras
+    // parte del barco se coloquen cerca de esta casilla
 
-    public Casilla(int posX, int posY, Barco barcos){
-        this.barcos = barcos.isParteBarcoTocado();
+    public Casilla(int posX, int posY){
         this.vacio = true;
         this.tapada = true;
         setPosicionX(posX);
