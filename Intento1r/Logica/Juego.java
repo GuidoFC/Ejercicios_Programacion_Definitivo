@@ -8,9 +8,10 @@ import Vista.Print;
 import java.util.ArrayList;
 
 public class Juego {
-    private ArrayList<Jugador> listaJugadores;
+
     private Jugador jugador;
     private Print presentacion;
+    private Tablero tablero;
 
 
     // se puede aplicar algun patron como Factory, Singleton o DAO?
@@ -21,17 +22,8 @@ public class Juego {
 
     public Juego(Jugador jugador1){
         this.jugador = jugador1;
-    }
-
-    // jugar Jugador1 Vs Jugador2
-    public Juego(Jugador jugador1, Jugador jugador2){
-        listaJugadores = new ArrayList<>();
-        listaJugadores.add(jugador1);
-        listaJugadores.add(jugador2);
-        Tablero tablero1 = jugador1.getTableroJugador();
-        Tablero tablero2 = jugador2.getTableroJugador();
-
-        presentacion = new Print(tablero1, tablero2);
+         tablero = jugador.getTableroJugador();
+         presentacion = new Print(tablero);
     }
 
 
