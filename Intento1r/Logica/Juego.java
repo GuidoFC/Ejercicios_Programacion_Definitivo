@@ -1,5 +1,6 @@
 package Logica;
 
+import Model.Barco;
 import Model.Jugador;
 
 import Model.Tablero;
@@ -22,11 +23,48 @@ public class Juego {
 
     public Juego(Jugador jugador1){
         this.jugador = jugador1;
-         tablero = jugador.getTableroJugador();
+         this.tablero = jugador.getTableroJugador();
          presentacion = new Print(tablero);
     }
 
+    // crear barcos
+    private void createShip(){
+        final int MAX_LONGITUD_BARCO = 4;
+        int auxiliar = 0;
+        int numBarcoCreado = MAX_LONGITUD_BARCO - auxiliar;
 
-    // insertarBarcos en el Juego
+        int tamanoBarco = MAX_LONGITUD_BARCO - (MAX_LONGITUD_BARCO -1);
+        int contadorBarcos = 0;
+
+        for (int i = MAX_LONGITUD_BARCO; i > 0 ; i--) {
+            while (numBarcoCreado > contadorBarcos ){
+                Barco barcoTamano = new Barco(tamanoBarco);
+                this.jugador.addBarco(barcoTamano);
+                contadorBarcos++;
+            }
+            contadorBarcos = 0;
+            tamanoBarco++;
+            auxiliar--;
+
+        }
+
+
+
+
+
+
+        int resta = 3;
+        int barcosCreados = 1;
+        for (int i = MAX_LONGITUD_BARCO; i > 0; i--) {
+
+            resta --;
+            barcosCreados = 1;
+        }
+    }
+
+    // crear el tablero para jugador
+
+    private void crearTablero
+
 
 }

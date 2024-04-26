@@ -30,18 +30,14 @@ public class Barco {
 
     public boolean todasPartesBarcoTocadas(){
         for (int i = 0; i < this.longitud; i++) {
-            if (ParteBarcoNoTocado()){
+            if (this.parteBarco[i].isTocado() == false){
                 return false;
             }
         }
         return true;
     }
 
-    public boolean ParteBarcoNoTocado(){
-        if (this.parteBarco[i].isTocado() == false){
-            return true;
-        }
-    }
+
 
 
 }
