@@ -185,7 +185,7 @@ public class Juego {
             return true;
         }
         return false;
-    }
+    } //
 
     public boolean outsideColumn(int fila, int modFila){
         if ((fila + modFila < 0) ||
