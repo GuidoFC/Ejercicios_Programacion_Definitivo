@@ -42,4 +42,8 @@ public class Barco {
     public int getLongitud() {
         return longitud;
     }
+
+    public ParteBarco getParteBarco(int numero) {
+        return parteBarco[numero];
+    }
 }

@@ -18,4 +18,6 @@ public class ParteBarco implements Atacado{
     public void serAtacado() {
 
     }
+
+
 }

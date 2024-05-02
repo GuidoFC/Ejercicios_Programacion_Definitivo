@@ -3,6 +3,7 @@ package Logica;
 import Model.Barco;
 import Model.Jugador;
 
+import Model.ParteBarco;
 import Model.Tablero;
 import Vista.Print;
 
@@ -23,6 +24,7 @@ public class Juego {
         this.jugador = jugador1;
         this.tablero = jugador.getTableroJugador();
         presentacion = new Print(tablero);
+
     }
 
     // crear barcos con un ARRAY { {1,1,1,1}, {2,2,2}, {4,4} }
@@ -41,22 +43,26 @@ public class Juego {
 
     // colocar los barcos
     private void putShipRightPlace(Barco barco){
+
         // 1r las casillas tiene que estar vacias
         int fila;
         int columna;
         while (true) {
-            int fila = generateRandomNumber();
-            int columna = generateRandomNumber();
+             fila = generateRandomNumber();
+             columna = generateRandomNumber();
+             // Falta por hacer: Determinar si el barco esta en
+            // posicion vertical u horizontal
 
-            if (checkSquareIsEmpty(fila, columna)) {
+            if (squareIsEmpty(fila, columna)) {
                 // 2n ese barco entra en el tablero
                 if(shipNotFitTable(fila, columna, barco)){
                     continue;
                 }
-                if (checkIsShipsAround(fila, columna, barco)){
+                if (isShipsAround(fila, columna, barco)){
                     continue;
                 }
-
+                putShipTable(fila, columna, barco);
+                return;
                 // 3r Los diferentes partes del barco tiene que estar con 1 casilla de distancia
 
             }
@@ -76,7 +82,7 @@ public class Juego {
         }
         return true;
     }
-    private boolean checkIsShipsAround(int fila, int columna, Barco barco){
+    private boolean isShipsAround(int fila, int columna, Barco barco){
         // en que casilla me encuetro (lo recibo por parametro)
         // comprobar si hay barcos al rededor (is vacio False)
             // aplicar esta logica por cada parte del barco
@@ -85,7 +91,7 @@ public class Juego {
                 if ((i == 0) && (j == 0)){
                     continue;
                 }
-                if(checkSquareIsEmpty (fila-i,columna-j) ){
+                if(squareIsEmpty(fila-i,columna-j) ){
                      continue;
                 }else {
                     return true;
@@ -96,14 +102,108 @@ public class Juego {
         return false;
     }
 
+    private void putShipTable(int fila, int columna, Barco barco){
+        int longitud = barco.getLongitud();
+        int posicionBarco = 0;
+        for (int i = fila; i < fila + longitud; i++) {
+            ParteBarco parteBarco = barco.getParteBarco(posicionBarco);
+            tablero.obtenerCasilla(i,columna).colocarParteBarco(parteBarco);
+            tablero.obtenerCasilla(i,columna).setVacio();
 
-    private boolean checkSquareIsEmpty(int fila, int columna){
+            posicionBarco ++;
+        }
+    }
+
+    private boolean squareIsEmpty(int fila, int columna){
         return tablero.obtenerCasilla(fila,columna).isVacio();
     }
 
     private int generateRandomNumber(){
         return (int) (Math.random() * 11);
     }
+
+    private void atacar(int fila, int columna){
+        // atacar una casilla que ya esta abierta
+        if(squareIsOpen(fila,columna)){
+            // volver a llamar al método atacar indicando que esa casilla
+            // ya esta abierta
+
+            // tengo que introducir otra fila y columna
+            atacar(fila,columna);
+        }
+        // que este vacio la casilla, y lo tengamos que revelar
+        if(squareIsEmpty(fila,columna)){
+            tablero.obtenerCasilla(fila,columna).setTapada();
+            return;
+        }
+        // que haya una parte del barco y la toquemos
+        ParteBarco parteBarco = tablero.obtenerCasilla(fila,columna).getParteBarco();
+        parteBarco.HundirParteBarco();
+
+        // que hayamos tocado todas las partes del barco y hundamos el barco
+        // COMO CONECTO ESTA PARTEBARCO CON EL BARCO?
+
+        // Si el barco no esta hundido y solo hemos tocado una parte
+        // tenemos que revelar las casilla de las esquinas
+        revelarEsquinaCasillaAtacada(fila,columna);
+
+
+    }
+
+    public void revelarEsquinaCasillaAtacada(int fila, int columna){
+        // las esquinas estan dentro del tablero
+        for (int modFila = -1; modFila < 1; modFila++) {
+            for (int modColumn = -1; modColumn < 1; modColumn++) {
+
+                if ( (modFila == 0) && (modColumn == 0) ){
+                    continue;
+                }
+                // estamos fuera del tablero
+                if (outsideTable(fila, modFila, columna, modColumn){
+                    continue;
+                }
+
+                tablero.obtenerCasilla(fila+modFila,columna+1).setTapada();
+            }
+
+        }
+
+    }
+
+    public boolean outsideTable(int fila, int modFila, int columna, int modColumna){
+        if ( outsideRow(fila,modFila) ||
+                (columna + modColumn < 0) ||
+                (tablero.getMaxColumna() > columna + modColumn ) ) ){
+                    return true;
+        }
+        return false;
+    }
+
+    public boolean outsideRow(int fila, int modFila){
+        if ((fila + modFila < 0) ||
+                (tablero.getMaxFila() < fila + modFila) ){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean outsideColumn(int fila, int modFila){
+        if ((fila + modFila < 0) ||
+                (tablero.getMaxFila() < fila + modFila) ){
+            return true;
+        }
+        return false;
+    }
+
+
+
+    private boolean squareIsOpen(int fila, int columna){
+        if (tablero.obtenerCasilla(fila,columna).isTapada()){
+            return true;
+        }
+        return false;
+    }
+
 }
 
 
