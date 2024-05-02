@@ -1,6 +1,6 @@
 package Model;
 
-public class Casilla {
+public class Casilla implements Atacado {
     private boolean vacio;
     private boolean tapada;
 
@@ -37,6 +37,19 @@ public class Casilla {
 
     public void setTapada(){
         this.tapada = false;
+    }
+
+    @Override
+    public void serAtacado() {
+
+    }
+
+    public void setParteBarco(ParteBarco parteBarco) {
+        this.parteBarco = parteBarco;
+    }
+
+    public ParteBarco getParteBarco() {
+        return parteBarco;
     }
 }
 

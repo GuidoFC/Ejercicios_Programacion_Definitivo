@@ -1,6 +1,6 @@
 package Model;
 
-public class ParteBarco {
+public class ParteBarco implements Atacado{
     private boolean tocado;
     public ParteBarco(){
         this.tocado = false;
@@ -14,4 +14,8 @@ public class ParteBarco {
         this.tocado = true;
     }
 
+    @Override
+    public void serAtacado() {
+
+    }
 }

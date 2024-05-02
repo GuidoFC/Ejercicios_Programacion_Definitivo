@@ -1,9 +1,14 @@
 package Model;
 
 public class Tablero  {
-    Casilla [][] matrizCasilla;
+    private Casilla [][] matrizCasilla;
+    private int fila;
+    private int columna;
+
 
     public Tablero (int fila, int columna){
+        this.fila = fila;
+        this.columna = columna;
         this.matrizCasilla = new Casilla [fila][columna];
         // rellenar la matriz de Casilla con Objeto de Casillas
         rellenarMatrizCasilla();
@@ -21,4 +26,11 @@ public class Tablero  {
         }
     }
 
+    public int getMaxFila() {
+        return fila;
+    }
+
+    public int getMaxColumna() {
+        return columna;
+    }
 }

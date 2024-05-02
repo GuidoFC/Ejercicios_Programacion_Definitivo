@@ -5,6 +5,8 @@ public class Barco {
     private ParteBarco [] parteBarco;
     private boolean hundido;
 
+
+
     public Barco(int longitudBarco){
         this.longitud = longitudBarco;
         parteBarco = new ParteBarco[longitud];
@@ -37,7 +39,7 @@ public class Barco {
         return true;
     }
 
-
-
-
+    public int getLongitud() {
+        return longitud;
+    }
 }
