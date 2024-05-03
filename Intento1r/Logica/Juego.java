@@ -13,8 +13,6 @@ public class Juego {
     private Print presentacion;
     private Tablero tablero;
 
-
-    // se puede aplicar algun patron como Factory, Singleton o DAO?
     // como aplicar este concepto:
     // Program to an interface, not an implemetation
 
