@@ -15,23 +15,42 @@ public class Jugador {
 
     private ArrayList<Barco> listaBarcos;
 
-    public Jugador(String nombre, String apellido, int fila, int columna){
+    public Jugador(String nombre, String apellido, int fila, int columna) {
         this.nombre = nombre;
         this.apellido = apellido;
-        this.tablero = new Tablero(fila,columna);
+        this.tablero = new Tablero(fila, columna);
         listaBarcos = new ArrayList<>();
     }
 
-    public Tablero getTableroJugador(){
+    public Tablero getTableroJugador() {
         return this.tablero;
     }
-    public void addBarco(Barco barco){
+
+    public void addBarco(Barco barco) {
         this.listaBarcos.add(barco);
     }
-    public String getNombre(){
+
+    public String getNombre() {
         return this.nombre;
     }
-    public  String getApellido(){
+
+    public String getApellido() {
         return this.apellido;
+    }
+
+    public ArrayList<Barco> getListaBarcos() {
+        return listaBarcos;
+    }
+
+    public boolean stillAlive() {
+        Barco barco;
+
+        for (int i = 0; i < listaBarcos.size(); i++) {
+            barco = listaBarcos.get(i);
+            if (!barco.isHundido()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

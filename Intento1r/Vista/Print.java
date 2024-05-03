@@ -11,4 +11,13 @@ public class Print {
     public Print (Tablero tableroRefernciaA){
         this.tableroJugadorA = tableroRefernciaA;
     }
+
+    public int elegir(String filaColumna){
+        System.out.println("Elija una " + filaColumna);
+        return sc.nextInt();
+    }
+
+    public void posicionAbierta(){
+        System.out.println("Esta casilla ya esta abierta");
+    }
 }

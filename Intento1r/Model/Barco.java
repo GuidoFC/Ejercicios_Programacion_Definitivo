@@ -2,22 +2,25 @@ package Model;
 import java.util.Arrays;
 public class Barco {
     private int longitud;
+    private boolean posHorizontal;
+
     private ParteBarco [] parteBarco;
     private boolean hundido;
 
 
 
     public Barco(int longitudBarco){
+        this.posHorizontal = false;
         this.longitud = longitudBarco;
         parteBarco = new ParteBarco[longitud];
         // creamos un método para añadir las partes del barco
-        construirBarco(longitudBarco);
+        construirBarco();
         hundido = false;
     }
 
-    public void construirBarco(int longitud){
-        for (int i = 0; i < longitud; i++) {
-            parteBarco[i] = new ParteBarco();
+    public void construirBarco(){
+        for (int i = 0; i < this.longitud; i++) {
+            parteBarco[i] = new ParteBarco(this);
         }
     }
     public void HundirBarco(){
@@ -45,5 +48,13 @@ public class Barco {
 
     public ParteBarco getParteBarco(int numero) {
         return parteBarco[numero];
+    }
+
+    public boolean isPosHorizontal() {
+        return posHorizontal;
+    }
+
+    public void setPosHorizontal(boolean posHorizontal) {
+        this.posHorizontal = posHorizontal;
     }
 }
