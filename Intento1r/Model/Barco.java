@@ -1,5 +1,5 @@
 package Model;
-import java.util.Arrays;
+
 public class Barco {
     private int longitud;
     private boolean posHorizontal;
@@ -23,7 +23,7 @@ public class Barco {
             parteBarco[i] = new ParteBarco(this);
         }
     }
-    public void HundirBarco(){
+    public void hundirBarco(){
         this.hundido = true;
     };
 

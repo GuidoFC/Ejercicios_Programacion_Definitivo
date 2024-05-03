@@ -119,7 +119,7 @@ public class Juego {
 
 
     private void putPositionShip(boolean posHorizontal, Barco barco){
-        barco.isPosHorizontal(posHorizontal);
+        barco.setPosHorizontal(posHorizontal);
     }
     private boolean randomPosition(int numeroAleatorio){
         // termino si la posicion en Vertical u Horizontal.
@@ -150,14 +150,15 @@ public class Juego {
         int filaModificada;
         int columnaModificada;
         if (shipIsHorizontal(ramdomHorizontal)){
-                for (int j = columna; j < columna + longitudBarco; j++) {
-                    for (int k = -1; k <= 1 ; k++) {
-                        for (int l = -1; l <=  1; l++) {
-                            if ( (k == 0) && (l == 0)){
+                for (int recorrerColumna = columna; recorrerColumna < columna + longitudBarco; recorrerColumna++) {
+                    for (int modFila = -1; modFila <= 1 ; modFila++) {
+                        for (int modColumn = -1; modColumn <=  1; modColumn++) {
+                            if ( (modFila == 0) && (modColumn == 0)){
                                 continue;
                             }
-                            filaModificada = fila + k;
-                            columnaModificada = j +l;
+                            // En este caso la fila es FIJA
+                            filaModificada = fila + modFila;
+                            columnaModificada = recorrerColumna +modColumn;
                             if (!tablero.insideTable(filaModificada, columnaModificada)){
                                 // no me interesa comprobar casillas fuera del tablero
                                 continue;
@@ -174,14 +175,15 @@ public class Juego {
 
             }
 
-        for (int j = fila; j < fila + longitudBarco; j++) {
-            for (int k = -1; k <= 1 ; k++) {
-                for (int l = -1; l <=  1; l++) {
-                    if ( (k == 0) && (l == 0)){
+        for (int recorreFila = fila; recorreFila < fila + longitudBarco; recorreFila++) {
+            for (int modFila = -1; modFila <= 1 ; modFila++) {
+                for (int modColumna = -1; modColumna <=  1; modColumna++) {
+                    if ( (modFila == 0) && (modColumna == 0)){
                         continue;
                     }
-                    filaModificada = fila + k;
-                    columnaModificada = j +l;
+                    // En este caso la Columna es FIJA
+                    filaModificada = recorreFila + modFila;
+                    columnaModificada = columna + modColumna;
                     if (!tablero.insideTable(filaModificada, columnaModificada)){
                         // no me interesa comprobar casillas fuera del tablero
                         continue;
@@ -198,13 +200,6 @@ public class Juego {
 
         return false;
         }
-
-
-
-
-
-
-
 
 
     private boolean squareIsEmpty(int fila, int columna){
@@ -230,7 +225,7 @@ public class Juego {
 
             if(squareIsOpen(fila,columna)){
                 // casilla abierta previamente, volver a elegir row and column
-                presentacion.posicionAbierta();
+                presentacion.mensajeCasillaAbierta();
                 continue;
             }
             // que este vacio la casilla, y lo tengamos que revelar
@@ -238,69 +233,69 @@ public class Juego {
                 tablero.obtenerCasilla(fila,columna).setTapada();
                 return;
             }
-            // ME HE QUEDADO AQUI!!!!!!!!
+
             
-            // que haya una parte del barco y la toquemos
+            // el barco este compuesto de solo una parte y la toquemos. Tocado y hundido
             // ponerlo en un método
-            ParteBarco parteBarco = tablero.obtenerCasilla(fila,columna).getParteBarco();
-            parteBarco.HundirParteBarco();
+            Barco barco = tablero.obtenerCasilla(fila,columna).getParteBarco().getBarco();
+            if (barco.getLongitud() == 1){
+                barco.getParteBarco(0).hundirParteBarco();
+                barco.hundirBarco();
+                revelaCasillasVecinas(fila,columna, barco);
+            }
+
+            // ME HE QUEDADO AQUI!!!!!!!!
+            // que hayamos tocado una parte del barco y NO hundamos el barco
 
             // que hayamos tocado todas las partes del barco y hundamos el barco
-            // COMO CONECTO ESTA PARTEBARCO CON EL BARCO?
+
 
             // Si el barco no esta hundido y solo hemos tocado una parte
             // tenemos que revelar las casilla de las esquinas
-            revelarEsquinaCasillaAtacada(fila,columna);
+            revelaCasillasVecinas(fila,columna, barco);
         }
 
 
 
     }
 
-    public void revelarEsquinaCasillaAtacada(int fila, int columna){
-        // las esquinas estan dentro del tablero
-        for (int modFila = -1; modFila < 1; modFila++) {
-            for (int modColumn = -1; modColumn < 1; modColumn++) {
+    public void revelaCasillasVecinas(int fila, int columna, Barco barco){
+        // revelar si el barco es de una sola longitud
+        if (barco.getLongitud() == 1){
+            for (int i = -1; i < 1; i++) {
+                for (int j = -1; j < 1; j++) {
+                    if((i == 0) && (j==0)){
+                        continue;
+                    }
+                    if (tablero.insideTable(fila+i,columna+j)){
+                        tablero.obtenerCasilla(fila+i,columna+j).setTapada();
+                    }
 
-                if ( (modFila == 0) && (modColumn == 0) ){
-                    continue;
-                }
-                // estamos fuera del tablero
-                if (outsideTable(fila, modFila, columna, modColumn){
-                    continue;
                 }
 
-                tablero.obtenerCasilla(fila+modFila,columna+1).setTapada();
+            }
+            return;
+        }
+
+        for (int i = -1; i < 1; i++) {
+            if (i == 0){
+                continue;
+            }
+            if (tablero.insideTable(fila+i,columna+i)){
+                tablero.obtenerCasilla(fila+i,columna+i).setTapada();
             }
 
         }
 
     }
 
-    public boolean outsideTable(int fila, int modFila, int columna, int modColumna){
-        if ( outsideRow(fila,modFila) ||
-                (columna + modColumn < 0) ||
-                (tablero.getMaxColumna() > columna + modColumn ) ) ){
-                    return true;
-        }
-        return false;
-    }
 
-    public boolean outsideRow(int fila, int modFila){
-        if ((fila + modFila < 0) ||
-                (tablero.getMaxFila() < fila + modFila) ){
-            return true;
-        }
-        return false;
-    } //
 
-    public boolean outsideColumn(int fila, int modFila){
-        if ((fila + modFila < 0) ||
-                (tablero.getMaxFila() < fila + modFila) ){
-            return true;
-        }
-        return false;
-    }
+
+
+
+
+
 
 
 

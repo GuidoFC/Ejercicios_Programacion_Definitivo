@@ -14,12 +14,33 @@ public class ParteBarco implements Atacado{
         return this.tocado;
     }
 
-    public void HundirParteBarco(){
+    public void hundirParteBarco(){
         this.tocado = true;
     }
 
     @Override
     public void serAtacado() {
+
+    }
+
+    public boolean shipIsAlive(){
+        int longitud = this.getBarco().getLongitud();
+        if (longitud == 1){
+            if(this.barco.getParteBarco(0).isTocado()){
+                return false;
+            }
+            return true;
+        }
+        int contadorPartesTocadas = 0 ;
+
+        for (int i = 0; i < longitud; i++) {
+            if(this.barco.getParteBarco(0).isTocado()){
+                contadorPartesTocadas++;
+            }
+            if (contadorPartesTocadas == longitud)
+                return false;
+        }
+            return true;
 
     }
 

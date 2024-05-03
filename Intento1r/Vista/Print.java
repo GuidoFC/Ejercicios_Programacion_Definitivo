@@ -17,7 +17,7 @@ public class Print {
         return sc.nextInt();
     }
 
-    public void posicionAbierta(){
+    public void mensajeCasillaAbierta(){
         System.out.println("Esta casilla ya esta abierta");
     }
 }
