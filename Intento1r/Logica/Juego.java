@@ -29,8 +29,8 @@ public class Juego {
     // implica crear 4 barcos que tienen tamaño 1
     // crear 3 barcos de tamaño 2
     // crear 2 barcos de tamaño 2
-    private void createShip() {
-        int[] arrayBarcos = {1, 1, 1, 1, 2, 2, 2, 4, 4};
+    public void createShip() {
+        int[] arrayBarcos = {1, 1, 1, 2, 2, 3, 4};
 
         for (int i = 0; i < arrayBarcos.length; i++) {
             int longitudBarco = arrayBarcos[i];
@@ -56,6 +56,7 @@ public class Juego {
 
             if (squareIsEmpty(fila, columna)) {
                 // 2n ese barco entra en el tablero
+                // todo: tengo que hacer posible que un barco de una longitud de 1 se pueda poner en los bordes
                 if(shipNotFitTable(fila, columna, longitudBarco, ramdomHorizontal)){
                     continue;
                 }
@@ -127,9 +128,9 @@ public class Juego {
     private boolean shipNotFitTable(int fila, int columna, int longitudBarco, boolean ramdomHorizontal){
 
         if (shipIsHorizontal(ramdomHorizontal)){
-            return (tablero.getMaxColumna() > columna + longitudBarco) ? false : true;
+            return (tablero.getMaxColumna() >= columna + longitudBarco) ? false : true;
         }
-        return (tablero.getMaxFila() > fila + longitudBarco) ? false : true;
+        return (tablero.getMaxFila() >= fila + longitudBarco) ? false : true;
 
     }
 
@@ -205,7 +206,7 @@ public class Juego {
     }
 
     private int generateRandomNumber(){
-        return (int) (Math.random() * 11);
+        return (int) (Math.random() * 10);
     }
 
 
@@ -217,6 +218,9 @@ public class Juego {
 
         // atacar mientras el jugador tenga Barcos
         while (jugador.stillAlive()){
+            presentacion.mensajeEsTuTurno();
+            presentacion.printTablero(tablero);
+            presentacion.printTableroConBarcos(tablero);
             fila = presentacion.elegir("Fila");
             columna = presentacion.elegir("Columna");
             // atacar una casilla que ya esta abierta

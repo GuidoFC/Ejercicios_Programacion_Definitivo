@@ -4,6 +4,7 @@ public class Casilla implements Atacado {
     private boolean  vacio; // no es necessari de fet es un duplicitat
     private boolean tapada;
 
+
     private boolean atacado = false ;
 
     // como puedo colocar una parte del Barco y que yo sepa que las otras
@@ -19,7 +20,7 @@ public class Casilla implements Atacado {
     }
 
     public void atacar(){
-        atacado = true ;
+        this.atacado = true ;
         // si apunta a una part de vaixell
         // atacar aquesta part de vaixell
         // if ( parteBarco != null )
@@ -34,8 +35,10 @@ public class Casilla implements Atacado {
     }
 
     public boolean isVacio(){
-        //return this.vacio;
-        return ( parteBarco == null ) ;
+        // todo: el profesor me ha modificado el codigo aqui
+        // todo: tengo que quitar  return this.vacio; por --> return ( parteBarco == null ) ;
+        return this.vacio;
+        // return ( parteBarco == null ) ;
     }
 
     public void setVacio(){
@@ -55,6 +58,14 @@ public class Casilla implements Atacado {
 
     }
 
+    public boolean isAtacado(){
+        return this.atacado;
+    }
+
+    public boolean isParteBarco(){
+        return (this.parteBarco != null) ? true : false;
+    }
+
     public void setParteBarco(ParteBarco parteBarco) {
         this.parteBarco = parteBarco;
     }
@@ -62,5 +73,6 @@ public class Casilla implements Atacado {
     public ParteBarco getParteBarco() {
         return parteBarco;
     }
+
 }
 
