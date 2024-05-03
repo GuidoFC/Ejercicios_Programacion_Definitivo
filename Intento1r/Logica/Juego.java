@@ -7,8 +7,6 @@ import Model.ParteBarco;
 import Model.Tablero;
 import Vista.Print;
 
-import java.util.Scanner;
-
 public class Juego {
 
     private Jugador jugador;
@@ -40,40 +38,37 @@ public class Juego {
             int longitudBarco = arrayBarcos[i];
             // primero comprobamos que entre el barco 
             // y luego creamos el barco
-            putShipRightPlace(longitudBarco);
+            createShipIfEnter(longitudBarco);
         }
     }
 
     // colocar los barcos
-    private void putShipRightPlace(int longitudBarco){
+    private void createShipIfEnter(int longitudBarco){
 
         // 1r las casillas tiene que estar vacias
         int fila;
         int columna;
         int numeroAleatorio;
-        boolean randoHorizontalOrVertical;
+        boolean ramdomHorizontal;
         while (true) {
                 fila = generateRandomNumber();
                 columna = generateRandomNumber();
                 numeroAleatorio = generateRandomNumber();
-                randoHorizontalOrVertical = randomPosition(numeroAleatorio);
-
-            // Falta por hacer: Determinar si el barco esta en
-            // posicion vertical u horizontal
+                ramdomHorizontal = randomPosition(numeroAleatorio);
 
             if (squareIsEmpty(fila, columna)) {
                 // 2n ese barco entra en el tablero
-                if(shipNotFitTable(fila, columna, longitudBarco, randoHorizontalOrVertical)){
+                if(shipNotFitTable(fila, columna, longitudBarco, ramdomHorizontal)){
                     continue;
                 }
                 // FALTA MIRAR TODA LA LONGITUD DEL BARCO
-                if (isShipsAround(fila, columna, longitudBarco, randoHorizontalOrVertical)){
+                if (isShipsAround(fila, columna, longitudBarco, ramdomHorizontal)){
                     continue;
                 }
                 // cremos el barco
                 Barco barco = new Barco(longitudBarco);
                 this.jugador.addBarco(barco);
-                choosePositionShip(randoHorizontalOrVertical, barco);
+                putPositionShip(ramdomHorizontal, barco);
                 // createPartShip(fila, columna, barco);
                 putShipTable(fila, columna, barco);
                 return;
@@ -87,16 +82,21 @@ public class Juego {
     private void putShipTable(int fila, int columna, Barco barco){
         // si el barco solo tiene una parte
 
-        if (barco.getLongitud() == 1){
+        if (shipHasOnly1Part(barco)){
             tablero.obtenerCasilla(fila,columna).colocarParteBarco(barco.getParteBarco(0));
+            // decir en que parte esta esa parte del barco
+            ParteBarco parteBarco = barco.getParteBarco(0);
+            darLocalizacionParteDelBarco(fila, columna, parteBarco);
             return;
         }
         // si el barco esta compuesto con más de una parte
 
         // posicion horizontal
-        if (shipIsHorizontal(randoHorizontalOrVertical)){
+        if (barco.isPosHorizontal()){
             for (int i = 0; i < barco.getLongitud(); i++) {
              tablero.obtenerCasilla(fila,columna +i).colocarParteBarco(barco.getParteBarco(i));
+             ParteBarco parteBarco = barco.getParteBarco(i);
+             darLocalizacionParteDelBarco(fila,columna+i,parteBarco);
             }
             return;
         }
@@ -109,8 +109,16 @@ public class Juego {
 
     }
 
+    public boolean shipHasOnly1Part(Barco barco){
+        return (barco.getLongitud() == 1) ? true : false;
+    }
 
-    private void choosePositionShip(boolean posHorizontal, Barco barco){
+    public void darLocalizacionParteDelBarco(int fila, int columna, ParteBarco parteBarco){
+        parteBarco.darCoordenadas(fila,columna);
+    }
+
+
+    private void putPositionShip(boolean posHorizontal, Barco barco){
         barco.isPosHorizontal(posHorizontal);
     }
     private boolean randomPosition(int numeroAleatorio){
@@ -118,74 +126,83 @@ public class Juego {
         // si el resultado es TRUE será posición PosHorizontal
         return ((numeroAleatorio % 2) == 0) ? true : false;
     }
-    private boolean shipNotFitTable(int fila, int columna, int longitudBarco, boolean randoHorizontalOrVertical){
+    private boolean shipNotFitTable(int fila, int columna, int longitudBarco, boolean ramdomHorizontal){
 
-        if (shipIsHorizontal(randoHorizontalOrVertical)){
-            if (tablero.getMaxColumna() > columna + longitudBarco){
-                return false;
-            }
-            return true;
+        if (shipIsHorizontal(ramdomHorizontal)){
+            return (tablero.getMaxColumna() > columna + longitudBarco) ? false : true;
         }
-        if (tablero.getMaxFila() > fila + longitudBarco){
-            return false;
-        }
-        return true;
-
-
-        // en que casilla me encuentro ? (lo obtengo por parametro)
-        // cuanto mide el barco = (lo tengo en longitud)
-        // cuantas casillas hay disponibles
-
+        return (tablero.getMaxFila() > fila + longitudBarco) ? false : true;
 
     }
 
-    private boolean shipIsHorizontal(boolean randoHorizontalOrVertical) {
-        return (randoHorizontalOrVertical == true) ? true : false;
+    private boolean shipIsHorizontal(boolean ramdomHorizontal) {
+        return (ramdomHorizontal == true) ? true : false;
     }
 
-    private boolean isShipsAround(int fila, int columna, int longitudBarco,  boolean randoHorizontalOrVertical){
+    private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean ramdomHorizontal){
+        // ME HE QUEDADO AQUI MIRAR LA LOGICA
+
+
         // en que casilla me encuetro (lo recibo por parametro)
         // TENGO QUE MIRAR SI EL BARCO ES HORIZONTAL O VERTICAL
         // comprobar si hay barcos alrededor (is vacio False)
             // aplicar esta logica por cada parte del barco
-        for (int i = -1; i < 1; i++) {
-            for (int j = -1; j < 1; j++) {
-                if ((i == 0) && (j == 0)){
-                    continue;
+        int filaModificada;
+        int columnaModificada;
+        if (shipIsHorizontal(ramdomHorizontal)){
+                for (int j = columna; j < columna + longitudBarco; j++) {
+                    for (int k = -1; k <= 1 ; k++) {
+                        for (int l = -1; l <=  1; l++) {
+                            if ( (k == 0) && (l == 0)){
+                                continue;
+                            }
+                            filaModificada = fila + k;
+                            columnaModificada = j +l;
+                            if (!tablero.insideTable(filaModificada, columnaModificada)){
+                                // no me interesa comprobar casillas fuera del tablero
+                                continue;
+                            }
+                            if (squareIsEmpty(filaModificada,columnaModificada)){
+                                continue;
+                            }else {
+                                return true;
+                            }
+                        }
+
+                    }
                 }
-                if(!squareIsEmpty(fila-i,columna-j) ){
-                    return true;
+
+            }
+
+        for (int j = fila; j < fila + longitudBarco; j++) {
+            for (int k = -1; k <= 1 ; k++) {
+                for (int l = -1; l <=  1; l++) {
+                    if ( (k == 0) && (l == 0)){
+                        continue;
+                    }
+                    filaModificada = fila + k;
+                    columnaModificada = j +l;
+                    if (!tablero.insideTable(filaModificada, columnaModificada)){
+                        // no me interesa comprobar casillas fuera del tablero
+                        continue;
+                    }
+                    if (squareIsEmpty(filaModificada,columnaModificada)){
+                        continue;
+                    }else {
+                        return true;
+                    }
                 }
+
             }
         }
-        return false;
-    }
 
-    // este método de createPartShip no me hace falta porque ya lo tengo
-    // construido en el momento que construi el Barco
-//    private void createPartShip(int fila, int columna, Barco barco){
-//
-//        barco.construirBarco();
-//
-//        //OTRA MANERA, CUAL ES MAS CORRECTA????
-//        // si el barco solo tiene una parte
-//        if (barco.getLongitud() == 1){
-//            ParteBarco parteBarco = new ParteBarco(barco,fila,columna);
-//            return;
-//        }
-//
-//        // crear el barco horizontalmente
-//        if (shipIsHorizontal(barco)){
-//            for (int i = 0; i < barco.getLongitud(); i++) {
-//                ParteBarco parteBarco = new ParteBarco(barco,fila,columna + i);
-//            }
-//            return;
-//        }
-//        // crear el barco verticalmente
-//        for (int i = 0; i < barco.getLongitud(); i++) {
-//            ParteBarco parteBarco = new ParteBarco(barco,fila+i,columna);
-//        }
-//    }
+        return false;
+        }
+
+
+
+
+
 
 
 

@@ -1,7 +1,7 @@
 package Model;
 
 public class Casilla implements Atacado {
-    private boolean   // no es necessari de fet es un duplicitat
+    private boolean  vacio; // no es necessari de fet es un duplicitat
     private boolean tapada;
 
     private boolean atacado = false ;

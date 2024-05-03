@@ -4,14 +4,8 @@ public class ParteBarco implements Atacado{
     private boolean tocado;
     private Barco barco;
     private int posFila, posColumna;
-    public ParteBarco(Barco barco, int posFila, int posColumna){
-        this.tocado = false;
-        this.posFila = posFila;
-        this.posColumna = posColumna;
 
-    }
-
-    public ParteBarco(){
+    public ParteBarco(Barco barco){
         this.tocado = false;
     }
 
@@ -41,7 +35,12 @@ public class ParteBarco implements Atacado{
         return posFila;
     }
 
-    public void setPosFila(int posFila) {
+    public void darCoordenadas(int fila, int columna){
+        this.setPosFila(fila);
+        this.setPosColumna(columna);
+    }
+
+    private void setPosFila(int posFila) {
         this.posFila = posFila;
     }
 
@@ -49,7 +48,7 @@ public class ParteBarco implements Atacado{
         return posColumna;
     }
 
-    public void setPosColumna(int posColumna) {
+    private void setPosColumna(int posColumna) {
         this.posColumna = posColumna;
     }
 }

@@ -26,6 +26,17 @@ public class Tablero  {
         }
     }
 
+    public boolean insideTable(int posFila, int posColumna){
+        if ((posFila < 0) || (posColumna < 0)){
+            return false;
+        }
+
+        if ((posFila > this.fila) || (posColumna > this.columna) ){
+            return false;
+        }
+        return true;
+    }
+
     public int getMaxFila() {
         return fila;
     }
