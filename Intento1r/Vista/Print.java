@@ -20,4 +20,8 @@ public class Print {
     public void mensajeCasillaAbierta(){
         System.out.println("Esta casilla ya esta abierta");
     }
+
+    public void mensajeGameOver(){
+        System.out.println("Has perdido");
+    }
 }

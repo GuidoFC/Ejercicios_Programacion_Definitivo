@@ -238,21 +238,37 @@ public class Juego {
             // el barco este compuesto de solo una parte y la toquemos. Tocado y hundido
             // ponerlo en un método
             Barco barco = tablero.obtenerCasilla(fila,columna).getParteBarco().getBarco();
+            barco.getParteBarco(0).hundirParteBarco();
             if (barco.getLongitud() == 1){
-                barco.getParteBarco(0).hundirParteBarco();
+
                 barco.hundirBarco();
+                // tenemos que revelar las casilla de las esquinas
                 revelaCasillasVecinas(fila,columna, barco);
+                return;
             }
 
             // ME HE QUEDADO AQUI!!!!!!!!
             // que hayamos tocado una parte del barco y NO hundamos el barco
 
+            if (!barco.todasPartesBarcoTocadas()){
+                revelaCasillasVecinas(fila,columna, barco);
+                return;
+            }
+
             // que hayamos tocado todas las partes del barco y hundamos el barco
+            if (jugador.stillAlive()){
+                barco.hundirBarco();
+                revelaCasillasVecinas(fila,columna, barco);
+                if (jugador.stillAlive()){
+                    presentacion.mensajeGameOver();
+                }
+                return;
+            }
 
 
-            // Si el barco no esta hundido y solo hemos tocado una parte
-            // tenemos que revelar las casilla de las esquinas
-            revelaCasillasVecinas(fila,columna, barco);
+            // que hayamos hundido todos los barcos
+            barco.hundirBarco();
+            presentacion.mensajeGameOver();
         }
 
 
@@ -288,15 +304,6 @@ public class Juego {
         }
 
     }
-
-
-
-
-
-
-
-
-
 
 
     private boolean squareIsOpen(int fila, int columna){
