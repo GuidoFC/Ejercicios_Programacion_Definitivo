@@ -14,7 +14,6 @@ public class Barco {
         this.longitud = longitudBarco;
         parteBarco = new ParteBarco[longitud];
         // creamos un método para añadir las partes del barco
-        construirBarco();
         hundido = false;
     }
 

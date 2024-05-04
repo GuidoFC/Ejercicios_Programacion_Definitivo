@@ -24,7 +24,7 @@ public class Print {
         System.out.println(mensaje);
     }
 
-    public  String printMatrizCasilla(int fila, int columna, Tablero tableroJugadorA) {
+    public  String imprimirEstadoCasilla(int fila, int columna, Tablero tableroJugadorA) {
         if (tableroJugadorA.obtenerCasilla(fila, columna).isTapada()) {
             return "-";
         }
@@ -53,7 +53,7 @@ public class Print {
                     if (j == 0) {
                         System.out.print(i + 1 + "\t");
                     }
-                    System.out.print(printMatrizCasilla(i,j,tableroJugadorA) + "\t");
+                    System.out.print(imprimirEstadoCasilla(i,j,tableroJugadorA) + "\t");
                     if (j == tableroJugadorA.getMaxColumna() - 1) {
                         System.out.println();
                     }

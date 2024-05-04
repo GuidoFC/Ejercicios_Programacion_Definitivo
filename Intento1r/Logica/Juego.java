@@ -13,6 +13,8 @@ public class Juego {
     private Print presentacion;
     private Tablero tablero;
 
+    private ParteBarco parteBarco;
+
     // como aplicar este concepto:
     // Program to an interface, not an implemetation
 
@@ -85,10 +87,13 @@ public class Juego {
     private void putShipTable(int fila, int columna, Barco barco){
         // si el barco solo tiene una parte
 
+        ParteBarco parteBarco;
         if (shipHasOnly1Part(barco)){
-            tablero.obtenerCasilla(fila,columna).colocarParteBarco(barco.getParteBarco(0));
+            barco.construirBarco();
+            parteBarco = barco.getParteBarco(0);
+            tablero.obtenerCasilla(fila,columna).colocarParteBarco(parteBarco);
             // decir en que parte esta esa parte del barco
-            ParteBarco parteBarco = barco.getParteBarco(0);
+
             darLocalizacionParteDelBarco(fila, columna, parteBarco);
             tablero.obtenerCasilla(fila,columna).setVacio();
             return;
@@ -98,8 +103,9 @@ public class Juego {
         // posicion horizontal
         if (barco.isPosHorizontal()){
             for (int i = 0; i < barco.getLongitud(); i++) {
-             tablero.obtenerCasilla(fila,columna +i).colocarParteBarco(barco.getParteBarco(i));
-             ParteBarco parteBarco = barco.getParteBarco(i);
+            parteBarco = barco.getParteBarco(i);
+             tablero.obtenerCasilla(fila,columna +i).colocarParteBarco(parteBarco);
+
              darLocalizacionParteDelBarco(fila,columna+i,parteBarco);
             tablero.obtenerCasilla(fila,columna+i).setVacio();
             }
@@ -221,11 +227,13 @@ public class Juego {
 
         // atacar mientras el jugador tenga Barcos
         while (jugador.stillAlive()){
+
             presentacion.mensajeEsTuTurno();
             presentacion.printTablero(tablero);
             presentacion.printTableroConBarcos(tablero);
-            fila = presentacion.elegir("Fila");
-            columna = presentacion.elegir("Columna");
+
+            fila = presentacion.elegir("Fila") -1;
+            columna = presentacion.elegir("Columna") -1;
             // atacar una casilla que ya esta abierta
 
             if(squareIsOpen(fila,columna)){
@@ -233,15 +241,18 @@ public class Juego {
                 presentacion.mensajeCasillaAbierta();
                 continue;
             }
-            // que este vacio la casilla, y lo tengamos que revelar
-            if(squareIsEmpty(fila,columna)){
+            // que este vacio la casilla, y no haya barco
+                // tenemos que destapar casilla
+            if(squareIsEmpty(fila,columna) && !(tablero.obtenerCasilla(fila,columna).tieneBarco())){
                 tablero.obtenerCasilla(fila,columna).setTapada();
-                return;
+                // TODO: LUEGO TENGO QUE CAMBIAR ESTE continue por RETURN
+                continue;
             }
 
             
             // el barco este compuesto de solo una parte y la toquemos. Tocado y hundido
             // ponerlo en un método
+            // TODO: Tengo que poner en la casilla
             Barco barco = tablero.obtenerCasilla(fila,columna).getParteBarco().getBarco();
             barco.getParteBarco(0).hundirParteBarco();
             if (barco.getLongitud() == 1){
@@ -249,7 +260,8 @@ public class Juego {
                 barco.hundirBarco();
                 // tenemos que revelar las casilla de las esquinas
                 revelaCasillasVecinas(fila,columna, barco);
-                return;
+                // TODO: LUEGO TENGO QUE CAMBIAR ESTE continue por RETURN
+                continue;
             }
 
             // ME HE QUEDADO AQUI!!!!!!!!
@@ -257,7 +269,8 @@ public class Juego {
 
             if (!barco.todasPartesBarcoTocadas()){
                 revelaCasillasVecinas(fila,columna, barco);
-                return;
+                // TODO: LUEGO TENGO QUE CAMBIAR ESTE continue por RETURN
+                continue;
             }
 
             // que hayamos tocado todas las partes del barco y hundamos el barco
@@ -267,7 +280,8 @@ public class Juego {
                 if (jugador.stillAlive()){
                     presentacion.mensajeGameOver();
                 }
-                return;
+                // TODO: LUEGO TENGO QUE CAMBIAR ESTE continue por RETURN
+                continue;
             }
 
 
@@ -312,7 +326,7 @@ public class Juego {
 
 
     private boolean squareIsOpen(int fila, int columna){
-        if (tablero.obtenerCasilla(fila,columna).isTapada()){
+        if (!tablero.obtenerCasilla(fila,columna).isTapada()){
             return true;
         }
         return false;

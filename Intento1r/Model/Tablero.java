@@ -15,7 +15,7 @@ public class Tablero  {
     }
 
     public Casilla obtenerCasilla(int fila, int columna){
-        // TODO: 04/05/2024 CUAL ES EL PROBLEMA? El Problema es que llega un momento en que la fila o columna llega a 10
+        // TODO: 04/05/2024 (SOLUCIONADO) CUAL ES EL PROBLEMA? El Problema es que llega un momento en que la fila o columna llega a 10.
         return matrizCasilla[fila][columna];
     }
     public void rellenarMatrizCasilla(){

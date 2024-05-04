@@ -7,6 +7,7 @@ public class ParteBarco implements Atacado{
 
     public ParteBarco(Barco barco){
         this.tocado = false;
+        this.barco = barco;
     }
 
 
