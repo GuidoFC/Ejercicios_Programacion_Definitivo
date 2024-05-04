@@ -25,6 +25,10 @@ public class Juego {
 
     }
 
+    public void starGame(){
+        createShip();
+        atacar();
+    }
     // crear barcos con un ARRAY { {1,1,1,1}, {2,2,2}, {4,4} }
     // implica crear 4 barcos que tienen tamaño 1
     // crear 3 barcos de tamaño 2
@@ -86,6 +90,7 @@ public class Juego {
             // decir en que parte esta esa parte del barco
             ParteBarco parteBarco = barco.getParteBarco(0);
             darLocalizacionParteDelBarco(fila, columna, parteBarco);
+            tablero.obtenerCasilla(fila,columna).setVacio();
             return;
         }
         // si el barco esta compuesto con más de una parte
@@ -96,6 +101,7 @@ public class Juego {
              tablero.obtenerCasilla(fila,columna +i).colocarParteBarco(barco.getParteBarco(i));
              ParteBarco parteBarco = barco.getParteBarco(i);
              darLocalizacionParteDelBarco(fila,columna+i,parteBarco);
+            tablero.obtenerCasilla(fila,columna+i).setVacio();
             }
             return;
         }
@@ -103,6 +109,7 @@ public class Juego {
         // posicion vertical
         for (int i = 0; i < barco.getLongitud(); i++) {
             tablero.obtenerCasilla(fila+i,columna ).colocarParteBarco(barco.getParteBarco(i));
+            tablero.obtenerCasilla(fila+i,columna).setVacio();
         }
 
 
@@ -139,17 +146,17 @@ public class Juego {
     }
 
     private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean ramdomHorizontal){
-        // ME HE QUEDADO AQUI MIRAR LA LOGICA
-
 
         // en que casilla me encuetro (lo recibo por parametro)
         // TENGO QUE MIRAR SI EL BARCO ES HORIZONTAL O VERTICAL
         // comprobar si hay barcos alrededor (is vacio False)
-            // aplicar esta logica por cada parte del barco
+            // todo: aplicar esta logica por cada parte del barco --> Lo miro con la int longitudBarco
+        // todo: mirar que cuando creo el barco pongo que esa casilla ya no este vacia
+
         int filaModificada;
         int columnaModificada;
         if (shipIsHorizontal(ramdomHorizontal)){
-                for (int recorrerColumna = columna; recorrerColumna < columna + longitudBarco; recorrerColumna++) {
+                for (int recorrerColumna = columna; recorrerColumna <= columna + longitudBarco; recorrerColumna++) {
                     for (int modFila = -1; modFila <= 1 ; modFila++) {
                         for (int modColumn = -1; modColumn <=  1; modColumn++) {
                             if ( (modFila == 0) && (modColumn == 0)){
@@ -157,14 +164,12 @@ public class Juego {
                             }
                             // En este caso la fila es FIJA
                             filaModificada = fila + modFila;
-                            columnaModificada = recorrerColumna +modColumn;
+                            columnaModificada = recorrerColumna + modColumn;
                             if (!tablero.insideTable(filaModificada, columnaModificada)){
                                 // no me interesa comprobar casillas fuera del tablero
                                 continue;
                             }
-                            if (squareIsEmpty(filaModificada,columnaModificada)){
-                                continue;
-                            }else {
+                            if (!squareIsEmpty(filaModificada,columnaModificada)){
                                 return true;
                             }
                         }
@@ -174,7 +179,7 @@ public class Juego {
 
             }
 
-        for (int recorreFila = fila; recorreFila < fila + longitudBarco; recorreFila++) {
+        for (int recorreFila = fila; recorreFila <= fila + longitudBarco; recorreFila++) {
             for (int modFila = -1; modFila <= 1 ; modFila++) {
                 for (int modColumna = -1; modColumna <=  1; modColumna++) {
                     if ( (modFila == 0) && (modColumna == 0)){
@@ -187,9 +192,7 @@ public class Juego {
                         // no me interesa comprobar casillas fuera del tablero
                         continue;
                     }
-                    if (squareIsEmpty(filaModificada,columnaModificada)){
-                        continue;
-                    }else {
+                    if (!squareIsEmpty(filaModificada,columnaModificada)){
                         return true;
                     }
                 }
@@ -211,7 +214,7 @@ public class Juego {
 
 
 
-    private void atacar(){
+    public void atacar(){
 
         int fila;
         int columna;

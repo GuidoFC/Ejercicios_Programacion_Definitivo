@@ -9,7 +9,7 @@ public class Main {
 
         //y pasamos este jugador a la parte logica
         Juego juego = new Juego(jugador1);
-        juego.createShip();
+        juego.starGame();
     }
 
 

@@ -15,6 +15,7 @@ public class Print {
     public  void mensajeEsTuTurno(){
         String mensaje =
                 """
+                
                 Es su turno, le toca atacar!
                 A continuación vera su tablero
                 y seguidamente vera el tablero
