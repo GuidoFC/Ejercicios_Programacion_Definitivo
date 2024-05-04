@@ -28,7 +28,7 @@ public class Print {
         if (tableroJugadorA.obtenerCasilla(fila, columna).isTapada()) {
             return "-";
         }
-        if (tableroJugadorA.obtenerCasilla(fila, columna).isAtacado()){
+        if (!tableroJugadorA.obtenerCasilla(fila, columna).isTapada()){
             if (tableroJugadorA.obtenerCasilla(fila,columna).isParteBarco()){
                 return "B";
             }

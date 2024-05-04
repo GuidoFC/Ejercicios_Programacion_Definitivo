@@ -255,6 +255,7 @@ public class Juego {
             // TODO: Tengo que poner en la casilla
             Barco barco = tablero.obtenerCasilla(fila,columna).getParteBarco().getBarco();
             barco.getParteBarco(0).hundirParteBarco();
+            tablero.obtenerCasilla(fila,columna).setTapada();
             if (barco.getLongitud() == 1){
 
                 barco.hundirBarco();
@@ -294,16 +295,17 @@ public class Juego {
 
     }
 
-    public void revelaCasillasVecinas(int fila, int columna, Barco barco){
+    public void revelaCasillasVecinas(int fila, int columna, Barco barco) {
         // revelar si el barco es de una sola longitud
-        if (barco.getLongitud() == 1){
-            for (int i = -1; i < 1; i++) {
-                for (int j = -1; j < 1; j++) {
-                    if((i == 0) && (j==0)){
+        if (barco.getLongitud() == 1) {
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if ((i == 0) && (j == 0)) {
                         continue;
                     }
-                    if (tablero.insideTable(fila+i,columna+j)){
-                        tablero.obtenerCasilla(fila+i,columna+j).setTapada();
+
+                    if (tablero.insideTable(fila + i, columna + j)) {
+                        tablero.obtenerCasilla(fila + i, columna + j).setTapada();
                     }
 
                 }
@@ -311,18 +313,44 @@ public class Juego {
             }
             return;
         }
-
-        for (int i = -1; i < 1; i++) {
-            if (i == 0){
-                continue;
+// todo: solo puede abrir las casillas en forma de CURZ "X"
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if ((i == 0) && (j == 0)) {
+                    continue;
+                }
+                if ((i == -1) && (j == 0)) {
+                    continue;
+                }
+                if ((i == 1) && (j == 0)) {
+                    continue;
+                }
+                if ((i == 0) && (j == -1)) {
+                    continue;
+                }
+                if ((i == 0) && (j == 1)) {
+                    continue;
+                }
+                if (tablero.insideTable(fila + i, columna + j)) {
+                    tablero.obtenerCasilla(fila + i, columna + j).setTapada();
+                }
             }
-            if (tablero.insideTable(fila+i,columna+i)){
-                tablero.obtenerCasilla(fila+i,columna+i).setTapada();
-            }
-
         }
+                if (barco.isHundido()){
+                    for (int i = -1; i <= 1; i++) {
+                        for (int j = -1; j <= 1; j++) {
+                            if ((i == 0) && (j == 0)) {
+                                continue;
+                            }
+                            tablero.obtenerCasilla(fila + i, columna + j).setTapada();
+                        }
+                    }
+                }
 
     }
+
+
+
 
 
     private boolean squareIsOpen(int fila, int columna){
