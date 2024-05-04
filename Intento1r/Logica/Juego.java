@@ -89,7 +89,7 @@ public class Juego {
 
         ParteBarco parteBarco;
         if (shipHasOnly1Part(barco)){
-            barco.construirBarco();
+
             parteBarco = barco.getParteBarco(0);
             tablero.obtenerCasilla(fila,columna).colocarParteBarco(parteBarco);
             // decir en que parte esta esa parte del barco

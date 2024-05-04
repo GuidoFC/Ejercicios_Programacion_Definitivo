@@ -10,7 +10,7 @@ public class Casilla implements Atacado {
     // como puedo colocar una parte del Barco y que yo sepa que las otras
     // parte del barco se coloquen cerca de esta casilla????
 
-    private ParteBarco parteBarco = null ;
+    private ParteBarco parteBarco; ;
 
 
     public Casilla() {

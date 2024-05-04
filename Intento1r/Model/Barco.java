@@ -1,10 +1,14 @@
 package Model;
 
+import java.util.ArrayList;
+
 public class Barco {
     private int longitud;
     private boolean posHorizontal;
 
-    private ParteBarco [] parteBarco;
+    private final ArrayList<ParteBarco> parteBarco = new ArrayList<>();
+
+    //private ParteBarco [] parteBarco;
     private boolean hundido;
 
 
@@ -12,14 +16,15 @@ public class Barco {
     public Barco(int longitudBarco){
         this.posHorizontal = false;
         this.longitud = longitudBarco;
-        parteBarco = new ParteBarco[longitud];
+        construirBarco(longitudBarco);
         // creamos un método para añadir las partes del barco
         hundido = false;
+
     }
 
-    public void construirBarco(){
-        for (int i = 0; i < this.longitud; i++) {
-            parteBarco[i] = new ParteBarco(this);
+    public void construirBarco(int longitudBarco){
+        for (int i = 0; i < longitudBarco; i++) {
+            this.parteBarco.add(new ParteBarco(this));
         }
     }
     public void hundirBarco(){
@@ -34,7 +39,7 @@ public class Barco {
 
     public boolean todasPartesBarcoTocadas(){
         for (int i = 0; i < this.longitud; i++) {
-            if (this.parteBarco[i].isTocado() == false){
+            if (this.parteBarco.get(i).isTocado() == false){
                 return false;
             }
         }
@@ -46,7 +51,7 @@ public class Barco {
     }
 
     public ParteBarco getParteBarco(int numero) {
-        return parteBarco[numero];
+        return parteBarco.get(numero);
     }
 
     public boolean isPosHorizontal() {
