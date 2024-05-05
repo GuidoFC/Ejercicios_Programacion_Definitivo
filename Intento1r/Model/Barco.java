@@ -39,7 +39,7 @@ public class Barco {
 
     public boolean todasPartesBarcoTocadas(){
         for (int i = 0; i < this.longitud; i++) {
-            if (this.parteBarco.get(i).isTocado() == false){
+            if (!this.parteBarco.get(i).isTocado()){
                 return false;
             }
         }

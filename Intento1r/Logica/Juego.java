@@ -252,7 +252,7 @@ public class Juego {
             
             // el barco este compuesto de solo una parte y la toquemos. Tocado y hundido
             // ponerlo en un método
-            // TODO: Tengo que poner en la casilla
+
             Barco barco = tablero.obtenerCasilla(fila,columna).getParteBarco().getBarco();
             barco.getParteBarco(0).hundirParteBarco();
             tablero.obtenerCasilla(fila,columna).setTapada();
@@ -267,6 +267,8 @@ public class Juego {
 
             // ME HE QUEDADO AQUI!!!!!!!!
             // que hayamos tocado una parte del barco y NO hundamos el barco
+
+            // TODO: ME FALTA INDICAR QUE CUANDO HEMOS TOCADO TODAS LAS PARTES DEL BARCO, ESPECIFICAR QUE ESE BARCO ESTA HUNDIDO
 
             if (!barco.todasPartesBarcoTocadas()){
                 revelaCasillasVecinas(fila,columna, barco);
@@ -314,38 +316,78 @@ public class Juego {
             return;
         }
 // todo: solo puede abrir las casillas en forma de CURZ "X"
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if ((i == 0) && (j == 0)) {
-                    continue;
-                }
-                if ((i == -1) && (j == 0)) {
-                    continue;
-                }
-                if ((i == 1) && (j == 0)) {
-                    continue;
-                }
-                if ((i == 0) && (j == -1)) {
-                    continue;
-                }
-                if ((i == 0) && (j == 1)) {
-                    continue;
-                }
-                if (tablero.insideTable(fila + i, columna + j)) {
-                    tablero.obtenerCasilla(fila + i, columna + j).setTapada();
+        if (barco.isHundido() == false){
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if ((i == 0) && (j == 0)) {
+                        continue;
+                    }
+                    if ((i == -1) && (j == 0)) {
+                        continue;
+                    }
+                    if ((i == 1) && (j == 0)) {
+                        continue;
+                    }
+                    if ((i == 0) && (j == -1)) {
+                        continue;
+                    }
+                    if ((i == 0) && (j == 1)) {
+                        continue;
+                    }
+                    if (tablero.insideTable(fila + i, columna + j)) {
+                        tablero.obtenerCasilla(fila + i, columna + j).setTapada();
+                        // TODO: COMPROBAR EL ESTADO DEL BARCO (ESTA HUNDIDO?)
+                    }
                 }
             }
+            return;
         }
-                if (barco.isHundido()){
-                    for (int i = -1; i <= 1; i++) {
-                        for (int j = -1; j <= 1; j++) {
-                            if ((i == 0) && (j == 0)) {
+
+        if (barco.isHundido()){
+            int longitudBarco = barco.getLongitud();
+            int filaInicial = barco.getParteBarco(0).getPosFila();
+            int columnaInicial = barco.getParteBarco(0).getPosColumna();
+            int modFila;
+            int modColumna;
+            if (barco.isPosHorizontal()){
+
+                for (int parteMovil = filaInicial; parteMovil <= (filaInicial +longitudBarco); parteMovil++) {
+                    for (int j = -1; parteMovil <= 1; parteMovil++) {
+                        for (int k = -1; j <= 1; j++) {
+                            if ((j == 0) && (k == 0)) {
                                 continue;
                             }
-                            tablero.obtenerCasilla(fila + i, columna + j).setTapada();
+                            modFila = parteMovil + j;
+                            modColumna = columnaInicial + k;
+                            if (tablero.insideTable(modFila, modColumna)) {
+                                tablero.obtenerCasilla(modFila, modColumna).setTapada();
+                            }
+
                         }
                     }
                 }
+                return;
+            }
+
+            for (int parteMovil = columnaInicial; parteMovil <= (columnaInicial +longitudBarco); parteMovil++) {
+                for (int j = -1; parteMovil <= 1; parteMovil++) {
+                    for (int k = -1; j <= 1; j++) {
+                        if ((j == 0) && (k == 0)) {
+                            continue;
+                        }
+                        modFila = filaInicial + j;
+                        modColumna = parteMovil + k;
+                        if (tablero.insideTable(modFila, modColumna)) {
+                            tablero.obtenerCasilla(modFila, modColumna).setTapada();
+                        }
+
+                    }
+                }
+            }
+
+        }
+
+
 
     }
 
