@@ -36,7 +36,7 @@ public class Juego {
     // crear 3 barcos de tamaño 2
     // crear 2 barcos de tamaño 2
     public void createShip() {
-        int[] arrayBarcos = {2, 2};
+        int[] arrayBarcos = {3, 3, 3};
 
         for (int i = 0; i < arrayBarcos.length; i++) {
             int longitudBarco = arrayBarcos[i];
@@ -212,7 +212,9 @@ public class Juego {
     }
 
     private int generateRandomNumber(){
-        return (int) (Math.random() * 5);
+        int numeroFilasColumnas = tablero.getMaxColumna();
+
+        return (int) (Math.random() * numeroFilasColumnas);
     }
 
 
