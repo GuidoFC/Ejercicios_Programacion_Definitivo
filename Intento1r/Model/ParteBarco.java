@@ -5,6 +5,8 @@ public class ParteBarco implements Atacado{
     private Barco barco;
     private int posFila, posColumna;
 
+
+
     public ParteBarco(Barco barco, int fila, int columna){
         this.tocado = false;
         this.barco = barco;

@@ -74,4 +74,12 @@ public class Barco {
     public void setPosHorizontal(boolean posHorizontal) {
         this.posHorizontal = posHorizontal;
     }
+
+    public int filaPrimeraParteBarco(){
+        return listaParteBarco.get(0).getPosFila();
+    }
+
+    public int columnaPrimeraParteBarco(){
+        return listaParteBarco.get(0).getPosColumna();
+    }
 }

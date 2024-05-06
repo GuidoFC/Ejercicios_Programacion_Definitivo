@@ -36,7 +36,7 @@ public class Juego {
     // crear 3 barcos de tamaño 2
     // crear 2 barcos de tamaño 2
     public void createShip() {
-        int[] arrayBarcos = {2, 2, 3, 4, 3, 1, 4};
+        int[] arrayBarcos = {2, 2};
 
         for (int i = 0; i < arrayBarcos.length; i++) {
             int longitudBarco = arrayBarcos[i];
@@ -212,7 +212,7 @@ public class Juego {
     }
 
     private int generateRandomNumber(){
-        return (int) (Math.random() * 10);
+        return (int) (Math.random() * 5);
     }
 
 
@@ -238,22 +238,20 @@ public class Juego {
             }
             // que este vacio la casilla, y no haya barco
                 // tenemos que destapar casilla
-            if(squareIsEmpty(fila,columna) && !(tablero.obtenerCasilla(fila,columna).tieneBarco())){
+            if(casillaSinBarco(fila,columna)){
                 tablero.obtenerCasilla(fila,columna).setTapada();
                 // TODO: LUEGO TENGO QUE CAMBIAR ESTE continue por RETURN
                 continue;
             }
 
-            
             // el barco este compuesto de solo una parte y la toquemos. Tocado y hundido
             // ponerlo en un método
 
             Barco barco = tablero.obtenerCasilla(fila,columna).getParteBarco().getBarco();
             // todo: TENGO QUE INDICAR QUE PARTE DEL BARCO ESTOY HUNDIENDO
             barco.getParteBarco(fila,columna).hundirParteBarco();
-
-
             tablero.obtenerCasilla(fila,columna).setTapada();
+
             if (barco.getLongitud() == 1){
 
                 barco.hundirBarco();
@@ -263,12 +261,11 @@ public class Juego {
                 continue;
             }
 
-            // ME HE QUEDADO AQUI!!!!!!!!
             // que hayamos tocado una parte del barco y NO hundamos el barco
 
             // TODO: ME FALTA INDICAR QUE CUANDO HEMOS TOCADO TODAS LAS PARTES DEL BARCO, ESPECIFICAR QUE ESE BARCO ESTA HUNDIDO
 
-            if (!barco.todasPartesBarcoTocadas()){
+            if (barco.todasPartesBarcoTocadas() == false){
                 revelaCasillasVecinas(fila,columna, barco);
                 // TODO: LUEGO TENGO QUE CAMBIAR ESTE continue por RETURN
                 continue;
@@ -276,7 +273,6 @@ public class Juego {
 
             // que hayamos tocado todas las partes del barco y hundamos el barco
             if (jugador.stillAlive()){
-                barco.hundirBarco();
                 revelaCasillasVecinas(fila,columna, barco);
                 if (jugador.stillAlive()){
                     presentacion.mensajeGameOver();
@@ -285,14 +281,18 @@ public class Juego {
                 continue;
             }
 
-
             // que hayamos hundido todos los barcos
             barco.hundirBarco();
             presentacion.mensajeGameOver();
         }
 
+    }
 
-
+    private boolean casillaSinBarco(int fila, int columna){
+        if (squareIsEmpty(fila,columna) && !(tablero.obtenerCasilla(fila,columna).tieneBarco())){
+            return true;
+        }
+        return false;
     }
 
     private void imprimirTablero() {
@@ -334,29 +334,38 @@ public class Juego {
                 }
             }
             // TODO: COMPROBAR EL ESTADO DEL BARCO (ESTA HUNDIDO?)
-            if (barco.todasPartesBarcoTocadas() == false){
+            if (barco.todasPartesBarcoTocadas() == true){
+                barco.hundirBarco();
+            }else {
                 return;
             }
+
         }
 
         if (barco.isHundido()){
+            tablero.obtenerCasilla(fila, columna).setTapada();
+            presentacion.printTablero(tablero);
             int longitudBarco = barco.getLongitud();
-            int filaInicial = barco.getParteBarco(fila,columna).getPosFila();
-            int columnaInicial = barco.getParteBarco(fila,columna).getPosColumna();
+            // TODO: tengo que buscar el barco de la posicion 0 y recorrer todo el barco
+
+            int filaInicial = barco.filaPrimeraParteBarco();
+            int columnaInicial = barco.columnaPrimeraParteBarco();
             int modFila;
             int modColumna;
             if (barco.isPosHorizontal()){
 
-                for (int parteMovil = filaInicial; parteMovil <= (filaInicial +longitudBarco); parteMovil++) {
-                    for (int j = -1; parteMovil <= 1; parteMovil++) {
-                        for (int k = -1; j <= 1; j++) {
+                for (int recorrerColumnas = columnaInicial; recorrerColumnas < (columnaInicial + longitudBarco); recorrerColumnas++) {
+                    for (int j = -1; j <= 1; j++) {
+                        for (int k = -1; k <= 1; k++) {
                             if ((j == 0) && (k == 0)) {
                                 continue;
                             }
-                            modFila = parteMovil + j;
-                            modColumna = columnaInicial + k;
+                            modFila = filaInicial + k;
+                            modColumna = recorrerColumnas + j;
+
                             if (tablero.insideTable(modFila, modColumna)) {
                                 tablero.obtenerCasilla(modFila, modColumna).setTapada();
+
                             }
 
                         }
@@ -365,16 +374,17 @@ public class Juego {
                 return;
             }
 
-            for (int parteMovil = columnaInicial; parteMovil <= (columnaInicial +longitudBarco); parteMovil++) {
-                for (int j = -1; parteMovil <= 1; parteMovil++) {
-                    for (int k = -1; j <= 1; j++) {
+            for (int recorrerFilas = filaInicial; recorrerFilas < (filaInicial + longitudBarco); recorrerFilas++) {
+                for (int j = -1; j <= 1; j++) {
+                    for (int k = -1; k <= 1; k++) {
                         if ((j == 0) && (k == 0)) {
                             continue;
                         }
-                        modFila = filaInicial + j;
-                        modColumna = parteMovil + k;
+                        modFila = recorrerFilas + k;
+                        modColumna = columnaInicial + j;
                         if (tablero.insideTable(modFila, modColumna)) {
                             tablero.obtenerCasilla(modFila, modColumna).setTapada();
+
                         }
 
                     }
@@ -408,7 +418,7 @@ public class Juego {
 
 
     private boolean squareIsOpen(int fila, int columna){
-        if (!tablero.obtenerCasilla(fila,columna).isTapada()){
+        if (tablero.obtenerCasilla(fila,columna).isTapada() == false){
             return true;
         }
         return false;
