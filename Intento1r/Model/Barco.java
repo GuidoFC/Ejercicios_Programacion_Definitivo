@@ -6,25 +6,30 @@ public class Barco {
     private int longitud;
     private boolean posHorizontal;
 
-    private final ArrayList<ParteBarco> parteBarco = new ArrayList<>();
+    private final ArrayList<ParteBarco> listaParteBarco = new ArrayList<>();
 
     //private ParteBarco [] parteBarco;
     private boolean hundido;
 
 
 
-    public Barco(int longitudBarco){
-        this.posHorizontal = false;
+    public Barco(int longitudBarco, int fila, int columna, boolean ramdomHorizontal){
         this.longitud = longitudBarco;
-        construirBarco(longitudBarco);
+        this.posHorizontal = ramdomHorizontal;
+        construirBarco(longitudBarco, fila, columna);
         // creamos un método para añadir las partes del barco
         hundido = false;
 
     }
 
-    public void construirBarco(int longitudBarco){
+    public void construirBarco(int longitudBarco, int fila, int columna){
         for (int i = 0; i < longitudBarco; i++) {
-            this.parteBarco.add(new ParteBarco(this));
+            if (isPosHorizontal()){
+                this.listaParteBarco.add(new ParteBarco(this, fila, columna+i));
+            }else {
+                this.listaParteBarco.add(new ParteBarco(this, fila+i, columna));
+            }
+
         }
     }
     public void hundirBarco(){
@@ -39,10 +44,11 @@ public class Barco {
 
     public boolean todasPartesBarcoTocadas(){
         for (int i = 0; i < this.longitud; i++) {
-            if (!this.parteBarco.get(i).isTocado()){
+            if (this.listaParteBarco.get(i).isTocado() == false){
                 return false;
             }
         }
+        this.hundirBarco();
         return true;
     }
 
@@ -50,8 +56,15 @@ public class Barco {
         return longitud;
     }
 
-    public ParteBarco getParteBarco(int numero) {
-        return parteBarco.get(numero);
+    public ParteBarco getParteBarco(int fila, int columna) {
+        int longitudBarco =this.getLongitud();
+        for (int i = 0; i < longitudBarco ; i++) {
+            if ( (listaParteBarco.get(i).getPosFila() == fila) && (listaParteBarco.get(i).getPosColumna() == columna) ){
+                return listaParteBarco.get(i);
+            }
+        }
+        // TODO: si se que va a encontrar el barco que puedo poner aqui? Porque no tengo ningun barco de longitud 110
+        return listaParteBarco.get(0);
     }
 
     public boolean isPosHorizontal() {

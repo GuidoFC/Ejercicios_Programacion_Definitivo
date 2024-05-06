@@ -36,7 +36,7 @@ public class Juego {
     // crear 3 barcos de tamaño 2
     // crear 2 barcos de tamaño 2
     public void createShip() {
-        int[] arrayBarcos = {1, 1, 1, 2, 2, 3, 4};
+        int[] arrayBarcos = {2, 2, 3, 4, 3, 1, 4};
 
         for (int i = 0; i < arrayBarcos.length; i++) {
             int longitudBarco = arrayBarcos[i];
@@ -49,17 +49,21 @@ public class Juego {
     // colocar los barcos
     private void createShipIfEnter(int longitudBarco){
 
-        // 1r las casillas tiene que estar vacias
+
         int fila;
         int columna;
         int numeroAleatorio;
         boolean ramdomHorizontal;
         while (true) {
+
+                // Para refactorizaer esto debería crear una clase de GeneradorCoordenadas y ponerle atributos?
+                // hay alguna otra manera de refactorizar?
                 fila = generateRandomNumber();
                 columna = generateRandomNumber();
                 numeroAleatorio = generateRandomNumber();
-                ramdomHorizontal = randomPosition(numeroAleatorio);
+                ramdomHorizontal =  randomPosition(numeroAleatorio);
 
+            // 1r las casillas tiene que estar vacias
             if (squareIsEmpty(fila, columna)) {
                 // 2n ese barco entra en el tablero
                 // todo: tengo que hacer posible que un barco de una longitud de 1 se pueda poner en los bordes
@@ -71,10 +75,11 @@ public class Juego {
                     continue;
                 }
                 // cremos el barco
-                Barco barco = new Barco(longitudBarco);
+                Barco barco = new Barco(longitudBarco, fila, columna, ramdomHorizontal);
+                // decimos que ese barco pertenece al jugador
                 this.jugador.addBarco(barco);
-                putPositionShip(ramdomHorizontal, barco);
-                // createPartShip(fila, columna, barco);
+
+                // ponemos el barco en el tablero
                 putShipTable(fila, columna, barco);
                 return;
                 // 3r Los diferentes partes del barco tiene que estar con 1 casilla de distancia
@@ -90,11 +95,11 @@ public class Juego {
         ParteBarco parteBarco;
         if (shipHasOnly1Part(barco)){
 
-            parteBarco = barco.getParteBarco(0);
+            parteBarco = barco.getParteBarco(fila,columna);
             tablero.obtenerCasilla(fila,columna).colocarParteBarco(parteBarco);
             // decir en que parte esta esa parte del barco
 
-            darLocalizacionParteDelBarco(fila, columna, parteBarco);
+
             tablero.obtenerCasilla(fila,columna).setVacio();
             return;
         }
@@ -103,10 +108,8 @@ public class Juego {
         // posicion horizontal
         if (barco.isPosHorizontal()){
             for (int i = 0; i < barco.getLongitud(); i++) {
-            parteBarco = barco.getParteBarco(i);
-             tablero.obtenerCasilla(fila,columna +i).colocarParteBarco(parteBarco);
-
-             darLocalizacionParteDelBarco(fila,columna+i,parteBarco);
+            parteBarco = barco.getParteBarco(fila,columna+i);
+            tablero.obtenerCasilla(fila,columna +i).colocarParteBarco(parteBarco);
             tablero.obtenerCasilla(fila,columna+i).setVacio();
             }
             return;
@@ -114,7 +117,8 @@ public class Juego {
 
         // posicion vertical
         for (int i = 0; i < barco.getLongitud(); i++) {
-            tablero.obtenerCasilla(fila+i,columna ).colocarParteBarco(barco.getParteBarco(i));
+            parteBarco = barco.getParteBarco(fila+i,columna);
+            tablero.obtenerCasilla(fila+i,columna ).colocarParteBarco(parteBarco);
             tablero.obtenerCasilla(fila+i,columna).setVacio();
         }
 
@@ -125,14 +129,7 @@ public class Juego {
         return (barco.getLongitud() == 1) ? true : false;
     }
 
-    public void darLocalizacionParteDelBarco(int fila, int columna, ParteBarco parteBarco){
-        parteBarco.darCoordenadas(fila,columna);
-    }
 
-
-    private void putPositionShip(boolean posHorizontal, Barco barco){
-        barco.setPosHorizontal(posHorizontal);
-    }
     private boolean randomPosition(int numeroAleatorio){
         // termino si la posicion en Vertical u Horizontal.
         // si el resultado es TRUE será posición PosHorizontal
@@ -228,9 +225,7 @@ public class Juego {
         // atacar mientras el jugador tenga Barcos
         while (jugador.stillAlive()){
 
-            presentacion.mensajeEsTuTurno();
-            presentacion.printTablero(tablero);
-            presentacion.printTableroConBarcos(tablero);
+            imprimirTablero();
 
             fila = presentacion.elegir("Fila") -1;
             columna = presentacion.elegir("Columna") -1;
@@ -254,7 +249,10 @@ public class Juego {
             // ponerlo en un método
 
             Barco barco = tablero.obtenerCasilla(fila,columna).getParteBarco().getBarco();
-            barco.getParteBarco(0).hundirParteBarco();
+            // todo: TENGO QUE INDICAR QUE PARTE DEL BARCO ESTOY HUNDIENDO
+            barco.getParteBarco(fila,columna).hundirParteBarco();
+
+
             tablero.obtenerCasilla(fila,columna).setTapada();
             if (barco.getLongitud() == 1){
 
@@ -297,6 +295,12 @@ public class Juego {
 
     }
 
+    private void imprimirTablero() {
+        presentacion.mensajeEsTuTurno();
+        presentacion.printTablero(tablero);
+        presentacion.printTableroConBarcos(tablero);
+    }
+
     public void revelaCasillasVecinas(int fila, int columna, Barco barco) {
         // revelar si el barco es de una sola longitud
         if (barco.getLongitud() == 1) {
@@ -315,38 +319,30 @@ public class Juego {
             }
             return;
         }
-// todo: solo puede abrir las casillas en forma de CURZ "X"
+    //  solo puede abrir las casillas en forma de CURZ "X"
         if (barco.isHundido() == false){
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
-                    if ((i == 0) && (j == 0)) {
-                        continue;
-                    }
-                    if ((i == -1) && (j == 0)) {
-                        continue;
-                    }
-                    if ((i == 1) && (j == 0)) {
-                        continue;
-                    }
-                    if ((i == 0) && (j == -1)) {
-                        continue;
-                    }
-                    if ((i == 0) && (j == 1)) {
+                    if (posicionNoPermitida(i, j)){
                         continue;
                     }
                     if (tablero.insideTable(fila + i, columna + j)) {
                         tablero.obtenerCasilla(fila + i, columna + j).setTapada();
-                        // TODO: COMPROBAR EL ESTADO DEL BARCO (ESTA HUNDIDO?)
+
+
                     }
                 }
             }
-            return;
+            // TODO: COMPROBAR EL ESTADO DEL BARCO (ESTA HUNDIDO?)
+            if (barco.todasPartesBarcoTocadas() == false){
+                return;
+            }
         }
 
         if (barco.isHundido()){
             int longitudBarco = barco.getLongitud();
-            int filaInicial = barco.getParteBarco(0).getPosFila();
-            int columnaInicial = barco.getParteBarco(0).getPosColumna();
+            int filaInicial = barco.getParteBarco(fila,columna).getPosFila();
+            int columnaInicial = barco.getParteBarco(fila,columna).getPosColumna();
             int modFila;
             int modColumna;
             if (barco.isPosHorizontal()){
@@ -391,8 +387,24 @@ public class Juego {
 
     }
 
-
-
+    private static boolean posicionNoPermitida(int i, int j) {
+        if ((i == 0) && (j == 0)) {
+            return true;
+        }
+        if ((i == -1) && (j == 0)) {
+            return true;
+        }
+        if ((i == 1) && (j == 0)) {
+            return true;
+        }
+        if ((i == 0) && (j == -1)) {
+            return true;
+        }
+        if ((i == 0) && (j == 1)) {
+            return true;
+        }
+        return false;
+    }
 
 
     private boolean squareIsOpen(int fila, int columna){

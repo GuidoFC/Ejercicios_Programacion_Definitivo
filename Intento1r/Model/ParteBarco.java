@@ -5,9 +5,11 @@ public class ParteBarco implements Atacado{
     private Barco barco;
     private int posFila, posColumna;
 
-    public ParteBarco(Barco barco){
+    public ParteBarco(Barco barco, int fila, int columna){
         this.tocado = false;
         this.barco = barco;
+        this.darCoordenadas(fila, columna);
+
     }
 
 
@@ -24,10 +26,10 @@ public class ParteBarco implements Atacado{
 
     }
 
-    public boolean shipIsAlive(){
+    public boolean shipIsAlive(int fila, int columna){
         int longitud = this.getBarco().getLongitud();
         if (longitud == 1){
-            if(this.barco.getParteBarco(0).isTocado()){
+            if(this.barco.getParteBarco(fila, columna).isTocado()){
                 return false;
             }
             return true;
@@ -35,7 +37,7 @@ public class ParteBarco implements Atacado{
         int contadorPartesTocadas = 0 ;
 
         for (int i = 0; i < longitud; i++) {
-            if(this.barco.getParteBarco(0).isTocado()){
+            if(this.barco.getParteBarco(fila, columna).isTocado()){
                 contadorPartesTocadas++;
             }
             if (contadorPartesTocadas == longitud)
@@ -57,7 +59,7 @@ public class ParteBarco implements Atacado{
         return posFila;
     }
 
-    public void darCoordenadas(int fila, int columna){
+    private void darCoordenadas(int fila, int columna){
         this.setPosFila(fila);
         this.setPosColumna(columna);
     }
