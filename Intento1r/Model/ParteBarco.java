@@ -1,6 +1,6 @@
 package Model;
 
-public class ParteBarco implements Atacado{
+public class ParteBarco {
     private boolean tocado;
     private Barco barco;
     private int posFila, posColumna;
@@ -23,10 +23,6 @@ public class ParteBarco implements Atacado{
         this.tocado = true;
     }
 
-    @Override
-    public void serAtacado() {
-
-    }
 
     public boolean shipIsAlive(int fila, int columna){
         int longitud = this.getBarco().getLongitud();

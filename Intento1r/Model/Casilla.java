@@ -1,6 +1,6 @@
 package Model;
 
-public class Casilla implements Atacado {
+public class Casilla  {
     private boolean  vacio; // no es necessari de fet es un duplicitat
     private boolean tapada;
 
@@ -53,10 +53,6 @@ public class Casilla implements Atacado {
         this.tapada = false;
     }
 
-    @Override
-    public void serAtacado() {
-
-    }
 
     public boolean isAtacado(){
         return this.atacado;
