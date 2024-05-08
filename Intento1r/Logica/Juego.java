@@ -294,7 +294,8 @@ public class Juego {
                 // tenemos que revelar las casilla de las esquinas
                 revelaCasillasVecinas(fila,columna, barco, tableroEnemigo, presentacionRef);
                 imprimirTablero(jugadorRef, tableroRef, presentacionRef, tableroEnemigo);
-                return true;
+                presentacionRef.MensajeHasHundidoBarco();
+                continue;
             }
 
             // que hayamos tocado una parte del barco y NO hundamos el barco
@@ -302,7 +303,8 @@ public class Juego {
             if (barco.todasPartesBarcoTocadas() == false){
                 revelaCasillasVecinas(fila,columna, barco, tableroEnemigo, presentacionRef);
                 imprimirTablero(jugadorRef, tableroRef, presentacionRef, tableroEnemigo);
-                return true;
+                presentacionRef.MensajeHasTocadoParteBarco();
+                continue;
             }
 
             // que hayamos tocado todas las partes del barco y hundamos el barco

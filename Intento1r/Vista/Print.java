@@ -42,6 +42,16 @@ public class Print {
         return ConsoleColors.GREEN + "!" + ConsoleColors.RESET;
     }
 
+    public void MensajeHasHundidoBarco(){
+        System.out.println("Has hundido el Barco");
+        System.out.println("Te vuelve a tocar atacar");
+    }
+
+    public void MensajeHasTocadoParteBarco(){
+        System.out.println("Has tocado Parte del Barco");
+        System.out.println("Te vuelve a tocar atacar");
+    }
+
 
 
         public void printTableroEnemigo(Tablero tableroEnemigo) {
