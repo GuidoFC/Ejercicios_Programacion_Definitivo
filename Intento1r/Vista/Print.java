@@ -35,11 +35,11 @@ public class Print {
         }
         if (!tableroJugadorA.obtenerCasilla(fila, columna).isTapada()){
             if (tableroJugadorA.obtenerCasilla(fila,columna).isParteBarco()){
-                return "B";
+                return ConsoleColors.RED + "T" + ConsoleColors.RESET;
             }
 
         }
-        return "x";
+        return ConsoleColors.GREEN + "!" + ConsoleColors.RESET;
     }
 
 
@@ -86,12 +86,12 @@ public class Print {
                     ParteBarco parteBarco = tableroJugador.obtenerCasilla(i, j).getParteBarco();
                     if (parteBarco != null){
                         if (ataqueAcertado(tableroJugador, i, j)){
-                            System.out.print( "T" + "\t");
+                            System.out.print( ConsoleColors.RED + "T" + "\t" + ConsoleColors.RESET);
                             if (j == tableroJugador.getMaxColumna() - 1) {
                                 System.out.println();
                             }
                         }else{
-                            System.out.print( "x" + "\t");
+                            System.out.print( ConsoleColors.BLUE + "x" + "\t" + ConsoleColors.RESET);
                             if (j == tableroJugador.getMaxColumna() - 1) {
                                 System.out.println();
                             }
@@ -99,7 +99,7 @@ public class Print {
 
                     }else {
                         if(AtaqueFallido(tableroJugador, i, j)){
-                            System.out.print( "!" + "\t");
+                            System.out.print( ConsoleColors.GREEN + "!" + "\t" + ConsoleColors.RESET);
                             if (j == tableroJugador.getMaxColumna() - 1) {
                                 System.out.println();
                             }
