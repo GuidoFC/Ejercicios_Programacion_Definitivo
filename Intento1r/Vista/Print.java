@@ -1,5 +1,7 @@
 package Vista;
 
+import Model.Jugador;
+import Model.ParteBarco;
 import Model.Tablero;
 import java.util.Scanner;
 
@@ -12,14 +14,17 @@ public class Print {
         this.tableroJugadorA = tableroRefernciaA;
     }
 
-    public  void mensajeEsTuTurno(){
+    public  void mensajeEsTuTurno(Jugador jugadorRef){
         String mensaje =
                 """
                 
-                Es su turno, le toca atacar!
-                A continuación vera su tablero
-                y seguidamente vera el tablero
-                de su enemigo.
+                Es el turno de:
+                """ + " " + jugadorRef.getNombre() + " "+
+                """
+                le toca atacar!
+                A continuación vera el tablero
+                de su enemigo
+                y seguidamente vera su tablero.
                 """;
         System.out.println(mensaje);
     }
@@ -39,13 +44,13 @@ public class Print {
 
 
 
-        public void printTablero(Tablero tableroJugadorA) {
+        public void printTableroEnemigo(Tablero tableroEnemigo) {
         System.out.println();
-        for (int i = -1; i < tableroJugadorA.getMaxFila(); i++) {
-            for (int j = 0; j < tableroJugadorA.getMaxColumna(); j++) {
+        for (int i = -1; i < tableroEnemigo.getMaxFila(); i++) {
+            for (int j = 0; j < tableroEnemigo.getMaxColumna(); j++) {
                 if ((i == -1)) {
                     System.out.print("\t" + (j + 1) + " ");
-                    if (j == tableroJugadorA.getMaxColumna() - 1) {
+                    if (j == tableroEnemigo.getMaxColumna() - 1) {
                         System.out.println();
                     }
                 }
@@ -53,8 +58,8 @@ public class Print {
                     if (j == 0) {
                         System.out.print(i + 1 + "\t");
                     }
-                    System.out.print(imprimirEstadoCasilla(i,j,tableroJugadorA) + "\t");
-                    if (j == tableroJugadorA.getMaxColumna() - 1) {
+                    System.out.print(imprimirEstadoCasilla(i,j,tableroEnemigo) + "\t");
+                    if (j == tableroEnemigo.getMaxColumna() - 1) {
                         System.out.println();
                     }
                 }
@@ -62,32 +67,74 @@ public class Print {
         }
     }
 
-    public  void printTableroConBarcos(Tablero tableroJugadorA) {
+
+    public  void printTableroConBarcos(Tablero tableroJugador) {
         System.out.println();
-        for (int i = -1; i < tableroJugadorA.getMaxFila(); i++) {
-            for (int j = 0; j < tableroJugadorA.getMaxColumna(); j++) {
+        for (int i = -1; i < tableroJugador.getMaxFila(); i++) {
+            for (int j = 0; j < tableroJugador.getMaxColumna(); j++) {
                 if ((i == -1)) {
                     System.out.print("\t" + (j + 1) + " ");
-                    if (j == tableroJugadorA.getMaxColumna() - 1) {
+                    if (j == tableroJugador.getMaxColumna() - 1) {
                         System.out.println();
                     }
                 }
+                // Todo: logica para visualizar los ataques
                 if (i >= 0) {
                     if (j == 0) {
                         System.out.print(i + 1 + "\t");
                     }
-                    if (tableroJugadorA.obtenerCasilla(i,j).isParteBarco()){
-                        System.out.print( "x" + "\t");
+                    ParteBarco parteBarco = tableroJugador.obtenerCasilla(i, j).getParteBarco();
+                    if (parteBarco != null){
+                        if (ataqueAcertado(tableroJugador, i, j)){
+                            System.out.print( "T" + "\t");
+                            if (j == tableroJugador.getMaxColumna() - 1) {
+                                System.out.println();
+                            }
+                        }else{
+                            System.out.print( "x" + "\t");
+                            if (j == tableroJugador.getMaxColumna() - 1) {
+                                System.out.println();
+                            }
+                        }
+
                     }else {
-                        System.out.print("0" + "\t");
+                        if(AtaqueFallido(tableroJugador, i, j)){
+                            System.out.print( "!" + "\t");
+                            if (j == tableroJugador.getMaxColumna() - 1) {
+                                System.out.println();
+                            }
+
+                        }
+                        else {
+                            System.out.print("0" + "\t");
+                        }
+
+                        if (j == tableroJugador.getMaxColumna() - 1) {
+                            System.out.println();
+                        }
                     }
 
-                    if (j == tableroJugadorA.getMaxColumna() - 1) {
-                        System.out.println();
-                    }
+
                 }
             }
         }
+    }
+
+    private static boolean AtaqueFallido(Tablero tableroJugador, int i, int j){
+        if(tableroJugador.obtenerCasilla(i, j).isVacio() && tableroJugador.obtenerCasilla(i, j).isTapada() == false ){
+            return true;
+        }
+        return false;
+    }
+    private static boolean Casilla_No_Atacada_Y_HayBarco(Tablero tableroJugador, int i, int j) {
+        return tableroJugador.obtenerCasilla(i, j).isParteBarco();
+    }
+
+    private static boolean ataqueAcertado(Tablero tableroJugador, int i, int j) {
+        if (tableroJugador.obtenerCasilla(i, j).getParteBarco().isTocado() == true){
+            return true;
+        }
+        return false;
     }
 
     public int elegir(String filaColumna){
@@ -99,7 +146,7 @@ public class Print {
         System.out.println("Esta casilla ya esta abierta");
     }
 
-    public void mensajeGameOver(){
-        System.out.println("Has perdido");
+    public void mensajeGameOver(Jugador jugadorRef){
+        System.out.println("El Jugador: " + jugadorRef.getNombre() + "ha perdido");
     }
 }

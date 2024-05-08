@@ -7,100 +7,123 @@ import Model.ParteBarco;
 import Model.Tablero;
 import Vista.Print;
 
+import java.util.ArrayList;
+
 public class Juego {
+    private ArrayList<Jugador> listaJugadores;
+    private ArrayList<Tablero> listaTablero;
+    private ArrayList<Print> listaPresentacion;
+    private int turno;
+    private int turnoMax;
 
-    private Jugador jugador;
-    private Print presentacion;
-    private Tablero tablero;
-
-    private ParteBarco parteBarco;
 
     // como aplicar este concepto:
     // Program to an interface, not an implemetation
 
     // Jugador1 Vs Maquina
 
-    public Juego(Jugador jugador1) {
-        this.jugador = jugador1;
-        this.tablero = jugador.getTableroJugador();
-        presentacion = new Print(tablero);
+    public Juego(Jugador jugador1, Jugador jugador2) {
+        listaJugadores = new ArrayList<>();
+        this.listaJugadores.add(jugador1);
+        this.listaJugadores.add(jugador2);
+        this.turno =0;
+        turnoMax();
+
+        listaTablero = new ArrayList<>();
+        listaPresentacion = new ArrayList<>();
+        addTableroForEachPlayer();
 
     }
 
+
+
+
+
     public void starGame(){
-        createShip();
-        atacar();
+        for (int i = 0; i < turnoMax; i++) {
+            turno = i;
+            createShip(turno);
+        }
+
+        turno = 0;
+
+        while (jugar(turno)){
+            turno++;
+            if (turno == turnoMax){
+                turno = 0;
+            }
+        }
+
     }
     // crear barcos con un ARRAY { {1,1,1,1}, {2,2,2}, {4,4} }
     // implica crear 4 barcos que tienen tamaño 1
     // crear 3 barcos de tamaño 2
     // crear 2 barcos de tamaño 2
-    public void createShip() {
-        int[] arrayBarcos = {3, 3, 3};
+    public void createShip(int turno) {
+        int[] arrayBarcos = {1, 2, 2, 3};
 
         for (int i = 0; i < arrayBarcos.length; i++) {
             int longitudBarco = arrayBarcos[i];
             // primero comprobamos que entre el barco 
             // y luego creamos el barco
-            createShipIfEnter(longitudBarco);
+            createShipIfEnter(longitudBarco, turno);
         }
     }
 
     // colocar los barcos
-    private void createShipIfEnter(int longitudBarco){
+    private void createShipIfEnter(int longitudBarco, int turno){
 
-
-        int fila;
-        int columna;
-        int numeroAleatorio;
-        boolean ramdomHorizontal;
         while (true) {
 
                 // Para refactorizaer esto debería crear una clase de GeneradorCoordenadas y ponerle atributos?
                 // hay alguna otra manera de refactorizar?
-                fila = generateRandomNumber();
-                columna = generateRandomNumber();
-                numeroAleatorio = generateRandomNumber();
-                ramdomHorizontal =  randomPosition(numeroAleatorio);
+                Tablero tableroRef = listaTablero.get(turno);
+                int fila = generateRandomNumber(tableroRef);
+                int columna = generateRandomNumber(tableroRef);
+                int numeroAleatorio = generateRandomNumber(tableroRef);
+                boolean ramdomHorizontal =  randomPosition(numeroAleatorio);
+
+
 
             // 1r las casillas tiene que estar vacias
-            if (squareIsEmpty(fila, columna)) {
+            if (squareIsEmpty(fila, columna, tableroRef)) {
                 // 2n ese barco entra en el tablero
-                // todo: tengo que hacer posible que un barco de una longitud de 1 se pueda poner en los bordes
-                if(shipNotFitTable(fila, columna, longitudBarco, ramdomHorizontal)){
+                if(shipNotFitTable(fila, columna, longitudBarco, ramdomHorizontal, tableroRef)){
                     continue;
                 }
-                // FALTA MIRAR TODA LA LONGITUD DEL BARCO
-                if (isShipsAround(fila, columna, longitudBarco, ramdomHorizontal)){
+                // 3r  a 1 casilla de distancia hay barco?
+                if (isShipsAround(fila, columna, longitudBarco, ramdomHorizontal, tableroRef)){
                     continue;
                 }
-                // cremos el barco
+                // Si cumplimos con los 3 requisitos, creamos el barco
                 Barco barco = new Barco(longitudBarco, fila, columna, ramdomHorizontal);
                 // decimos que ese barco pertenece al jugador
-                this.jugador.addBarco(barco);
+
+                // TODO: tengo que hacer un arrary list de Jugadores
+                Jugador jugadorRef = listaJugadores.get(turno);
+                jugadorRef.addBarco(barco);
 
                 // ponemos el barco en el tablero
-                putShipTable(fila, columna, barco);
+                putShipTable(fila, columna, barco, turno);
                 return;
-                // 3r Los diferentes partes del barco tiene que estar con 1 casilla de distancia
+
 
             }
         }
 
     }
 
-    private void putShipTable(int fila, int columna, Barco barco){
+    private void putShipTable(int fila, int columna, Barco barco, int turno){
         // si el barco solo tiene una parte
 
+        Tablero tableroRef =  listaTablero.get(turno);
         ParteBarco parteBarco;
         if (shipHasOnly1Part(barco)){
 
             parteBarco = barco.getParteBarco(fila,columna);
-            tablero.obtenerCasilla(fila,columna).colocarParteBarco(parteBarco);
+            tableroRef.obtenerCasilla(fila,columna).colocarParteBarco(parteBarco);
             // decir en que parte esta esa parte del barco
-
-
-            tablero.obtenerCasilla(fila,columna).setVacio();
+            tableroRef.obtenerCasilla(fila,columna).setVacio();
             return;
         }
         // si el barco esta compuesto con más de una parte
@@ -109,8 +132,8 @@ public class Juego {
         if (barco.isPosHorizontal()){
             for (int i = 0; i < barco.getLongitud(); i++) {
             parteBarco = barco.getParteBarco(fila,columna+i);
-            tablero.obtenerCasilla(fila,columna +i).colocarParteBarco(parteBarco);
-            tablero.obtenerCasilla(fila,columna+i).setVacio();
+            tableroRef.obtenerCasilla(fila,columna +i).colocarParteBarco(parteBarco);
+            tableroRef.obtenerCasilla(fila,columna+i).setVacio();
             }
             return;
         }
@@ -118,8 +141,8 @@ public class Juego {
         // posicion vertical
         for (int i = 0; i < barco.getLongitud(); i++) {
             parteBarco = barco.getParteBarco(fila+i,columna);
-            tablero.obtenerCasilla(fila+i,columna ).colocarParteBarco(parteBarco);
-            tablero.obtenerCasilla(fila+i,columna).setVacio();
+            tableroRef.obtenerCasilla(fila+i,columna ).colocarParteBarco(parteBarco);
+            tableroRef.obtenerCasilla(fila+i,columna).setVacio();
         }
 
 
@@ -135,12 +158,12 @@ public class Juego {
         // si el resultado es TRUE será posición PosHorizontal
         return ((numeroAleatorio % 2) == 0) ? true : false;
     }
-    private boolean shipNotFitTable(int fila, int columna, int longitudBarco, boolean ramdomHorizontal){
+    private boolean shipNotFitTable(int fila, int columna, int longitudBarco, boolean ramdomHorizontal, Tablero tableroRef){
 
         if (shipIsHorizontal(ramdomHorizontal)){
-            return (tablero.getMaxColumna() >= columna + longitudBarco) ? false : true;
+            return (tableroRef.getMaxColumna() >= columna + longitudBarco) ? false : true;
         }
-        return (tablero.getMaxFila() >= fila + longitudBarco) ? false : true;
+        return (tableroRef.getMaxFila() >= fila + longitudBarco) ? false : true;
 
     }
 
@@ -148,7 +171,7 @@ public class Juego {
         return (ramdomHorizontal == true) ? true : false;
     }
 
-    private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean ramdomHorizontal){
+    private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean ramdomHorizontal, Tablero tableroRef){
 
         // en que casilla me encuetro (lo recibo por parametro)
         // TENGO QUE MIRAR SI EL BARCO ES HORIZONTAL O VERTICAL
@@ -168,11 +191,11 @@ public class Juego {
                             // En este caso la fila es FIJA
                             filaModificada = fila + modFila;
                             columnaModificada = recorrerColumna + modColumn;
-                            if (!tablero.insideTable(filaModificada, columnaModificada)){
+                            if (!tableroRef.insideTable(filaModificada, columnaModificada)){
                                 // no me interesa comprobar casillas fuera del tablero
                                 continue;
                             }
-                            if (!squareIsEmpty(filaModificada,columnaModificada)){
+                            if (!squareIsEmpty(filaModificada ,columnaModificada, tableroRef)){
                                 return true;
                             }
                         }
@@ -191,11 +214,11 @@ public class Juego {
                     // En este caso la Columna es FIJA
                     filaModificada = recorreFila + modFila;
                     columnaModificada = columna + modColumna;
-                    if (!tablero.insideTable(filaModificada, columnaModificada)){
+                    if (!tableroRef.insideTable(filaModificada, columnaModificada)){
                         // no me interesa comprobar casillas fuera del tablero
                         continue;
                     }
-                    if (!squareIsEmpty(filaModificada,columnaModificada)){
+                    if (!squareIsEmpty(filaModificada,columnaModificada, tableroRef)){
                         return true;
                     }
                 }
@@ -207,103 +230,136 @@ public class Juego {
         }
 
 
-    private boolean squareIsEmpty(int fila, int columna){
-        return tablero.obtenerCasilla(fila,columna).isVacio();
+    private boolean squareIsEmpty(int fila, int columna, Tablero tableroRef){
+        return tableroRef.obtenerCasilla(fila,columna).isVacio();
     }
 
-    private int generateRandomNumber(){
-        int numeroFilasColumnas = tablero.getMaxColumna();
+    private int generateRandomNumber(Tablero tableroRef){
+        int numeroFilasColumnas = tableroRef.getMaxColumna();
 
         return (int) (Math.random() * numeroFilasColumnas);
     }
 
 
 
-    public void atacar(){
-
-        int fila;
-        int columna;
+    public boolean jugar(int turno){
 
         // atacar mientras el jugador tenga Barcos
-        while (jugador.stillAlive()){
+        Jugador jugadorRef = listaJugadores.get(turno);
+        Tablero tableroRef = listaTablero.get(turno);
+        Print presentacionRef = listaPresentacion.get(turno);
 
-            imprimirTablero();
 
-            fila = presentacion.elegir("Fila") -1;
-            columna = presentacion.elegir("Columna") -1;
+        int indiceEnemigo = obtenerIndiceJugadorEnemigo(turno);
+
+        Tablero tableroEnemigo = listaTablero.get(indiceEnemigo);
+
+        if (jugadorRef.stillAlive() == false){
+            presentacionRef.mensajeGameOver(jugadorRef);
+            return false;
+        }
+
+        while (true){
+
+            imprimirTablero(jugadorRef, tableroRef, presentacionRef, tableroEnemigo);
+
+            int fila = presentacionRef.elegir("Fila") -1;
+            int columna = presentacionRef.elegir("Columna") -1;
             // atacar una casilla que ya esta abierta
 
-            if(squareIsOpen(fila,columna)){
+            if(squareIsOpen(fila,columna, tableroEnemigo)){
                 // casilla abierta previamente, volver a elegir row and column
-                presentacion.mensajeCasillaAbierta();
+                presentacionRef.mensajeCasillaAbierta();
                 continue;
             }
             // que este vacio la casilla, y no haya barco
                 // tenemos que destapar casilla
-            if(casillaSinBarco(fila,columna)){
-                tablero.obtenerCasilla(fila,columna).setTapada();
-                // TODO: LUEGO TENGO QUE CAMBIAR ESTE continue por RETURN
-                continue;
+            if(casillaSinBarco(fila,columna, tableroEnemigo)){
+                tableroEnemigo.obtenerCasilla(fila,columna).setTapada();
+                imprimirTablero(jugadorRef, tableroRef, presentacionRef, tableroEnemigo);
+                return true;
             }
 
             // el barco este compuesto de solo una parte y la toquemos. Tocado y hundido
             // ponerlo en un método
 
-            Barco barco = tablero.obtenerCasilla(fila,columna).getParteBarco().getBarco();
+            Barco barco = tableroEnemigo.obtenerCasilla(fila,columna).getParteBarco().getBarco();
             // todo: TENGO QUE INDICAR QUE PARTE DEL BARCO ESTOY HUNDIENDO
             barco.getParteBarco(fila,columna).hundirParteBarco();
-            tablero.obtenerCasilla(fila,columna).setTapada();
+            tableroEnemigo.obtenerCasilla(fila,columna).setTapada();
 
             if (barco.getLongitud() == 1){
 
                 barco.hundirBarco();
                 // tenemos que revelar las casilla de las esquinas
-                revelaCasillasVecinas(fila,columna, barco);
-                // TODO: LUEGO TENGO QUE CAMBIAR ESTE continue por RETURN
-                continue;
+                revelaCasillasVecinas(fila,columna, barco, tableroEnemigo, presentacionRef);
+                imprimirTablero(jugadorRef, tableroRef, presentacionRef, tableroEnemigo);
+                return true;
             }
 
             // que hayamos tocado una parte del barco y NO hundamos el barco
 
-            // TODO: ME FALTA INDICAR QUE CUANDO HEMOS TOCADO TODAS LAS PARTES DEL BARCO, ESPECIFICAR QUE ESE BARCO ESTA HUNDIDO
-
             if (barco.todasPartesBarcoTocadas() == false){
-                revelaCasillasVecinas(fila,columna, barco);
-                // TODO: LUEGO TENGO QUE CAMBIAR ESTE continue por RETURN
-                continue;
+                revelaCasillasVecinas(fila,columna, barco, tableroEnemigo, presentacionRef);
+                imprimirTablero(jugadorRef, tableroRef, presentacionRef, tableroEnemigo);
+                return true;
             }
 
             // que hayamos tocado todas las partes del barco y hundamos el barco
-            if (jugador.stillAlive()){
-                revelaCasillasVecinas(fila,columna, barco);
-                if (jugador.stillAlive()){
-                    presentacion.mensajeGameOver();
+            if (jugadorRef.stillAlive()){
+                revelaCasillasVecinas(fila,columna, barco, tableroEnemigo, presentacionRef);
+                if (jugadorRef.stillAlive() == false){
+                    imprimirTablero(jugadorRef, tableroRef, presentacionRef, tableroEnemigo);
+                    presentacionRef.mensajeGameOver(jugadorRef);
+                    return false;
                 }
-                // TODO: LUEGO TENGO QUE CAMBIAR ESTE continue por RETURN
-                continue;
+
+                imprimirTablero(jugadorRef, tableroRef, presentacionRef, tableroEnemigo);
+                return true;
             }
 
             // que hayamos hundido todos los barcos
             barco.hundirBarco();
-            presentacion.mensajeGameOver();
+
+
         }
 
     }
 
-    private boolean casillaSinBarco(int fila, int columna){
-        if (squareIsEmpty(fila,columna) && !(tablero.obtenerCasilla(fila,columna).tieneBarco())){
+    private boolean casillaSinBarco(int fila, int columna, Tablero tableroRef){
+        if (squareIsEmpty(fila,columna, tableroRef) && !(tableroRef.obtenerCasilla(fila,columna).tieneBarco())){
             return true;
         }
         return false;
     }
 
-    private void imprimirTablero() {
-        presentacion.mensajeEsTuTurno();
-        presentacion.printTablero(tablero);
-        presentacion.printTableroConBarcos(tablero);
+    private void imprimirTablero(Jugador jugadorRef, Tablero tableroRef, Print presentacionRef, Tablero tableroEnemigo) {
+
+        // todo: hace falta tener un Print presentacionRef?
+
+        presentacionRef.mensajeEsTuTurno(jugadorRef);
+
+        System.out.println("Tablero Enemigo");
+        presentacionRef.printTableroEnemigo(tableroEnemigo);
+
+        System.out.println("Tu tablero");
+        // todo: borrar uno
+        presentacionRef.printTableroConBarcos(tableroRef);
+
+
     }
 
-    public void revelaCasillasVecinas(int fila, int columna, Barco barco) {
+    private int obtenerIndiceJugadorEnemigo(int turnoRef){
+        if (turnoRef == this.turnoMax-1){
+            return 0;
+        }
+        return turnoRef+1;
+
+
+
+    }
+
+    public void revelaCasillasVecinas(int fila, int columna, Barco barco, Tablero tableroRef, Print presentacionRef) {
         // revelar si el barco es de una sola longitud
         if (barco.getLongitud() == 1) {
             for (int i = -1; i <= 1; i++) {
@@ -312,8 +368,8 @@ public class Juego {
                         continue;
                     }
 
-                    if (tablero.insideTable(fila + i, columna + j)) {
-                        tablero.obtenerCasilla(fila + i, columna + j).setTapada();
+                    if (tableroRef.insideTable(fila + i, columna + j)) {
+                        tableroRef.obtenerCasilla(fila + i, columna + j).setTapada();
                     }
 
                 }
@@ -328,8 +384,8 @@ public class Juego {
                     if (posicionNoPermitida(i, j)){
                         continue;
                     }
-                    if (tablero.insideTable(fila + i, columna + j)) {
-                        tablero.obtenerCasilla(fila + i, columna + j).setTapada();
+                    if (tableroRef.insideTable(fila + i, columna + j)) {
+                        tableroRef.obtenerCasilla(fila + i, columna + j).setTapada();
 
 
                     }
@@ -345,8 +401,10 @@ public class Juego {
         }
 
         if (barco.isHundido()){
-            tablero.obtenerCasilla(fila, columna).setTapada();
-            presentacion.printTablero(tablero);
+            tableroRef.obtenerCasilla(fila, columna).setTapada();
+
+            // TODO: no estoy seguro si el codigo de abajo deberia pasar: tableroRef o tableroEnemigo
+            presentacionRef.printTableroEnemigo(tableroRef);
             int longitudBarco = barco.getLongitud();
             // TODO: tengo que buscar el barco de la posicion 0 y recorrer todo el barco
 
@@ -365,8 +423,8 @@ public class Juego {
                             modFila = filaInicial + k;
                             modColumna = recorrerColumnas + j;
 
-                            if (tablero.insideTable(modFila, modColumna)) {
-                                tablero.obtenerCasilla(modFila, modColumna).setTapada();
+                            if (tableroRef.insideTable(modFila, modColumna)) {
+                                tableroRef.obtenerCasilla(modFila, modColumna).setTapada();
 
                             }
 
@@ -384,8 +442,8 @@ public class Juego {
                         }
                         modFila = recorrerFilas + k;
                         modColumna = columnaInicial + j;
-                        if (tablero.insideTable(modFila, modColumna)) {
-                            tablero.obtenerCasilla(modFila, modColumna).setTapada();
+                        if (tableroRef.insideTable(modFila, modColumna)) {
+                            tableroRef.obtenerCasilla(modFila, modColumna).setTapada();
 
                         }
 
@@ -419,12 +477,29 @@ public class Juego {
     }
 
 
-    private boolean squareIsOpen(int fila, int columna){
-        if (tablero.obtenerCasilla(fila,columna).isTapada() == false){
+    private boolean squareIsOpen(int fila, int columna, Tablero tableroRef){
+        if (tableroRef.obtenerCasilla(fila,columna).isTapada() == false){
             return true;
         }
         return false;
     }
+
+    private void turnoMax(){
+        this.turnoMax = listaJugadores.size();
+
+    }
+
+
+
+    private void addTableroForEachPlayer(){
+        for (int i = 0; i < this.listaJugadores.size(); i++) {
+            Jugador jugador = listaJugadores.get(i);
+            Tablero tablero= jugador.getTableroJugador();
+            listaTablero.add(tablero);
+            listaPresentacion.add(new Print(tablero));
+        }
+    }
+
 
 }
 
