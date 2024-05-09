@@ -25,10 +25,8 @@ public class Juego {
 
     public Juego(Jugador jugador1, Jugador jugador2) {
         arrayListAddJugadores(jugador1, jugador2);
-        this.turno =0;
         definirTurnoMax();
         addTableroForEachPlayer();
-
     }
 
     private void arrayListAddJugadores(Jugador jugador1, Jugador jugador2) {
@@ -41,7 +39,7 @@ public class Juego {
     public void starGame(){
         for (int i = 0; i < turnoMax; i++) {
             turno = i;
-            createShip(turno);
+            createShipForEachPlayer(turno);
         }
 
         turno = 0;
@@ -58,8 +56,9 @@ public class Juego {
     // implica crear 4 barcos que tienen tamaño 1
     // crear 3 barcos de tamaño 2
     // crear 2 barcos de tamaño 2
-    public void createShip(int turno) {
-        int[] arrayBarcos = {1, 2, 2, 3};
+    public void createShipForEachPlayer(int turno) {
+        // Definimos cuantos barcos queremos y su longitud
+        int[] arrayBarcos = {1, 2, 2, 2, 3, 3, 4};
 
         for (int i = 0; i < arrayBarcos.length; i++) {
             int longitudBarco = arrayBarcos[i];
@@ -76,7 +75,7 @@ public class Juego {
 
                 // Para refactorizaer esto debería crear una clase de GeneradorCoordenadas y ponerle atributos?
                 // hay alguna otra manera de refactorizar?
-                Tablero tableroRef = listaTablero.get(turno);
+                Tablero tableroRef = this.listaTablero.get(turno);
                 int fila = generateRandomNumber(tableroRef);
                 int columna = generateRandomNumber(tableroRef);
                 int numeroAleatorio = generateRandomNumber(tableroRef);
@@ -170,63 +169,69 @@ public class Juego {
         return (ramdomHorizontal == true) ? true : false;
     }
 
-    private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean ramdomHorizontal, Tablero tableroRef){
+private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean ramdomHorizontal, Tablero tableroRef){
 
         // en que casilla me encuetro (lo recibo por parametro)
         // TENGO QUE MIRAR SI EL BARCO ES HORIZONTAL O VERTICAL
         // comprobar si hay barcos alrededor (is vacio False)
             // todo: aplicar esta logica por cada parte del barco --> Lo miro con la int longitudBarco
-        // todo: mirar que cuando creo el barco pongo que esa casilla ya no este vacia
+        // todo: cuando creo el barco pongo que esa casilla ya no este vacia
 
-        int filaModificada;
-        int columnaModificada;
+
         if (shipIsHorizontal(ramdomHorizontal)){
-                for (int recorrerColumna = columna; recorrerColumna <= columna + longitudBarco; recorrerColumna++) {
-                    for (int modFila = -1; modFila <= 1 ; modFila++) {
-                        for (int modColumn = -1; modColumn <=  1; modColumn++) {
-                            if ( (modFila == 0) && (modColumn == 0)){
-                                continue;
-                            }
-                            // En este caso la fila es FIJA
-                            filaModificada = fila + modFila;
-                            columnaModificada = recorrerColumna + modColumn;
-                            if (!tableroRef.insideTable(filaModificada, columnaModificada)){
-                                // no me interesa comprobar casillas fuera del tablero
-                                continue;
-                            }
-                            if (!squareIsEmpty(filaModificada ,columnaModificada, tableroRef)){
-                                return true;
-                            }
-                        }
-
-                    }
-                }
-
+            // comprobarBarcosEnCasillasVecinas(), el parametro que se introduce primero es la parte Fija
+            // y el segundo paramentro que se introduce es la parte que se tiene que recorrer
+                // El barco es Horizontal, tenemos que recorrer la columna
+            if (comprobarBarcosEnCasillasVecinas(fila, columna, longitudBarco, tableroRef, ramdomHorizontal)){
+                return true;
             }
 
-        for (int recorreFila = fila; recorreFila <= fila + longitudBarco; recorreFila++) {
+        }
+            // El barco es Vertical, tenemos que recorrer la fila
+        if (comprobarBarcosEnCasillasVecinas(columna, fila, longitudBarco, tableroRef, ramdomHorizontal)){
+            return true;
+        }
+        // isShipsAround() devuelve false, indicando que no hay barcos alrededor
+        return false;
+    }
+
+    private boolean comprobarBarcosEnCasillasVecinas(int posFija, int posRecorrer, int longitudBarco, Tablero tableroRef, boolean ramdomHorizontal) {
+        int filaModificada;
+        int columnaModificada;
+        
+        for (int recorrerPosicion = posRecorrer; recorrerPosicion <= posRecorrer + longitudBarco; recorrerPosicion++) {
             for (int modFila = -1; modFila <= 1 ; modFila++) {
-                for (int modColumna = -1; modColumna <=  1; modColumna++) {
-                    if ( (modFila == 0) && (modColumna == 0)){
+                for (int modColumn = -1; modColumn <=  1; modColumn++) {
+                    if (NoVerificarCasillasVecinas(modFila, modColumn)){
                         continue;
                     }
-                    // En este caso la Columna es FIJA
-                    filaModificada = recorreFila + modFila;
-                    columnaModificada = columna + modColumna;
+                    if (shipIsHorizontal(ramdomHorizontal)){
+                        // En este caso la fila es FIJA
+                        filaModificada = posFija + modFila;
+                        columnaModificada = recorrerPosicion + modColumn;
+                        
+                    }else {
+                        // En este caso la Columna es FIJA
+                        filaModificada = recorrerPosicion + modFila;
+                        columnaModificada = posFija + modColumn;
+                    }
                     if (!tableroRef.insideTable(filaModificada, columnaModificada)){
                         // no me interesa comprobar casillas fuera del tablero
                         continue;
                     }
-                    if (!squareIsEmpty(filaModificada,columnaModificada, tableroRef)){
+                    if (!squareIsEmpty(filaModificada ,columnaModificada, tableroRef)){
                         return true;
                     }
                 }
 
             }
         }
-
         return false;
-        }
+    }
+
+    private static boolean NoVerificarCasillasVecinas(int modFila, int modColumn) {
+        return (modFila == 0) && (modColumn == 0);
+    }
 
 
     private boolean squareIsEmpty(int fila, int columna, Tablero tableroRef){
@@ -418,7 +423,7 @@ public class Juego {
                 for (int recorrerColumnas = columnaInicial; recorrerColumnas < (columnaInicial + longitudBarco); recorrerColumnas++) {
                     for (int j = -1; j <= 1; j++) {
                         for (int k = -1; k <= 1; k++) {
-                            if ((j == 0) && (k == 0)) {
+                            if (NoVerificarCasillasVecinas(j, k)) {
                                 continue;
                             }
                             modFila = filaInicial + k;
@@ -438,7 +443,7 @@ public class Juego {
             for (int recorrerFilas = filaInicial; recorrerFilas < (filaInicial + longitudBarco); recorrerFilas++) {
                 for (int j = -1; j <= 1; j++) {
                     for (int k = -1; k <= 1; k++) {
-                        if ((j == 0) && (k == 0)) {
+                        if (NoVerificarCasillasVecinas(j, k)) {
                             continue;
                         }
                         modFila = recorrerFilas + k;
@@ -459,7 +464,7 @@ public class Juego {
     }
 
     private static boolean posicionNoPermitida(int i, int j) {
-        if ((i == 0) && (j == 0)) {
+        if (NoVerificarCasillasVecinas(i, j)) {
             return true;
         }
         if ((i == -1) && (j == 0)) {
