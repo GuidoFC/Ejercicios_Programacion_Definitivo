@@ -279,7 +279,7 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
             // que este vacio la casilla, y no haya barco
                 // tenemos que destapar casilla
             if(casillaSinBarco(fila,columna, tableroEnemigo)){
-                tableroEnemigo.obtenerCasilla(fila,columna).setTapada();
+                destaparCasilla(tableroEnemigo, fila, columna);
                 imprimirTablero(jugadorRef, tableroRef, presentacionRef, tableroEnemigo);
                 return true;
             }
@@ -290,7 +290,7 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
             Barco barco = tableroEnemigo.obtenerCasilla(fila,columna).getParteBarco().getBarco();
             // todo: TENGO QUE INDICAR QUE PARTE DEL BARCO ESTOY HUNDIENDO
             barco.getParteBarco(fila,columna).hundirParteBarco();
-            tableroEnemigo.obtenerCasilla(fila,columna).setTapada();
+            destaparCasilla(tableroEnemigo, fila, columna);
 
             if (barco.getLongitud() == 1){
 
@@ -330,6 +330,10 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
 
         }
 
+    }
+
+    private static void destaparCasilla(Tablero tableroEnemigo, int fila, int columna) {
+        tableroEnemigo.obtenerCasilla(fila, columna).setTapada();
     }
 
     private boolean casillaSinBarco(int fila, int columna, Tablero tableroRef){
@@ -375,7 +379,7 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
                     }
 
                     if (tableroRef.insideTable(fila + i, columna + j)) {
-                        tableroRef.obtenerCasilla(fila + i, columna + j).setTapada();
+                        destaparCasilla(tableroRef, fila + i, columna + j);
                     }
 
                 }
@@ -391,7 +395,7 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
                         continue;
                     }
                     if (tableroRef.insideTable(fila + i, columna + j)) {
-                        tableroRef.obtenerCasilla(fila + i, columna + j).setTapada();
+                        destaparCasilla(tableroRef, fila + i, columna + j);
 
 
                     }
@@ -407,7 +411,7 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
         }
 
         if (barco.isHundido()){
-            tableroRef.obtenerCasilla(fila, columna).setTapada();
+            destaparCasilla(tableroRef, fila, columna);
 
             // TODO: no estoy seguro si el codigo de abajo deberia pasar: tableroRef o tableroEnemigo
             presentacionRef.printTableroEnemigo(tableroRef);
@@ -430,7 +434,7 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
                             modColumna = recorrerColumnas + j;
 
                             if (tableroRef.insideTable(modFila, modColumna)) {
-                                tableroRef.obtenerCasilla(modFila, modColumna).setTapada();
+                                destaparCasilla(tableroRef, modFila, modColumna);
 
                             }
 
@@ -449,7 +453,7 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
                         modFila = recorrerFilas + k;
                         modColumna = columnaInicial + j;
                         if (tableroRef.insideTable(modFila, modColumna)) {
-                            tableroRef.obtenerCasilla(modFila, modColumna).setTapada();
+                            destaparCasilla(tableroRef, modFila, modColumna);
 
                         }
 
