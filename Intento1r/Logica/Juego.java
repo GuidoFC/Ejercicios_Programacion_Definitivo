@@ -15,7 +15,7 @@ public class Juego {
     // todo: Creo que sobra el Arraylist <Print>
     private ArrayList<Print> listaPresentacion;
     private int turno;
-    private int turnoMax;
+    private int maxJugadores;
 
 
     // como aplicar este concepto:
@@ -37,18 +37,18 @@ public class Juego {
 
 
     public void starGame(){
-        for (int i = 0; i < turnoMax; i++) {
-            turno = i;
-            createShipForEachPlayer(turno);
+        for (int player = 0; player < maxJugadores; player++) {
+            createShipForEachPlayer(player);
         }
 
         turno = 0;
 
         while (jugar(turno)){
+            // Lo que hace es coger el turno dividirlo entre el numero Max
+            // y el resultado que es el residuo me indicara de quien es el turno
             turno++;
-            if (turno == turnoMax){
-                turno = 0;
-            }
+            turno =  turno % maxJugadores;
+
         }
 
     }
@@ -374,7 +374,7 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
     }
 
     private int obtenerIndiceJugadorEnemigo(int turnoRef){
-        if (turnoRef == this.turnoMax-1){
+        if (turnoRef == this.maxJugadores -1){
             return 0;
         }
         return turnoRef+1;
@@ -509,7 +509,7 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
     }
 
     private void definirTurnoMax(){
-        this.turnoMax = listaJugadores.size();
+        this.maxJugadores = listaJugadores.size();
 
     }
 
