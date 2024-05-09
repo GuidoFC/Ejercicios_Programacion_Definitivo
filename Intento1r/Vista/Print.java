@@ -42,6 +42,14 @@ public class Print {
         return ConsoleColors.GREEN + "!" + ConsoleColors.RESET;
     }
 
+    public void MensajeTableroEnemigo(){
+        System.out.println("Tablero Enemigo");
+    }
+
+    public void MensajeTableroPropio(){
+        System.out.println("Tu tablero");
+    }
+
     public void MensajeHasHundidoBarco(){
         System.out.println("Has hundido el Barco");
         System.out.println("Te vuelve a tocar atacar");

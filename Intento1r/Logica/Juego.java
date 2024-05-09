@@ -363,10 +363,10 @@ private boolean isShipsAround(int fila, int columna, int longitudBarco, boolean 
 
         presentacionRef.mensajeEsTuTurno(jugadorRef);
 
-        System.out.println("Tablero Enemigo");
+        presentacionRef.MensajeTableroEnemigo();
         presentacionRef.printTableroEnemigo(tableroEnemigo);
 
-        System.out.println("Tu tablero");
+        presentacionRef.MensajeTableroPropio();
         // todo: borrar uno
         presentacionRef.printTableroConBarcos(tableroRef);
 
