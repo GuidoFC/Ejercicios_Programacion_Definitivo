@@ -118,10 +118,10 @@ public class Juego {
         ParteBarco parteBarco;
         if (shipHasOnly1Part(barco)){
 
-            parteBarco = barco.getParteBarco(fila,columna);
-            tableroRef.obtenerCasilla(fila,columna).colocarParteBarco(parteBarco);
+            parteBarco = getParteBarco(fila, columna, barco);
+            colocarParteBarcoEnCasilla(fila, columna, tableroRef, parteBarco);
             // decir en que parte esta esa parte del barco
-            tableroRef.obtenerCasilla(fila,columna).setVacio();
+            indicarCasillaOcupada(fila, columna, tableroRef);
             return;
         }
         // si el barco esta compuesto con más de una parte
@@ -129,9 +129,9 @@ public class Juego {
         // posicion horizontal
         if (barco.isPosHorizontal()){
             for (int i = 0; i < barco.getLongitud(); i++) {
-            parteBarco = barco.getParteBarco(fila,columna+i);
-            tableroRef.obtenerCasilla(fila,columna +i).colocarParteBarco(parteBarco);
-            tableroRef.obtenerCasilla(fila,columna+i).setVacio();
+            parteBarco = getParteBarco(fila,columna+i, barco);
+                colocarParteBarcoEnCasilla(fila, columna + i, tableroRef, parteBarco);
+                indicarCasillaOcupada(fila, columna + i, tableroRef);
             }
             return;
         }
@@ -139,11 +139,25 @@ public class Juego {
         // posicion vertical
         for (int i = 0; i < barco.getLongitud(); i++) {
             parteBarco = barco.getParteBarco(fila+i,columna);
-            tableroRef.obtenerCasilla(fila+i,columna ).colocarParteBarco(parteBarco);
-            tableroRef.obtenerCasilla(fila+i,columna).setVacio();
+            colocarParteBarcoEnCasilla(fila + i, columna, tableroRef, parteBarco);
+            indicarCasillaOcupada(fila + i, columna, tableroRef);
         }
 
 
+    }
+
+    private static void indicarCasillaOcupada(int fila, int columna, Tablero tableroRef) {
+        tableroRef.obtenerCasilla(fila, columna).setVacio();
+    }
+
+    private static void colocarParteBarcoEnCasilla(int fila, int columna, Tablero tableroRef, ParteBarco parteBarco) {
+        tableroRef.obtenerCasilla(fila, columna).colocarParteBarco(parteBarco);
+    }
+
+    private static ParteBarco getParteBarco(int fila, int columna, Barco barco) {
+        ParteBarco parteBarco;
+        parteBarco = barco.getParteBarco(fila, columna);
+        return parteBarco;
     }
 
     public boolean shipHasOnly1Part(Barco barco){
