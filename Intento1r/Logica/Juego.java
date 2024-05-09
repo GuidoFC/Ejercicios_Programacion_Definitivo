@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Juego {
     private ArrayList<Jugador> listaJugadores;
     private ArrayList<Tablero> listaTablero;
+    // todo: Creo que sobra el Arraylist <Print>
     private ArrayList<Print> listaPresentacion;
     private int turno;
     private int turnoMax;
@@ -23,20 +24,18 @@ public class Juego {
     // Jugador1 Vs Maquina
 
     public Juego(Jugador jugador1, Jugador jugador2) {
-        listaJugadores = new ArrayList<>();
-        this.listaJugadores.add(jugador1);
-        this.listaJugadores.add(jugador2);
+        arrayListAddJugadores(jugador1, jugador2);
         this.turno =0;
-        turnoMax();
-
-        listaTablero = new ArrayList<>();
-        listaPresentacion = new ArrayList<>();
+        definirTurnoMax();
         addTableroForEachPlayer();
 
     }
 
-
-
+    private void arrayListAddJugadores(Jugador jugador1, Jugador jugador2) {
+        listaJugadores = new ArrayList<>();
+        this.listaJugadores.add(jugador1);
+        this.listaJugadores.add(jugador2);
+    }
 
 
     public void starGame(){
@@ -486,7 +485,7 @@ public class Juego {
         return false;
     }
 
-    private void turnoMax(){
+    private void definirTurnoMax(){
         this.turnoMax = listaJugadores.size();
 
     }
@@ -494,6 +493,8 @@ public class Juego {
 
 
     private void addTableroForEachPlayer(){
+        listaTablero = new ArrayList<>();
+        listaPresentacion = new ArrayList<>();
         for (int i = 0; i < this.listaJugadores.size(); i++) {
             Jugador jugador = listaJugadores.get(i);
             Tablero tablero= jugador.getTableroJugador();
